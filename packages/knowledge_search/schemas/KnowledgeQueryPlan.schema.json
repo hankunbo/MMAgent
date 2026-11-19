@@ -1,0 +1,712 @@
+{
+  "$defs": {
+    "CodedTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "synonyms": {
+          "default": [],
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Synonyms",
+          "type": "array"
+        },
+        "terminology_source": {
+          "const": "MMAGENT_GENERAL_KNOWLEDGE_CATALOG",
+          "default": "MMAGENT_GENERAL_KNOWLEDGE_CATALOG",
+          "title": "Terminology Source",
+          "type": "string"
+        },
+        "terminology_version": {
+          "default": "1.0.0",
+          "enum": [
+            "1.0.0",
+            "2.0.0",
+            "3.0.0"
+          ],
+          "title": "Terminology Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "label"
+      ],
+      "title": "CodedTerm",
+      "type": "object"
+    },
+    "CohortConditions": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "default": "UNRESTRICTED",
+          "enum": [
+            "UNRESTRICTED",
+            "ADULTS",
+            "ADULT_FEMALES"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "provenance": {
+          "const": "research_cohort_catalog",
+          "default": "research_cohort_catalog",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "source_version": {
+          "const": "1.0.0",
+          "default": "1.0.0",
+          "title": "Source Version",
+          "type": "string"
+        }
+      },
+      "title": "CohortConditions",
+      "type": "object"
+    },
+    "ExpansionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "allowlist": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ExpansionSuggestion"
+          },
+          "maxItems": 64,
+          "title": "Allowlist",
+          "type": "array"
+        },
+        "config_version": {
+          "default": "1.0.0",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Config Version",
+          "type": "string"
+        },
+        "enabled": {
+          "default": false,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "model": {
+          "default": "disabled",
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "prompt_version": {
+          "default": "1.0.0",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Prompt Version",
+          "type": "string"
+        }
+      },
+      "title": "ExpansionConfig",
+      "type": "object"
+    },
+    "ExpansionSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "concept_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Concept Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "synonym",
+            "mesh",
+            "spelling"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "term": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Term",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_code",
+        "kind",
+        "term"
+      ],
+      "title": "ExpansionSuggestion",
+      "type": "object"
+    },
+    "ExpansionTrace": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/$defs/ExpansionConfig"
+        },
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "config_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Config Version",
+          "type": "string"
+        },
+        "input_plan_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Plan Checksum",
+          "type": "string"
+        },
+        "model": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "output_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Output Checksum",
+          "type": "string"
+        },
+        "prompt": {
+          "const": "Suggest only allowlisted synonyms, MeSH candidates or spelling variants for existing concept codes. Return a JSON object with suggestions only. Never change goal, claim, evidence need, population, age, sex, dates or other applicability conditions.",
+          "default": "Suggest only allowlisted synonyms, MeSH candidates or spelling variants for existing concept codes. Return a JSON object with suggestions only. Never change goal, claim, evidence need, population, age, sex, dates or other applicability conditions.",
+          "title": "Prompt",
+          "type": "string"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "prompt_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "suggestion_policy": {
+          "const": "set/2.0.0",
+          "title": "Suggestion Policy",
+          "type": "string"
+        },
+        "suggestions": {
+          "items": {
+            "$ref": "#/$defs/ExpansionSuggestion"
+          },
+          "maxItems": 24,
+          "title": "Suggestions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "suggestion_policy",
+        "prompt_version",
+        "model",
+        "config_version",
+        "config_checksum",
+        "prompt_checksum",
+        "input_plan_checksum",
+        "config",
+        "output_checksum",
+        "suggestions"
+      ],
+      "title": "ExpansionTrace",
+      "type": "object"
+    },
+    "IdentifierPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "const": "sha256:a9e14026eb8fae4f16d21adccd596c79a909159cc5abb8ba0dc63cd20c7a1808",
+          "default": "sha256:a9e14026eb8fae4f16d21adccd596c79a909159cc5abb8ba0dc63cd20c7a1808",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "existence": {
+          "const": "not_checked",
+          "default": "not_checked",
+          "title": "Existence",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "general_bibliographic_lookup",
+          "default": "general_bibliographic_lookup",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "version": {
+          "const": "bibliographic-identifier/1.0.0",
+          "default": "bibliographic-identifier/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "IdentifierPolicy",
+      "type": "object"
+    },
+    "PatientFreePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "default": "sha256:bdf7c8a00feb6634429c6794411bd56d418e7a061275e0ed0e40dad9c2de5c60",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "temporal_scope": {
+          "const": "publication_window",
+          "default": "publication_window",
+          "title": "Temporal Scope",
+          "type": "string"
+        },
+        "term_source": {
+          "const": "MMAGENT_GENERAL_KNOWLEDGE_CATALOG",
+          "default": "MMAGENT_GENERAL_KNOWLEDGE_CATALOG",
+          "title": "Term Source",
+          "type": "string"
+        },
+        "term_version": {
+          "default": "1.0.0",
+          "enum": [
+            "1.0.0",
+            "2.0.0",
+            "3.0.0"
+          ],
+          "title": "Term Version",
+          "type": "string"
+        },
+        "version": {
+          "default": "patient-free/3.0.0",
+          "enum": [
+            "patient-free/3.0.0",
+            "patient-free/4.0.0",
+            "patient-free/5.0.0"
+          ],
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "PatientFreePolicy",
+      "type": "object"
+    },
+    "ProviderBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "max_hits": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Hits",
+          "type": "integer"
+        },
+        "max_pages": {
+          "default": 3,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Pages",
+          "type": "integer"
+        },
+        "max_requests": {
+          "default": 16,
+          "maximum": 128,
+          "minimum": 0,
+          "title": "Max Requests",
+          "type": "integer"
+        },
+        "max_retries": {
+          "default": 2,
+          "maximum": 7,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "page_size": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Page Size",
+          "type": "integer"
+        },
+        "priority": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Priority",
+          "type": "integer"
+        },
+        "provider_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Provider Code",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 30000,
+          "maximum": 300000,
+          "minimum": 1,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider_code"
+      ],
+      "title": "ProviderBudget",
+      "type": "object"
+    },
+    "QueryIdentifier": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "DOI",
+          "title": "Kind",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/$defs/IdentifierPolicy"
+        },
+        "source": {
+          "const": "self_identifying_doi",
+          "default": "self_identifying_doi",
+          "title": "Source",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "title": "QueryIdentifier",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "age_max": {
+      "anyOf": [
+        {
+          "maximum": 130,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Age Max"
+    },
+    "age_min": {
+      "anyOf": [
+        {
+          "maximum": 130,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Age Min"
+    },
+    "anatomy": {
+      "default": [],
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Anatomy",
+      "type": "array"
+    },
+    "claim": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Claim",
+      "type": "string"
+    },
+    "cohort": {
+      "$ref": "#/$defs/CohortConditions"
+    },
+    "concepts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CodedTerm"
+      },
+      "maxItems": 8,
+      "title": "Concepts",
+      "type": "array"
+    },
+    "date_from": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date From"
+    },
+    "date_to": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date To"
+    },
+    "diseases": {
+      "items": {
+        "$ref": "#/$defs/CodedTerm"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Diseases",
+      "type": "array"
+    },
+    "evidence_need": {
+      "enum": [
+        "definition",
+        "diagnostic_criteria",
+        "association",
+        "test_accuracy",
+        "prognosis",
+        "management",
+        "contraindication"
+      ],
+      "title": "Evidence Need",
+      "type": "string"
+    },
+    "examinations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CodedTerm"
+      },
+      "maxItems": 8,
+      "title": "Examinations",
+      "type": "array"
+    },
+    "expansion": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExpansionTrace"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "goal": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Goal",
+      "type": "string"
+    },
+    "identifier_policy": {
+      "$ref": "#/$defs/IdentifierPolicy"
+    },
+    "identifiers": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/QueryIdentifier"
+      },
+      "maxItems": 8,
+      "title": "Identifiers",
+      "type": "array"
+    },
+    "languages": {
+      "default": [
+        "en"
+      ],
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Languages",
+      "type": "array"
+    },
+    "max_concurrency": {
+      "default": 3,
+      "maximum": 8,
+      "minimum": 1,
+      "title": "Max Concurrency",
+      "type": "integer"
+    },
+    "modalities": {
+      "default": [],
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "title": "Modalities",
+      "type": "array"
+    },
+    "population": {
+      "items": {
+        "maxLength": 160,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Population",
+      "type": "array"
+    },
+    "privacy": {
+      "$ref": "#/$defs/PatientFreePolicy"
+    },
+    "providers": {
+      "items": {
+        "$ref": "#/$defs/ProviderBudget"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Providers",
+      "type": "array"
+    },
+    "query_plan_version": {
+      "default": "4.0.0",
+      "enum": [
+        "4.0.0",
+        "5.0.0",
+        "6.0.0"
+      ],
+      "title": "Query Plan Version",
+      "type": "string"
+    },
+    "sexes": {
+      "default": [],
+      "items": {
+        "enum": [
+          "female",
+          "male",
+          "intersex",
+          "unknown"
+        ],
+        "type": "string"
+      },
+      "title": "Sexes",
+      "type": "array"
+    },
+    "source_types": {
+      "items": {
+        "enum": [
+          "guideline",
+          "systematic_review",
+          "original_research",
+          "educational_overview",
+          "web",
+          "consensus"
+        ],
+        "type": "string"
+      },
+      "maxItems": 6,
+      "minItems": 1,
+      "title": "Source Types",
+      "type": "array"
+    },
+    "source_version": {
+      "anyOf": [
+        {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Version"
+    },
+    "stop_on_duplicate_page": {
+      "default": true,
+      "title": "Stop On Duplicate Page",
+      "type": "boolean"
+    },
+    "stop_on_empty": {
+      "default": true,
+      "title": "Stop On Empty",
+      "type": "boolean"
+    },
+    "template_version": {
+      "default": "2.0.0",
+      "enum": [
+        "2.0.0",
+        "3.0.0",
+        "4.0.0"
+      ],
+      "title": "Template Version",
+      "type": "string"
+    },
+    "total_max_hits": {
+      "default": 80,
+      "maximum": 200,
+      "minimum": 1,
+      "title": "Total Max Hits",
+      "type": "integer"
+    },
+    "total_max_requests": {
+      "default": 64,
+      "maximum": 256,
+      "minimum": 0,
+      "title": "Total Max Requests",
+      "type": "integer"
+    },
+    "total_timeout_ms": {
+      "default": 60000,
+      "maximum": 600000,
+      "minimum": 1,
+      "title": "Total Timeout Ms",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "goal",
+    "claim",
+    "evidence_need",
+    "diseases",
+    "population",
+    "source_types",
+    "providers"
+  ],
+  "title": "KnowledgeQueryPlan",
+  "type": "object"
+}

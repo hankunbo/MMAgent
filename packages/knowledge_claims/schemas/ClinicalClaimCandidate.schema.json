@@ -1,0 +1,1009 @@
+{
+  "$defs": {
+    "BatchPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "claim-batch/1.0.0",
+          "default": "claim-batch/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "max_requests": {
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Max Requests",
+          "type": "integer"
+        },
+        "max_input_chars": {
+          "maximum": 512000,
+          "minimum": 1,
+          "title": "Max Input Chars",
+          "type": "integer"
+        },
+        "max_output_tokens": {
+          "maximum": 16000,
+          "minimum": 256,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "total_seconds": {
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Total Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_requests",
+        "max_input_chars",
+        "max_output_tokens",
+        "total_seconds"
+      ],
+      "title": "BatchPolicy",
+      "type": "object"
+    },
+    "CandidateSubmission": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "candidate-submission/1.0.0",
+          "default": "candidate-submission/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "producer": {
+          "pattern": "^[A-Za-z0-9:_-]{1,128}$",
+          "title": "Producer",
+          "type": "string"
+        },
+        "request_key": {
+          "pattern": "^[A-Za-z0-9:_-]{1,128}$",
+          "title": "Request Key",
+          "type": "string"
+        },
+        "request_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Request Checksum",
+          "type": "string"
+        },
+        "source_binding_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Binding Checksum",
+          "type": "string"
+        },
+        "display_zh": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Display Zh"
+        }
+      },
+      "required": [
+        "producer",
+        "request_key",
+        "request_checksum",
+        "source_binding_checksum"
+      ],
+      "title": "CandidateSubmission",
+      "type": "object"
+    },
+    "ConfigurationSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "default": "claim-config/1.0.0",
+          "enum": [
+            "claim-config/1.0.0",
+            "claim-config/2.0.0",
+            "claim-config/3.0.0",
+            "claim-config/4.0.0"
+          ],
+          "title": "Version",
+          "type": "string"
+        },
+        "validation_policy": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ValidationPolicyBinding"
+            },
+            {
+              "$ref": "#/$defs/N124ValidationPolicyBinding"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Validation Policy"
+        },
+        "execution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuleExecution"
+            },
+            {
+              "$ref": "#/$defs/N124RuleExecution"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Execution"
+        },
+        "submission": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CandidateSubmission"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "method": {
+          "enum": [
+            "RULE",
+            "LLM"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "extractor_version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "extractor_config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Extractor Config Checksum",
+          "type": "string"
+        },
+        "code_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Code Checksum",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model Version"
+        },
+        "base_url": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Base Url"
+        },
+        "api_key_env": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Api Key Env"
+        },
+        "endpoint": {
+          "anyOf": [
+            {
+              "const": "chat_completions",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Endpoint"
+        },
+        "timeout_seconds": {
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        },
+        "max_retries": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "schema_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Schema Checksum",
+          "type": "string"
+        },
+        "budget": {
+          "$ref": "#/$defs/BatchPolicy"
+        }
+      },
+      "required": [
+        "method",
+        "extractor_version",
+        "extractor_config_checksum",
+        "code_checksum",
+        "model",
+        "model_version",
+        "base_url",
+        "api_key_env",
+        "endpoint",
+        "timeout_seconds",
+        "max_retries",
+        "prompt_checksum",
+        "schema_checksum",
+        "budget"
+      ],
+      "title": "ConfigurationSnapshot",
+      "type": "object"
+    },
+    "N124RuleExecution": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "extractor-execution/2.0.0",
+          "default": "extractor-execution/2.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "implementation": {
+          "const": "registered_nice_ng81_n124",
+          "default": "registered_nice_ng81_n124",
+          "title": "Implementation",
+          "type": "string"
+        },
+        "rule_version": {
+          "const": "nice-ng81-n124/1.0.0",
+          "default": "nice-ng81-n124/1.0.0",
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "transport": {
+          "const": "local",
+          "default": "local",
+          "title": "Transport",
+          "type": "string"
+        },
+        "external_services_called": {
+          "const": false,
+          "default": false,
+          "title": "External Services Called",
+          "type": "boolean"
+        },
+        "model_called": {
+          "const": false,
+          "default": false,
+          "title": "Model Called",
+          "type": "boolean"
+        }
+      },
+      "title": "N124RuleExecution",
+      "type": "object"
+    },
+    "N124ValidationPolicyBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "claim-validation/3.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "numeric_version": {
+          "const": "n124-document-metadata/1.0.0",
+          "title": "Numeric Version",
+          "type": "string"
+        },
+        "polarity_version": {
+          "const": "n124-exact-clause/1.0.0",
+          "title": "Polarity Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "numeric_version",
+        "polarity_version",
+        "checksum"
+      ],
+      "title": "N124ValidationPolicyBinding",
+      "type": "object"
+    },
+    "NumericEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "pattern": "^-?\\d+(?:\\.\\d+)?$",
+          "title": "Value",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "comparator": {
+          "anyOf": [
+            {
+              "enum": [
+                "<",
+                "<=",
+                ">",
+                ">=",
+                "=",
+                "≤",
+                "≥"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Comparator"
+        },
+        "quote": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "comparator",
+        "quote",
+        "span"
+      ],
+      "title": "NumericEvidence",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "enum": [
+            "RULE",
+            "LLM"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "extractor_version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "prompt_version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "schema_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Schema Checksum",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model Version"
+        },
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "configuration": {
+          "$ref": "#/$defs/ConfigurationSnapshot"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "output_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Output Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "method",
+        "extractor_version",
+        "prompt_version",
+        "prompt_checksum",
+        "schema_checksum",
+        "model",
+        "model_version",
+        "config_checksum",
+        "configuration",
+        "input_checksum",
+        "output_checksum"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "source",
+            "source_version",
+            "source_document",
+            "document_chunk"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "maxLength": 256,
+              "minLength": 129,
+              "type": "string"
+            }
+          ],
+          "title": "Code"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "RuleExecution": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "extractor-execution/1.0.0",
+          "default": "extractor-execution/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "implementation": {
+          "const": "registered_exact_candidate",
+          "default": "registered_exact_candidate",
+          "title": "Implementation",
+          "type": "string"
+        },
+        "rule_version": {
+          "const": "exact-candidate/1.0.0",
+          "default": "exact-candidate/1.0.0",
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "transport": {
+          "const": "local",
+          "default": "local",
+          "title": "Transport",
+          "type": "string"
+        },
+        "external_services_called": {
+          "const": false,
+          "default": false,
+          "title": "External Services Called",
+          "type": "boolean"
+        },
+        "model_called": {
+          "const": false,
+          "default": false,
+          "title": "Model Called",
+          "type": "boolean"
+        }
+      },
+      "title": "RuleExecution",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinate_system": {
+          "const": "canonical_unicode",
+          "default": "canonical_unicode",
+          "title": "Coordinate System",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "ValidationPolicyBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "claim-validation/2.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "numeric_version": {
+          "const": "numeric-occurrence/1.0.0",
+          "title": "Numeric Version",
+          "type": "string"
+        },
+        "polarity_version": {
+          "const": "polarity-grammar/1.0.0",
+          "title": "Polarity Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "numeric_version",
+        "polarity_version",
+        "checksum"
+      ],
+      "title": "ValidationPolicyBinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "claim_type": {
+      "enum": [
+        "exam_requirement",
+        "evidence_direction",
+        "exclusion",
+        "applicability",
+        "validation",
+        "stop"
+      ],
+      "title": "Claim Type",
+      "type": "string"
+    },
+    "statement": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Statement",
+      "type": "string"
+    },
+    "target_proposition": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Target Proposition",
+      "type": "string"
+    },
+    "polarity": {
+      "enum": [
+        "POSITIVE",
+        "NEGATIVE",
+        "UNCERTAIN"
+      ],
+      "title": "Polarity",
+      "type": "string"
+    },
+    "uncertainty": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Uncertainty",
+      "type": "array"
+    },
+    "recommendation_strength": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Recommendation Strength",
+      "type": "array"
+    },
+    "subject": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Subject",
+      "type": "string"
+    },
+    "population": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Population",
+      "type": "array"
+    },
+    "disease_stage": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Disease Stage",
+      "type": "array"
+    },
+    "condition": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Condition",
+      "type": "array"
+    },
+    "intervention": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Intervention",
+      "type": "array"
+    },
+    "exam": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Exam",
+      "type": "array"
+    },
+    "modality": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Modality",
+      "type": "array"
+    },
+    "outcome": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Outcome",
+      "type": "array"
+    },
+    "time": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Time",
+      "type": "array"
+    },
+    "laterality": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Laterality",
+      "type": "array"
+    },
+    "device": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Device",
+      "type": "array"
+    },
+    "applicability": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Applicability",
+      "type": "array"
+    },
+    "numbers": {
+      "items": {
+        "$ref": "#/$defs/NumericEvidence"
+      },
+      "maxItems": 32,
+      "title": "Numbers",
+      "type": "array"
+    },
+    "quote": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Quote",
+      "type": "string"
+    },
+    "span": {
+      "$ref": "#/$defs/Span"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "schema_version": {
+      "const": "clinical-claim-candidate/1.0.0",
+      "default": "clinical-claim-candidate/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "code": {
+      "pattern": "^CLAIM:CANDIDATE:[A-F0-9]{64}$",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "draft",
+      "default": "draft",
+      "title": "Status",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Reference"
+    },
+    "source_version": {
+      "$ref": "#/$defs/Reference"
+    },
+    "document": {
+      "$ref": "#/$defs/Reference"
+    },
+    "chunk": {
+      "$ref": "#/$defs/Reference"
+    },
+    "page": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Page"
+    },
+    "paragraph": {
+      "minimum": 1,
+      "title": "Paragraph",
+      "type": "integer"
+    },
+    "section_path": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Section Path",
+      "type": "array"
+    },
+    "quote_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Quote Checksum",
+      "type": "string"
+    },
+    "parse_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parse Checksum",
+      "type": "string"
+    },
+    "grid_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Grid Checksum"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "evidence_grade": {
+      "const": "unassessed",
+      "default": "unassessed",
+      "title": "Evidence Grade",
+      "type": "string"
+    },
+    "authority": {
+      "const": "unassessed",
+      "default": "unassessed",
+      "title": "Authority",
+      "type": "string"
+    },
+    "currency": {
+      "const": "unassessed",
+      "default": "unassessed",
+      "title": "Currency",
+      "type": "string"
+    },
+    "directness": {
+      "const": "extractive",
+      "default": "extractive",
+      "title": "Directness",
+      "type": "string"
+    }
+  },
+  "required": [
+    "claim_type",
+    "statement",
+    "target_proposition",
+    "polarity",
+    "uncertainty",
+    "recommendation_strength",
+    "subject",
+    "population",
+    "disease_stage",
+    "condition",
+    "intervention",
+    "exam",
+    "modality",
+    "outcome",
+    "time",
+    "laterality",
+    "device",
+    "applicability",
+    "numbers",
+    "quote",
+    "span",
+    "confidence",
+    "code",
+    "version",
+    "source",
+    "source_version",
+    "document",
+    "chunk",
+    "page",
+    "paragraph",
+    "section_path",
+    "quote_checksum",
+    "parse_checksum",
+    "grid_checksum",
+    "provenance"
+  ],
+  "title": "ClinicalClaimCandidate",
+  "type": "object"
+}

@@ -1,0 +1,76 @@
+{
+  "additionalProperties": false,
+  "description": "An explicit complete-block range from an immutable full source parse.",
+  "properties": {
+    "version": {
+      "const": "2.4.0",
+      "default": "2.4.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "max_chars": {
+      "default": 1200,
+      "maximum": 4096,
+      "minimum": 64,
+      "title": "Max Chars",
+      "type": "integer"
+    },
+    "overlap_chars": {
+      "default": 100,
+      "maximum": 512,
+      "minimum": 0,
+      "title": "Overlap Chars",
+      "type": "integer"
+    },
+    "max_chunks": {
+      "default": 192,
+      "maximum": 250,
+      "minimum": 1,
+      "title": "Max Chunks",
+      "type": "integer"
+    },
+    "projection_version": {
+      "const": "bounded-projection/1.0.0",
+      "default": "bounded-projection/1.0.0",
+      "title": "Projection Version",
+      "type": "string"
+    },
+    "selection": {
+      "const": "exact-ordinal-window/1.0.0",
+      "default": "exact-ordinal-window/1.0.0",
+      "title": "Selection",
+      "type": "string"
+    },
+    "source_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Checksum",
+      "type": "string"
+    },
+    "first_ordinal": {
+      "minimum": 1,
+      "title": "First Ordinal",
+      "type": "integer"
+    },
+    "last_ordinal": {
+      "minimum": 1,
+      "title": "Last Ordinal",
+      "type": "integer"
+    },
+    "tables": {
+      "default": "included",
+      "enum": [
+        "included",
+        "excluded"
+      ],
+      "title": "Tables",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_checksum",
+    "first_ordinal",
+    "last_ordinal"
+  ],
+  "title": "WindowChunkPolicy",
+  "type": "object"
+}

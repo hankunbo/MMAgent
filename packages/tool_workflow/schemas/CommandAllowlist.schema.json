@@ -1,0 +1,310 @@
+{
+  "$defs": {
+    "JsonValue": {},
+    "ManifestResource": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Byte Size"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "resource_key": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Resource Key",
+          "type": "string"
+        },
+        "resource_role": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Resource Role",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256"
+        },
+        "uri": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "resource_key",
+        "resource_role",
+        "uri",
+        "sha256",
+        "byte_size",
+        "required",
+        "metadata"
+      ],
+      "title": "ManifestResource",
+      "type": "object"
+    },
+    "OutputSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "pattern": "^[a-z][a-z0-9_.-]{0,95}$",
+          "title": "Filename",
+          "type": "string"
+        },
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "qc_policy_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "qc_port": {
+          "const": "technical_output_qc/1.0.0",
+          "default": "technical_output_qc/1.0.0",
+          "title": "Qc Port",
+          "type": "string"
+        }
+      },
+      "required": [
+        "port",
+        "filename",
+        "qc_policy_ref"
+      ],
+      "title": "OutputSpec",
+      "type": "object"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Controlled owner declares exact command, not a caller's approved boolean.",
+  "properties": {
+    "argv": {
+      "items": {
+        "maxLength": 512,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 128,
+      "minItems": 2,
+      "title": "Argv",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "compiler_config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Compiler Config Checksum",
+      "type": "string"
+    },
+    "entrypoint_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Entrypoint Checksum",
+      "type": "string"
+    },
+    "entrypoint_uri": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Entrypoint Uri",
+      "type": "string"
+    },
+    "executable_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Executable Checksum",
+      "type": "string"
+    },
+    "executable_uri": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Executable Uri",
+      "type": "string"
+    },
+    "manifest_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Manifest Checksum",
+      "type": "string"
+    },
+    "optional_absence": {
+      "const": "omit_token_no_value",
+      "default": "omit_token_no_value",
+      "title": "Optional Absence",
+      "type": "string"
+    },
+    "outputs": {
+      "items": {
+        "$ref": "#/$defs/OutputSpec"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Outputs",
+      "type": "array"
+    },
+    "parameter_schema_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parameter Schema Checksum",
+      "type": "string"
+    },
+    "parameter_schema_version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Parameter Schema Version",
+      "type": "string"
+    },
+    "profile_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Profile Checksum",
+      "type": "string"
+    },
+    "resources": {
+      "items": {
+        "$ref": "#/$defs/ManifestResource"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Resources",
+      "type": "array"
+    },
+    "shell": {
+      "const": false,
+      "default": false,
+      "title": "Shell",
+      "type": "boolean"
+    },
+    "source_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "synthetic_only": {
+      "title": "Synthetic Only",
+      "type": "boolean"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "checksum",
+    "source_ref",
+    "manifest_checksum",
+    "profile_checksum",
+    "compiler_config_checksum",
+    "synthetic_only",
+    "executable_uri",
+    "executable_checksum",
+    "entrypoint_uri",
+    "entrypoint_checksum",
+    "resources",
+    "argv",
+    "parameter_schema_version",
+    "parameter_schema_checksum",
+    "outputs"
+  ],
+  "title": "CommandAllowlist",
+  "type": "object"
+}

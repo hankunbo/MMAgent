@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "batch_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Batch Id",
+      "type": "string"
+    },
+    "raw_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Checksum",
+      "type": "string"
+    },
+    "reason": {
+      "const": "confirmed_schema_failure_not_reused",
+      "default": "confirmed_schema_failure_not_reused",
+      "title": "Reason",
+      "type": "string"
+    },
+    "record_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Record Checksum",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "response_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Response Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "batch_id",
+    "request_id",
+    "record_checksum",
+    "response_checksum",
+    "raw_checksum"
+  ],
+  "title": "ConfirmedFormatFailure",
+  "type": "object"
+}

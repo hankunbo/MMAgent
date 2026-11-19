@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "synthetic-adapter-fake/1.0.0",
+      "default": "synthetic-adapter-fake/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "case": {
+      "default": "ok",
+      "enum": [
+        "ok",
+        "safety",
+        "interface",
+        "empty_mask",
+        "performance",
+        "repeatability",
+        "resource",
+        "technical_failure",
+        "unknown",
+        "not_installed"
+      ],
+      "title": "Case",
+      "type": "string"
+    }
+  },
+  "title": "FakeProtocol",
+  "type": "object"
+}

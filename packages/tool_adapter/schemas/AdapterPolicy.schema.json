@@ -1,0 +1,69 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "synthetic-adapter-policy/1.0.0",
+      "default": "synthetic-adapter-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "code": {
+      "const": "POLICY:SYNTHETIC_ADAPTER",
+      "default": "POLICY:SYNTHETIC_ADAPTER",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "default": "1.0.0",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "max_seconds": {
+      "default": 10,
+      "maximum": 30,
+      "minimum": 1,
+      "title": "Max Seconds",
+      "type": "integer"
+    },
+    "lease_seconds": {
+      "default": 30,
+      "maximum": 60,
+      "minimum": 2,
+      "title": "Lease Seconds",
+      "type": "integer"
+    },
+    "max_memory_mb": {
+      "default": 512,
+      "maximum": 4096,
+      "minimum": 16,
+      "title": "Max Memory Mb",
+      "type": "integer"
+    },
+    "max_attempts": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Attempts",
+      "type": "integer"
+    },
+    "real_benchmark": {
+      "default": null,
+      "title": "Real Benchmark",
+      "type": "null"
+    },
+    "intended_use": {
+      "const": "research_only",
+      "default": "research_only",
+      "title": "Intended Use",
+      "type": "string"
+    }
+  },
+  "title": "AdapterPolicy",
+  "type": "object"
+}

@@ -1,0 +1,204 @@
+{
+  "$defs": {
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "RuntimeFile": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "executable": {
+          "default": false,
+          "title": "Executable",
+          "type": "boolean"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target",
+        "checksum"
+      ],
+      "title": "RuntimeFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_plan_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 512,
+      "minItems": 1,
+      "title": "Allowed Plan Checksums",
+      "type": "array"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "cpu_seconds": {
+      "default": 2,
+      "maximum": 3600,
+      "minimum": 1,
+      "title": "Cpu Seconds",
+      "type": "integer"
+    },
+    "environment": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "maxProperties": 16,
+      "title": "Environment",
+      "type": "object"
+    },
+    "isolation": {
+      "const": "linux_chroot_drop_privileges_seccomp_x86_64/1.0.0",
+      "default": "linux_chroot_drop_privileges_seccomp_x86_64/1.0.0",
+      "title": "Isolation",
+      "type": "string"
+    },
+    "log_bytes": {
+      "default": 65536,
+      "maximum": 1048576,
+      "minimum": 1024,
+      "title": "Log Bytes",
+      "type": "integer"
+    },
+    "max_concurrent": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Concurrent",
+      "type": "integer"
+    },
+    "max_resource_bytes": {
+      "default": 67108864,
+      "maximum": 1073741824,
+      "minimum": 1,
+      "title": "Max Resource Bytes",
+      "type": "integer"
+    },
+    "process_limit": {
+      "default": 16,
+      "maximum": 128,
+      "minimum": 2,
+      "title": "Process Limit",
+      "type": "integer"
+    },
+    "purpose": {
+      "enum": [
+        "debug",
+        "shadow",
+        "decisive_research"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "reference": {
+      "$ref": "#/$defs/Ref"
+    },
+    "resource_semantics": {
+      "const": "per_process_as_cpu_affinity_and_wall_deadline",
+      "default": "per_process_as_cpu_affinity_and_wall_deadline",
+      "title": "Resource Semantics",
+      "type": "string"
+    },
+    "runtime_files": {
+      "items": {
+        "$ref": "#/$defs/RuntimeFile"
+      },
+      "maxItems": 8192,
+      "minItems": 1,
+      "title": "Runtime Files",
+      "type": "array"
+    },
+    "sandbox_uid": {
+      "default": 61006,
+      "maximum": 64999,
+      "minimum": 60000,
+      "title": "Sandbox Uid",
+      "type": "integer"
+    },
+    "synthetic_execution": {
+      "title": "Synthetic Execution",
+      "type": "boolean"
+    },
+    "version": {
+      "const": "06D.1.0.0",
+      "default": "06D.1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "reference",
+    "runtime_files",
+    "allowed_plan_checksums",
+    "purpose",
+    "synthetic_execution"
+  ],
+  "title": "ExecutionPolicy",
+  "type": "object"
+}

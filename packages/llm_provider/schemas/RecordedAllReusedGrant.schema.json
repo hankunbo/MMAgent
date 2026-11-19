@@ -1,0 +1,145 @@
+{
+  "additionalProperties": false,
+  "description": "Local closure of an original all-reused failure, not a new model Review.",
+  "properties": {
+    "aggregate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Aggregate Checksum",
+      "type": "string"
+    },
+    "aggregate_key": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Aggregate Key",
+      "type": "string"
+    },
+    "all_reused_origin_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "All Reused Origin Checksum",
+      "type": "string"
+    },
+    "case_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "control_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Control Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "failed_result_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Failed Result Checksum",
+      "type": "string"
+    },
+    "install_successor": {
+      "const": false,
+      "default": false,
+      "title": "Install Successor",
+      "type": "boolean"
+    },
+    "issued_at": {
+      "format": "date-time",
+      "title": "Issued At",
+      "type": "string"
+    },
+    "new_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "New Requests",
+      "type": "integer"
+    },
+    "original_grant_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Original Grant Checksum",
+      "type": "string"
+    },
+    "previous_local_grant_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Previous Local Grant Checksum"
+    },
+    "previous_local_receipt_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Previous Local Receipt Checksum"
+    },
+    "purpose": {
+      "const": "save_complete_recorded_review_only",
+      "default": "save_complete_recorded_review_only",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "rejected_response_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Rejected Response Checksums",
+      "type": "array"
+    },
+    "request_checksums": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Request Checksums",
+      "type": "array"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "recorded-review-finalization/1.3.0",
+      "default": "recorded-review-finalization/1.3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "State Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "case_code",
+    "original_grant_checksum",
+    "failed_result_checksum",
+    "control_checksum",
+    "state_checksum",
+    "aggregate_key",
+    "aggregate_checksum",
+    "issued_at",
+    "deadline",
+    "rejected_response_checksums",
+    "previous_local_grant_checksum",
+    "previous_local_receipt_checksum",
+    "all_reused_origin_checksum"
+  ],
+  "title": "RecordedAllReusedGrant",
+  "type": "object"
+}

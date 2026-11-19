@@ -1,0 +1,158 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "case_code": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "domain": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Domain",
+      "type": "string"
+    },
+    "failure_types": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Failure Types",
+      "type": "array"
+    },
+    "goal": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Goal",
+      "type": "string"
+    },
+    "graph_conditions": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Graph Conditions",
+      "type": "array"
+    },
+    "groups": {
+      "default": [
+        "success",
+        "counterfactual",
+        "recovery"
+      ],
+      "items": {
+        "enum": [
+          "success",
+          "counterfactual",
+          "recovery"
+        ],
+        "type": "string"
+      },
+      "title": "Groups",
+      "type": "array"
+    },
+    "inputs": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "modalities": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Modalities",
+      "type": "array"
+    },
+    "patient_conditions": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Patient Conditions",
+      "type": "object"
+    },
+    "purpose": {
+      "const": "synthetic_offline",
+      "default": "synthetic_offline",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "rule_versions": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Rule Versions",
+      "type": "object"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "memory-query/1.0.0",
+      "default": "memory-query/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "template": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Template",
+      "type": "string"
+    },
+    "test_context": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Test Context",
+      "type": "string"
+    },
+    "text": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Text",
+      "type": "array"
+    },
+    "tool_versions": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Tool Versions",
+      "type": "object"
+    },
+    "validation": {
+      "const": "synthetic_engineering",
+      "default": "synthetic_engineering",
+      "title": "Validation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "goal",
+    "template",
+    "graph_conditions",
+    "modalities",
+    "inputs",
+    "patient_conditions",
+    "tool_versions",
+    "rule_versions",
+    "failure_types",
+    "domain",
+    "run_id",
+    "case_code",
+    "test_context"
+  ],
+  "title": "Query",
+  "type": "object"
+}

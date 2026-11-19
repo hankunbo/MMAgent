@@ -1,0 +1,274 @@
+{
+  "$defs": {
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "capability": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability"
+        },
+        "queueable": {
+          "default": false,
+          "title": "Queueable",
+          "type": "boolean"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "source_checksum",
+        "reason"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "QueuePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "tool-gap-policy/1.0.0",
+          "default": "tool-gap-policy/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "allowed": {
+          "default": [
+            "capability_unregistered",
+            "environment_unavailable",
+            "implementation_missing",
+            "input_incompatible",
+            "output_incompatible",
+            "validation_insufficient"
+          ],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Allowed",
+          "type": "array"
+        },
+        "purposes": {
+          "default": [
+            "debug",
+            "shadow",
+            "decisive_research"
+          ],
+          "items": {
+            "enum": [
+              "debug",
+              "shadow",
+              "decisive_research"
+            ],
+            "type": "string"
+          },
+          "title": "Purposes",
+          "type": "array"
+        },
+        "lease_seconds": {
+          "default": 60,
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Lease Seconds",
+          "type": "integer"
+        },
+        "max_claims": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Max Claims",
+          "type": "integer"
+        },
+        "lifetime_seconds": {
+          "default": 86400,
+          "maximum": 604800,
+          "minimum": 1,
+          "title": "Lifetime Seconds",
+          "type": "integer"
+        }
+      },
+      "title": "QueuePolicy",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-gap-application/1.0.0",
+      "default": "tool-gap-application/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "case_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "owner": {
+      "enum": [
+        "05",
+        "06_research",
+        "06_formal",
+        "06_execution",
+        "08",
+        "09"
+      ],
+      "title": "Owner",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "debug",
+        "shadow",
+        "decisive_research",
+        "research_offline"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "requirement": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Requirement",
+      "type": "object"
+    },
+    "catalog": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Catalog",
+      "type": "object"
+    },
+    "policy": {
+      "$ref": "#/$defs/QueuePolicy"
+    },
+    "material": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Material",
+      "type": "object"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "control": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Control"
+    },
+    "intent": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Intent"
+    },
+    "missing": {
+      "default": [
+        "selected_candidate",
+        "evaluation_dataset",
+        "threshold_policy",
+        "onboarding_job"
+      ],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Missing",
+      "type": "array"
+    },
+    "replay": {
+      "const": "new_run_new_locks_05_grounding_06_admission",
+      "default": "new_run_new_locks_05_grounding_06_admission",
+      "title": "Replay",
+      "type": "string"
+    },
+    "live_domain_acceptance": {
+      "const": "live_domain_acceptance_not_enabled",
+      "default": "live_domain_acceptance_not_enabled",
+      "title": "Live Domain Acceptance",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "case_code",
+    "key",
+    "owner",
+    "purpose",
+    "requirement",
+    "catalog",
+    "policy",
+    "material",
+    "findings"
+  ],
+  "title": "Application",
+  "type": "object"
+}

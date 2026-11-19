@@ -1,0 +1,226 @@
+{
+  "$defs": {
+    "PresentationPacket": {
+      "additionalProperties": true,
+      "properties": {
+        "appendices": {
+          "additionalProperties": true,
+          "title": "Appendices",
+          "type": "object"
+        },
+        "checks": {
+          "additionalProperties": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Checks",
+          "type": "object"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Confidence"
+        },
+        "counts": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Counts",
+          "type": "object"
+        },
+        "coverage": {
+          "additionalProperties": true,
+          "title": "Coverage",
+          "type": "object"
+        },
+        "diagnostics": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        },
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/StructureEdge"
+          },
+          "maxItems": 50000,
+          "title": "Edges",
+          "type": "array"
+        },
+        "memory": {
+          "additionalProperties": true,
+          "title": "Memory",
+          "type": "object"
+        },
+        "navigation": {
+          "items": {
+            "$ref": "#/$defs/StructureNode"
+          },
+          "maxItems": 10000,
+          "title": "Navigation",
+          "type": "array"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/StructureNode"
+          },
+          "maxItems": 10000,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "report_content_checksum": {
+          "minLength": 1,
+          "title": "Report Content Checksum",
+          "type": "string"
+        },
+        "sample": {
+          "title": "Sample",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "evidence-presentation/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "const": "historical_read_only_not_current_authorization",
+          "title": "Scope",
+          "type": "string"
+        },
+        "scores": {
+          "additionalProperties": true,
+          "title": "Scores",
+          "type": "object"
+        },
+        "scores_checksum": {
+          "minLength": 1,
+          "title": "Scores Checksum",
+          "type": "string"
+        },
+        "source_checksum": {
+          "minLength": 1,
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "source_version": {
+          "title": "Source Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "scope",
+        "source_checksum",
+        "report_content_checksum",
+        "source_version",
+        "sample",
+        "nodes",
+        "edges",
+        "navigation",
+        "checks",
+        "scores",
+        "scores_checksum",
+        "counts",
+        "confidence",
+        "coverage",
+        "appendices",
+        "diagnostics",
+        "memory"
+      ],
+      "title": "PresentationPacket",
+      "type": "object"
+    },
+    "StructureEdge": {
+      "additionalProperties": true,
+      "properties": {
+        "relation": {
+          "minLength": 1,
+          "title": "Relation",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "minLength": 1,
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target",
+        "relation"
+      ],
+      "title": "StructureEdge",
+      "type": "object"
+    },
+    "StructureNode": {
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "type": {
+          "minLength": 1,
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "title"
+      ],
+      "title": "StructureNode",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "packet": {
+      "$ref": "#/$defs/PresentationPacket"
+    },
+    "packet_checksum": {
+      "minLength": 1,
+      "title": "Packet Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "evidence-display-export/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "packet_checksum",
+    "packet"
+  ],
+  "title": "DisplayExport",
+  "type": "object"
+}

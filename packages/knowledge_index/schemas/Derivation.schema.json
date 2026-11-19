@@ -1,0 +1,298 @@
+{
+  "$defs": {
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Section Path",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "paragraph",
+            "heading",
+            "list",
+            "table",
+            "caption"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "ordinal": {
+          "minimum": 1,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "span_start": {
+          "minimum": 0,
+          "title": "Span Start",
+          "type": "integer"
+        },
+        "span_end": {
+          "minimum": 1,
+          "title": "Span End",
+          "type": "integer"
+        },
+        "table_status": {
+          "default": "not_applicable",
+          "enum": [
+            "structured",
+            "unavailable",
+            "not_applicable"
+          ],
+          "title": "Table Status",
+          "type": "string"
+        },
+        "table_capability": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TableCapability"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "section_path",
+        "kind",
+        "ordinal",
+        "span_start",
+        "span_end"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "TableCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "table-grid/1.0.0",
+          "default": "table-grid/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "structured",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "rows": {
+          "anyOf": [
+            {
+              "maximum": 64,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rows"
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "maximum": 32,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Columns"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "numeric_evidence": {
+          "title": "Numeric Evidence",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "numeric_evidence"
+      ],
+      "title": "TableCapability",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "derivation/1.0.0",
+      "default": "derivation/1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "original_checksum": {
+      "title": "Original Checksum",
+      "type": "string"
+    },
+    "parse_uri": {
+      "title": "Parse Uri",
+      "type": "string"
+    },
+    "parse_checksum": {
+      "title": "Parse Checksum",
+      "type": "string"
+    },
+    "parser": {
+      "title": "Parser",
+      "type": "string"
+    },
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "parse_policy_checksum": {
+      "title": "Parse Policy Checksum",
+      "type": "string"
+    },
+    "chunk_policy_checksum": {
+      "title": "Chunk Policy Checksum",
+      "type": "string"
+    },
+    "language": {
+      "maxLength": 32,
+      "title": "Language",
+      "type": "string"
+    },
+    "targets": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Targets",
+      "type": "array"
+    },
+    "position": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Position"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "previous_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Code"
+    },
+    "next_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Code"
+    },
+    "fidelity_policy": {
+      "anyOf": [
+        {
+          "enum": [
+            "text-fidelity/2.0.0",
+            "text-fidelity/2.1.0"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fidelity Policy"
+    },
+    "table_evidence": {
+      "anyOf": [
+        {
+          "enum": [
+            "structured_or_absent",
+            "contains_unavailable"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Table Evidence"
+    }
+  },
+  "required": [
+    "original_checksum",
+    "parse_uri",
+    "parse_checksum",
+    "parser",
+    "parser_version",
+    "parse_policy_checksum",
+    "chunk_policy_checksum",
+    "language"
+  ],
+  "title": "Derivation",
+  "type": "object"
+}

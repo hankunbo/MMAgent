@@ -1,0 +1,65 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "content_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Content Checksum",
+      "type": "string"
+    },
+    "dimension": {
+      "maximum": 65536,
+      "minimum": 1,
+      "title": "Dimension",
+      "type": "integer"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "model_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Model Code",
+      "type": "string"
+    },
+    "model_version": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Model Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "memory-index/1.0.0",
+      "default": "memory-index/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "metadata_only",
+      "default": "metadata_only",
+      "title": "Status",
+      "type": "string"
+    },
+    "target": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Target",
+      "type": "string"
+    },
+    "target_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Target Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "target",
+    "target_checksum",
+    "model_code",
+    "model_version",
+    "dimension",
+    "content_checksum"
+  ],
+  "title": "EmbeddingIndex",
+  "type": "object"
+}

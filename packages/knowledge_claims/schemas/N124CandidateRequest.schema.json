@@ -1,0 +1,769 @@
+{
+  "$defs": {
+    "CandidateSourceBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "index_key": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Index Key",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/Reference"
+        },
+        "source_version": {
+          "$ref": "#/$defs/Reference"
+        },
+        "document": {
+          "$ref": "#/$defs/Reference"
+        },
+        "chunk": {
+          "$ref": "#/$defs/Reference"
+        },
+        "original_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Original Checksum",
+          "type": "string"
+        },
+        "parse_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Parse Checksum",
+          "type": "string"
+        },
+        "chunk_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Chunk Checksum",
+          "type": "string"
+        },
+        "parse_uri": {
+          "maxLength": 256,
+          "pattern": "^object://knowledge/objects/[A-Za-z0-9_-]+$",
+          "title": "Parse Uri",
+          "type": "string"
+        },
+        "fidelity_policy": {
+          "const": "text-fidelity/2.0.0",
+          "title": "Fidelity Policy",
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/Position"
+        }
+      },
+      "required": [
+        "index_key",
+        "source",
+        "source_version",
+        "document",
+        "chunk",
+        "original_checksum",
+        "parse_checksum",
+        "chunk_checksum",
+        "parse_uri",
+        "fidelity_policy",
+        "position"
+      ],
+      "title": "CandidateSourceBinding",
+      "type": "object"
+    },
+    "N124DraftOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_type": {
+          "enum": [
+            "exam_requirement",
+            "evidence_direction",
+            "exclusion",
+            "applicability",
+            "validation",
+            "stop"
+          ],
+          "title": "Claim Type",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "target_proposition": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Target Proposition",
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "POSITIVE",
+            "NEGATIVE",
+            "UNCERTAIN"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "uncertainty": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Uncertainty",
+          "type": "array"
+        },
+        "recommendation_strength": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Recommendation Strength",
+          "type": "array"
+        },
+        "subject": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Subject",
+          "type": "string"
+        },
+        "population": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Population",
+          "type": "array"
+        },
+        "disease_stage": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Disease Stage",
+          "type": "array"
+        },
+        "condition": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Condition",
+          "type": "array"
+        },
+        "intervention": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Intervention",
+          "type": "array"
+        },
+        "exam": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Exam",
+          "type": "array"
+        },
+        "modality": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Modality",
+          "type": "array"
+        },
+        "outcome": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Outcome",
+          "type": "array"
+        },
+        "time": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Time",
+          "type": "array"
+        },
+        "laterality": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Laterality",
+          "type": "array"
+        },
+        "device": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Device",
+          "type": "array"
+        },
+        "applicability": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "numbers": {
+          "items": {
+            "$ref": "#/$defs/NumericEvidence"
+          },
+          "maxItems": 32,
+          "title": "Numbers",
+          "type": "array"
+        },
+        "quote": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "output_version": {
+          "const": "nice-ng81-n124-output/1.0.0",
+          "title": "Output Version",
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/$defs/N124Metadata"
+        }
+      },
+      "required": [
+        "claim_type",
+        "statement",
+        "target_proposition",
+        "polarity",
+        "uncertainty",
+        "recommendation_strength",
+        "subject",
+        "population",
+        "disease_stage",
+        "condition",
+        "intervention",
+        "exam",
+        "modality",
+        "outcome",
+        "time",
+        "laterality",
+        "device",
+        "applicability",
+        "numbers",
+        "quote",
+        "span",
+        "confidence",
+        "output_version",
+        "metadata"
+      ],
+      "title": "N124DraftOutput",
+      "type": "object"
+    },
+    "N124Metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "nice-ng81-n124-metadata/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "anchor": {
+          "const": "ng81-1_2_4",
+          "title": "Anchor",
+          "type": "string"
+        },
+        "recommendation": {
+          "const": "1.2.4",
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "recommendation_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "semantic_text": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Semantic Text",
+          "type": "string"
+        },
+        "semantic_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "update_text": {
+          "const": "[2009, amended 2017]",
+          "title": "Update Text",
+          "type": "string"
+        },
+        "update_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "examples_text": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Examples Text",
+          "type": "string"
+        },
+        "examples_span": {
+          "$ref": "#/$defs/Span"
+        },
+        "source_scope": {
+          "$ref": "#/$defs/N124Scope"
+        }
+      },
+      "required": [
+        "version",
+        "anchor",
+        "recommendation",
+        "recommendation_span",
+        "semantic_text",
+        "semantic_span",
+        "update_text",
+        "update_span",
+        "examples_text",
+        "examples_span",
+        "source_scope"
+      ],
+      "title": "N124Metadata",
+      "type": "object"
+    },
+    "N124Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/CandidateSourceBinding"
+        },
+        "quote": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "population_text": {
+          "const": "people aged 18 and over",
+          "title": "Population Text",
+          "type": "string"
+        },
+        "age": {
+          "$ref": "#/$defs/NumericEvidence"
+        },
+        "assessment": {
+          "const": "pending_review",
+          "default": "pending_review",
+          "title": "Assessment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "quote",
+        "span",
+        "population_text",
+        "age"
+      ],
+      "title": "N124Scope",
+      "type": "object"
+    },
+    "NumericEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "pattern": "^-?\\d+(?:\\.\\d+)?$",
+          "title": "Value",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "comparator": {
+          "anyOf": [
+            {
+              "enum": [
+                "<",
+                "<=",
+                ">",
+                ">=",
+                "=",
+                "≤",
+                "≥"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Comparator"
+        },
+        "quote": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "comparator",
+        "quote",
+        "span"
+      ],
+      "title": "NumericEvidence",
+      "type": "object"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Section Path",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "paragraph",
+            "heading",
+            "list",
+            "table",
+            "caption"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "ordinal": {
+          "minimum": 1,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "span_start": {
+          "minimum": 0,
+          "title": "Span Start",
+          "type": "integer"
+        },
+        "span_end": {
+          "minimum": 1,
+          "title": "Span End",
+          "type": "integer"
+        },
+        "table_status": {
+          "default": "not_applicable",
+          "enum": [
+            "structured",
+            "unavailable",
+            "not_applicable"
+          ],
+          "title": "Table Status",
+          "type": "string"
+        },
+        "table_capability": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TableCapability"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "section_path",
+        "kind",
+        "ordinal",
+        "span_start",
+        "span_end"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "source",
+            "source_version",
+            "source_document",
+            "document_chunk"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "maxLength": 256,
+              "minLength": 129,
+              "type": "string"
+            }
+          ],
+          "title": "Code"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinate_system": {
+          "const": "canonical_unicode",
+          "default": "canonical_unicode",
+          "title": "Coordinate System",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "TableCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "table-grid/1.0.0",
+          "default": "table-grid/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "structured",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "rows": {
+          "anyOf": [
+            {
+              "maximum": 64,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rows"
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "maximum": 32,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Columns"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "numeric_evidence": {
+          "title": "Numeric Evidence",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "numeric_evidence"
+      ],
+      "title": "TableCapability",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "candidate-request/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "request_key": {
+      "pattern": "^[A-Za-z0-9:_-]{1,128}$",
+      "title": "Request Key",
+      "type": "string"
+    },
+    "method": {
+      "const": "RULE",
+      "default": "RULE",
+      "title": "Method",
+      "type": "string"
+    },
+    "rule_version": {
+      "const": "nice-ng81-n124/1.0.0",
+      "title": "Rule Version",
+      "type": "string"
+    },
+    "rule_config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Rule Config Checksum",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/CandidateSourceBinding"
+    },
+    "candidate": {
+      "$ref": "#/$defs/N124DraftOutput"
+    },
+    "display_zh": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Display Zh"
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_key",
+    "rule_version",
+    "rule_config_checksum",
+    "source",
+    "candidate"
+  ],
+  "title": "N124CandidateRequest",
+  "type": "object"
+}

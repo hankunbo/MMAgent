@@ -1,0 +1,82 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "extension-event-fixture/1.0.0",
+      "default": "extension-event-fixture/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "requirement_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Requirement Checksum",
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "failed",
+        "qualified_for_future_run"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "future_catalog": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "requirement_checksum",
+    "outcome"
+  ],
+  "title": "ExtensionFixture",
+  "type": "object"
+}

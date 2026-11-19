@@ -1,0 +1,142 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "approved": {
+      "default": false,
+      "title": "Approved",
+      "type": "boolean"
+    },
+    "case_counting": {
+      "const": "distinct_source_case_code_not_patient_count",
+      "default": "distinct_source_case_code_not_patient_count",
+      "title": "Case Counting",
+      "type": "string"
+    },
+    "clinical_level": {
+      "const": "not_evaluated",
+      "default": "not_evaluated",
+      "title": "Clinical Level",
+      "type": "string"
+    },
+    "domains": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Domains",
+      "type": "array"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "identities": {
+      "default": {},
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Identities",
+      "type": "object"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "min_cases": {
+      "anyOf": [
+        {
+          "minimum": 2,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Cases"
+    },
+    "min_reviewers": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Reviewers"
+    },
+    "purpose": {
+      "default": "research_offline",
+      "enum": [
+        "synthetic_offline",
+        "research_offline"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "reviewers": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Reviewers",
+      "type": "array"
+    },
+    "revocation": {
+      "const": "immediate_recheck_no_cached_authority",
+      "default": "immediate_recheck_no_cached_authority",
+      "title": "Revocation",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "memory-publication-policy/1.0.0",
+      "default": "memory-publication-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "test_context": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Test Context"
+    },
+    "valid_from": {
+      "format": "date-time",
+      "title": "Valid From",
+      "type": "string"
+    },
+    "validation": {
+      "default": "not_evaluated",
+      "enum": [
+        "synthetic_engineering",
+        "not_evaluated"
+      ],
+      "title": "Validation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "domains",
+    "valid_from",
+    "expires_at"
+  ],
+  "title": "Policy",
+  "type": "object"
+}

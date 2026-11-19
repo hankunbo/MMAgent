@@ -1,0 +1,301 @@
+{
+  "$defs": {
+    "ComponentCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "abilities": {
+          "items": {
+            "$ref": "#/$defs/InputAbility"
+          },
+          "title": "Abilities",
+          "type": "array"
+        },
+        "acquisition_basis": {
+          "title": "Acquisition Basis",
+          "type": "string"
+        },
+        "acquisition_fraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Acquisition Fraction",
+          "type": "number"
+        },
+        "anatomical_region": {
+          "const": "unknown",
+          "default": "unknown",
+          "title": "Anatomical Region",
+          "type": "string"
+        },
+        "axis_semantics": {
+          "enum": [
+            "unknown",
+            "source_index_only",
+            "not_applicable"
+          ],
+          "title": "Axis Semantics",
+          "type": "string"
+        },
+        "component_checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Component Checksum",
+          "type": "string"
+        },
+        "component_id": {
+          "title": "Component Id",
+          "type": "string"
+        },
+        "concept": {
+          "title": "Concept",
+          "type": "string"
+        },
+        "input_status": {
+          "enum": [
+            "obtained",
+            "partial",
+            "missing",
+            "withheld"
+          ],
+          "title": "Input Status",
+          "type": "string"
+        },
+        "laterality": {
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "modality": {
+          "title": "Modality",
+          "type": "string"
+        },
+        "payload_checksums": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Payload Checksums",
+          "type": "array"
+        },
+        "physical_image_calibration": {
+          "const": "not_established",
+          "default": "not_established",
+          "title": "Physical Image Calibration",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "image",
+            "image_series",
+            "volume",
+            "map",
+            "vector",
+            "scalar"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "unit_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit Basis"
+        },
+        "visit": {
+          "title": "Visit",
+          "type": "string"
+        },
+        "visual_scope": {
+          "const": "not_assessed",
+          "default": "not_assessed",
+          "title": "Visual Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component_id",
+        "component_checksum",
+        "payload_checksums",
+        "representation",
+        "modality",
+        "concept",
+        "input_status",
+        "unit",
+        "unit_basis",
+        "laterality",
+        "visit",
+        "axis_semantics",
+        "acquisition_fraction",
+        "acquisition_basis",
+        "limitations",
+        "abilities"
+      ],
+      "title": "ComponentCapability",
+      "type": "object"
+    },
+    "InputAbility": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Basis",
+          "type": "string"
+        },
+        "name": {
+          "enum": [
+            "read_image",
+            "read_image_series",
+            "read_volume",
+            "read_numeric_map",
+            "read_numeric_vector",
+            "read_scalar",
+            "qualitative_visual_observation",
+            "read_source_measurement",
+            "absolute_image_measurement"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "prerequisites": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Prerequisites",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "conditional",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "basis",
+        "prerequisites"
+      ],
+      "title": "InputAbility",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "api_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Api Requests",
+      "type": "integer"
+    },
+    "audit_checksum": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Audit Checksum",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/ComponentCapability"
+      },
+      "maxItems": 1024,
+      "minItems": 1,
+      "title": "Components",
+      "type": "array"
+    },
+    "current_source_qualification": {
+      "const": "not_checked",
+      "default": "not_checked",
+      "title": "Current Source Qualification",
+      "type": "string"
+    },
+    "database_writes": {
+      "const": 0,
+      "default": 0,
+      "title": "Database Writes",
+      "type": "integer"
+    },
+    "execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Execution Authorized",
+      "type": "boolean"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "model_runs": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Runs",
+      "type": "integer"
+    },
+    "provenance": {
+      "const": "original_prepared_components_and_input_audit",
+      "default": "original_prepared_components_and_input_audit",
+      "title": "Provenance",
+      "type": "string"
+    },
+    "qualification": {
+      "const": "representation_only_visual_scope_pending",
+      "default": "representation_only_visual_scope_pending",
+      "title": "Qualification",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "input-capabilities/1.0.0",
+      "default": "input-capabilities/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "input_checksum",
+    "audit_checksum",
+    "components"
+  ],
+  "title": "InputCapabilities",
+  "type": "object"
+}

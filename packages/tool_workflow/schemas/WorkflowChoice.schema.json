@@ -1,0 +1,227 @@
+{
+  "$defs": {
+    "AssetSource": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_code": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Asset Code",
+          "type": "string"
+        },
+        "kind": {
+          "const": "artifact",
+          "default": "artifact",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_code"
+      ],
+      "title": "AssetSource",
+      "type": "object"
+    },
+    "InputChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "sources": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "artifact": "#/$defs/AssetSource",
+                "producer": "#/$defs/ProducerSource"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/AssetSource"
+              },
+              {
+                "$ref": "#/$defs/ProducerSource"
+              }
+            ]
+          },
+          "maxItems": 64,
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "port",
+        "sources"
+      ],
+      "title": "InputChoice",
+      "type": "object"
+    },
+    "NodeChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_ref": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Candidate Ref",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/InputChoice"
+          },
+          "maxItems": 64,
+          "title": "Inputs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "candidate_ref",
+        "inputs"
+      ],
+      "title": "NodeChoice",
+      "type": "object"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "ProducerSource": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_ref": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Candidate Ref",
+          "type": "string"
+        },
+        "kind": {
+          "const": "producer",
+          "default": "producer",
+          "title": "Kind",
+          "type": "string"
+        },
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        }
+      },
+      "required": [
+        "candidate_ref",
+        "port"
+      ],
+      "title": "ProducerSource",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeChoice"
+      },
+      "maxItems": 512,
+      "title": "Nodes",
+      "type": "array"
+    },
+    "roots": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Roots",
+      "type": "array"
+    },
+    "tie_break": {
+      "const": "caller_explicit_no_medical_ranking",
+      "default": "caller_explicit_no_medical_ranking",
+      "title": "Tie Break",
+      "type": "string"
+    },
+    "version": {
+      "const": "explicit/1.0.0",
+      "default": "explicit/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "roots",
+    "nodes"
+  ],
+  "title": "WorkflowChoice",
+  "type": "object"
+}

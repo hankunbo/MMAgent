@@ -1,0 +1,377 @@
+{
+  "$defs": {
+    "CaseScope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "pattern": "^CASE:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "encounter_code": {
+          "pattern": "^ENCOUNTER:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Encounter Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "patient_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Patient Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "patient_hash",
+        "encounter_code",
+        "laterality"
+      ],
+      "title": "CaseScope",
+      "type": "object"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "ResearchLock": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "run_id": {
+          "pattern": "^RUN:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "catalog_ref"
+      ],
+      "title": "ResearchLock",
+      "type": "object"
+    },
+    "TaskInput": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Artifact Type Code",
+          "type": "string"
+        },
+        "asset_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Asset Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "media_type": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_code",
+        "checksum",
+        "artifact_type_code",
+        "media_type"
+      ],
+      "title": "TaskInput",
+      "type": "object"
+    },
+    "TaskIntent": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_modalities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Allowed Modalities",
+          "type": "array"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "clinical_acceptance": {
+          "const": false,
+          "default": false,
+          "title": "Clinical Acceptance",
+          "type": "boolean"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "definition_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Definition Refs",
+          "type": "array"
+        },
+        "missing_evidence": {
+          "const": "report_scope_and_gaps",
+          "default": "report_scope_and_gaps",
+          "title": "Missing Evidence",
+          "type": "string"
+        },
+        "ordered_labels": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Ordered Labels",
+          "type": "array"
+        },
+        "output_kind": {
+          "enum": [
+            "binary_evidence",
+            "ordinal_evidence",
+            "observed_change",
+            "evidence_review"
+          ],
+          "title": "Output Kind",
+          "type": "string"
+        },
+        "research_only": {
+          "const": true,
+          "default": true,
+          "title": "Research Only",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "research-task-intent/1.0.0",
+          "default": "research-task-intent/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Target Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "code",
+        "version",
+        "target_code",
+        "output_kind",
+        "allowed_modalities",
+        "definition_refs"
+      ],
+      "title": "TaskIntent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/TaskInput"
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "cutoff_visit": {
+      "anyOf": [
+        {
+          "maximum": 1000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cutoff Visit"
+    },
+    "decisive_evidence": {
+      "const": false,
+      "default": false,
+      "title": "Decisive Evidence",
+      "type": "boolean"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "lock": {
+      "$ref": "#/$defs/ResearchLock"
+    },
+    "policy_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "purpose": {
+      "const": "shadow",
+      "default": "shadow",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "task-research-request/1.0.0",
+      "default": "task-research-request/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/CaseScope"
+    },
+    "selected_components": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1024,
+      "title": "Selected Components",
+      "type": "array"
+    },
+    "task": {
+      "$ref": "#/$defs/TaskIntent"
+    },
+    "visible_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Visible Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "scope",
+    "lock",
+    "task",
+    "policy_ref",
+    "input_checksum",
+    "visible_checksum",
+    "artifacts",
+    "selected_components"
+  ],
+  "title": "TaskRunRequest",
+  "type": "object"
+}

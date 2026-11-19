@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "batch_size": {
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Batch Size",
+      "type": "integer"
+    },
+    "max_batches": {
+      "maximum": 20,
+      "minimum": 1,
+      "title": "Max Batches",
+      "type": "integer"
+    },
+    "partition": {
+      "const": "sorted_task_ids_full_parent_material",
+      "default": "sorted_task_ids_full_parent_material",
+      "title": "Partition",
+      "type": "string"
+    },
+    "planner_actions": {
+      "const": 1,
+      "default": 1,
+      "title": "Planner Actions",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "review-batch-policy/1.0.0",
+      "default": "review-batch-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "batch_size",
+    "max_batches"
+  ],
+  "title": "ReviewBatchPolicy",
+  "type": "object"
+}

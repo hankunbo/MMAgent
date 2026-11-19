@@ -1,0 +1,88 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "affected_fields": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Affected Fields",
+      "type": "array"
+    },
+    "candidate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Candidate Checksum",
+      "type": "string"
+    },
+    "changed_fields": {
+      "default": [
+        "schema_version"
+      ],
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "const": "schema_version",
+          "type": "string"
+        }
+      ],
+      "title": "Changed Fields",
+      "type": "array"
+    },
+    "current_text_limit": {
+      "const": 512,
+      "default": 512,
+      "title": "Current Text Limit",
+      "type": "integer"
+    },
+    "findings_regions_bindings_unchanged": {
+      "const": true,
+      "default": true,
+      "title": "Findings Regions Bindings Unchanged",
+      "type": "boolean"
+    },
+    "original_candidate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Original Candidate Checksum",
+      "type": "string"
+    },
+    "original_error": {
+      "const": "input_scope_region_text_bound",
+      "default": "input_scope_region_text_bound",
+      "title": "Original Error",
+      "type": "string"
+    },
+    "original_prompt": {
+      "const": "vision-input-scope-1.1.0",
+      "default": "vision-input-scope-1.1.0",
+      "title": "Original Prompt",
+      "type": "string"
+    },
+    "original_text_limit": {
+      "const": 100,
+      "default": 100,
+      "title": "Original Text Limit",
+      "type": "integer"
+    },
+    "raw_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "input-scope-storage-interpretation/1.1.0",
+      "default": "input-scope-storage-interpretation/1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "raw_checksum",
+    "original_candidate_checksum",
+    "candidate_checksum",
+    "affected_fields"
+  ],
+  "title": "ScopeTextInterpretation",
+  "type": "object"
+}

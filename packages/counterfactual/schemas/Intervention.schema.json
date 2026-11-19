@@ -1,0 +1,46 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "enum": [
+        "remove_evidence",
+        "remove_resource",
+        "reverse",
+        "select_check",
+        "replace_tool",
+        "replace_path"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "targets": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Targets",
+      "type": "array"
+    },
+    "alternative": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Alternative"
+    }
+  },
+  "required": [
+    "kind",
+    "targets"
+  ],
+  "title": "Intervention",
+  "type": "object"
+}

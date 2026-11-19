@@ -1,0 +1,31 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "input-scope-method-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "regions_by_question": {
+      "maxProperties": 128,
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "title": "Regions By Question",
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "regions_by_question"
+  ],
+  "title": "ScopeSelectionPolicy",
+  "type": "object"
+}

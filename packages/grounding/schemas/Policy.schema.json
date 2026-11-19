@@ -1,0 +1,143 @@
+{
+  "$defs": {
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "policy",
+      "default": "policy",
+      "title": "Kind",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "synthetic_only": {
+      "title": "Synthetic Only",
+      "type": "boolean"
+    },
+    "admissible_states": {
+      "items": {
+        "const": "Active",
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "title": "Admissible States",
+      "type": "array"
+    },
+    "type_compatibility": {
+      "const": "exact",
+      "title": "Type Compatibility",
+      "type": "string"
+    },
+    "accepted_validation": {
+      "items": {
+        "$ref": "#/$defs/ToolValidationStatus"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Accepted Validation",
+      "type": "array"
+    },
+    "intended_use": {
+      "const": "research_only",
+      "title": "Intended Use",
+      "type": "string"
+    },
+    "execution_policy": {
+      "const": "research",
+      "title": "Execution Policy",
+      "type": "string"
+    },
+    "max_bytes": {
+      "maximum": 65536,
+      "minimum": 1024,
+      "title": "Max Bytes",
+      "type": "integer"
+    },
+    "max_candidates": {
+      "maximum": 64,
+      "minimum": 1,
+      "title": "Max Candidates",
+      "type": "integer"
+    },
+    "max_inputs": {
+      "maximum": 64,
+      "minimum": 1,
+      "title": "Max Inputs",
+      "type": "integer"
+    },
+    "max_artifacts": {
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Max Artifacts",
+      "type": "integer"
+    },
+    "max_mappings": {
+      "maximum": 128,
+      "minimum": 1,
+      "title": "Max Mappings",
+      "type": "integer"
+    },
+    "allowed_terms": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Allowed Terms",
+      "type": "array"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "baseline_only",
+    "synthetic_only",
+    "admissible_states",
+    "type_compatibility",
+    "accepted_validation",
+    "intended_use",
+    "execution_policy",
+    "max_bytes",
+    "max_candidates",
+    "max_inputs",
+    "max_artifacts",
+    "max_mappings",
+    "allowed_terms"
+  ],
+  "title": "Policy",
+  "type": "object"
+}

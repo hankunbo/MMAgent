@@ -1,0 +1,87 @@
+{
+  "$defs": {
+    "FileBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 33554432,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "relative_path": {
+          "maxLength": 200,
+          "title": "Relative Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_path",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "FileBinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "image_transform": {
+      "const": "lossless_uint8_grayscale_png",
+      "default": "lossless_uint8_grayscale_png",
+      "title": "Image Transform",
+      "type": "string"
+    },
+    "missing_optional_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Optional Fields",
+      "type": "array"
+    },
+    "quarantined_field_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Quarantined Field Names",
+      "type": "array"
+    },
+    "sample": {
+      "pattern": "^[A-Za-z0-9_-]+\\.npz$",
+      "title": "Sample",
+      "type": "string"
+    },
+    "source_files": {
+      "items": {
+        "$ref": "#/$defs/FileBinding"
+      },
+      "title": "Source Files",
+      "type": "array"
+    },
+    "unknown_field_policy": {
+      "const": "quarantine_not_visible",
+      "default": "quarantine_not_visible",
+      "title": "Unknown Field Policy",
+      "type": "string"
+    },
+    "version": {
+      "const": "fairvlmed-selected/1.0.0",
+      "default": "fairvlmed-selected/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "sample",
+    "source_files",
+    "missing_optional_fields",
+    "quarantined_field_names"
+  ],
+  "title": "RuntimeInputProfile",
+  "type": "object"
+}

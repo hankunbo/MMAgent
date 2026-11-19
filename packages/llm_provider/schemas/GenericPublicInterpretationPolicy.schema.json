@@ -1,0 +1,307 @@
+{
+  "$defs": {
+    "ExplanatoryPassagePlan": {
+      "additionalProperties": false,
+      "description": "Use body prose/list/table anchors; headings/captions remain context leads.\n\nStructural eligibility is not medical entailment. Original current reads and\nthe definition owner still decide whether any selected passage is usable.",
+      "properties": {
+        "context_radius": {
+          "default": 1,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Context Radius",
+          "type": "integer"
+        },
+        "max_characters": {
+          "default": 12000,
+          "maximum": 16000,
+          "minimum": 1000,
+          "title": "Max Characters",
+          "type": "integer"
+        },
+        "max_per_document": {
+          "default": 3,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Per Document",
+          "type": "integer"
+        },
+        "queries": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "minItems": 1,
+          "title": "Queries",
+          "type": "array"
+        },
+        "query_intents": {
+          "additionalProperties": {
+            "enum": [
+              "examination",
+              "target",
+              "alternative"
+            ],
+            "type": "string"
+          },
+          "title": "Query Intents",
+          "type": "object"
+        },
+        "schema_version": {
+          "const": "definition-passage-plan/5.0.0",
+          "default": "definition-passage-plan/5.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "queries",
+        "query_intents"
+      ],
+      "title": "ExplanatoryPassagePlan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Bounded original public retrieval for an existing confirmed observation.\n\nUses the established explanatory passage contract; the wider local-only\nmaterial profiles retain their no-network semantics. Discovery is not proof\nof novelty, medical entailment, or an accepted interpretation.",
+  "properties": {
+    "acquisition_revision_scope": {
+      "const": "changed-unattempted-current-input/1.0.0",
+      "default": "changed-unattempted-current-input/1.0.0",
+      "title": "Acquisition Revision Scope",
+      "type": "string"
+    },
+    "confirmed_requirements": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Confirmed Requirements",
+      "type": "array"
+    },
+    "direction_policy": {
+      "const": "direction-assessment/1.0.0",
+      "default": "direction-assessment/1.0.0",
+      "title": "Direction Policy",
+      "type": "string"
+    },
+    "index_keys": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Index Keys",
+      "type": "array"
+    },
+    "material_policy": {
+      "const": "xml-jats-citations-windowed/1.0.0",
+      "default": "xml-jats-citations-windowed/1.0.0",
+      "title": "Material Policy",
+      "type": "string"
+    },
+    "max_candidates": {
+      "default": 5,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Max Candidates",
+      "type": "integer"
+    },
+    "max_definitions": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Definitions",
+      "type": "integer"
+    },
+    "max_fetch_requests": {
+      "default": 2,
+      "maximum": 2,
+      "minimum": 1,
+      "title": "Max Fetch Requests",
+      "type": "integer"
+    },
+    "max_new_observations": {
+      "const": 1,
+      "default": 1,
+      "title": "Max New Observations",
+      "type": "integer"
+    },
+    "max_operations": {
+      "default": 36,
+      "maximum": 36,
+      "minimum": 1,
+      "title": "Max Operations",
+      "type": "integer"
+    },
+    "max_rounds": {
+      "default": 2,
+      "maximum": 2,
+      "minimum": 1,
+      "title": "Max Rounds",
+      "type": "integer"
+    },
+    "max_search_requests": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Search Requests",
+      "type": "integer"
+    },
+    "passage_plans": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ExplanatoryPassagePlan"
+      },
+      "maxProperties": 1,
+      "minProperties": 1,
+      "title": "Passage Plans",
+      "type": "object"
+    },
+    "prompt_version": {
+      "const": "definition-draft-6.8.0",
+      "default": "definition-draft-6.8.0",
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "public_accounting": {
+      "const": "original-wire-and-agent-journals/1.0.0",
+      "default": "original-wire-and-agent-journals/1.0.0",
+      "title": "Public Accounting",
+      "type": "string"
+    },
+    "public_proposition_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Public Proposition Checksum",
+      "type": "string"
+    },
+    "public_queries": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "title": "Public Queries",
+      "type": "array"
+    },
+    "public_query_profile": {
+      "const": "glaucoma-general-original-root/1.0.0",
+      "default": "glaucoma-general-original-root/1.0.0",
+      "title": "Public Query Profile",
+      "type": "string"
+    },
+    "public_target": {
+      "title": "Public Target",
+      "type": "string"
+    },
+    "public_topic_sets": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "maxProperties": 2,
+      "minProperties": 1,
+      "title": "Public Topic Sets",
+      "type": "object"
+    },
+    "public_topics": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "maxProperties": 3,
+      "title": "Public Topics",
+      "type": "object"
+    },
+    "query_requirements": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "maxProperties": 3,
+      "title": "Query Requirements",
+      "type": "object"
+    },
+    "require_target_relation": {
+      "const": true,
+      "default": true,
+      "title": "Require Target Relation",
+      "type": "boolean"
+    },
+    "reserve_close_seconds": {
+      "default": 300,
+      "maximum": 900,
+      "minimum": 60,
+      "title": "Reserve Close Seconds",
+      "type": "integer"
+    },
+    "reserve_review_requests": {
+      "default": 12,
+      "maximum": 30,
+      "minimum": 1,
+      "title": "Reserve Review Requests",
+      "type": "integer"
+    },
+    "reserve_review_seconds": {
+      "default": 2100,
+      "maximum": 7200,
+      "minimum": 60,
+      "title": "Reserve Review Seconds",
+      "type": "integer"
+    },
+    "retrieval_scope": {
+      "const": "generic-bounded-public/1.0.0",
+      "default": "generic-bounded-public/1.0.0",
+      "title": "Retrieval Scope",
+      "type": "string"
+    },
+    "review_source_scope": {
+      "const": "requirements-and-items/1.0.0",
+      "default": "requirements-and-items/1.0.0",
+      "title": "Review Source Scope",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "campaign-definition-expansion/1.43.0",
+      "default": "campaign-definition-expansion/1.43.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "search_failure_policy": {
+      "const": "technical_backlog_no_retry",
+      "default": "technical_backlog_no_retry",
+      "title": "Search Failure Policy",
+      "type": "string"
+    },
+    "search_timeout_ms": {
+      "default": 120000,
+      "maximum": 120000,
+      "minimum": 30000,
+      "title": "Search Timeout Ms",
+      "type": "integer"
+    },
+    "source_output_tokens": {
+      "const": 8192,
+      "default": 8192,
+      "title": "Source Output Tokens",
+      "type": "integer"
+    },
+    "unresolved_relation_retrieval": {
+      "const": "unseen-first-for-owner-gap/1.0.0",
+      "default": "unseen-first-for-owner-gap/1.0.0",
+      "title": "Unresolved Relation Retrieval",
+      "type": "string"
+    }
+  },
+  "required": [
+    "index_keys",
+    "public_queries",
+    "public_topic_sets",
+    "passage_plans",
+    "public_target",
+    "confirmed_requirements",
+    "public_proposition_checksum"
+  ],
+  "title": "GenericPublicInterpretationPolicy",
+  "type": "object"
+}

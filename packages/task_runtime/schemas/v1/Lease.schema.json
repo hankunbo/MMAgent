@@ -1,0 +1,27 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "token": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Token",
+      "type": "string"
+    },
+    "worker": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Worker",
+      "type": "string"
+    }
+  },
+  "required": [
+    "worker",
+    "token",
+    "expires_at"
+  ],
+  "title": "Lease",
+  "type": "object"
+}

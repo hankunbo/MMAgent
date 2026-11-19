@@ -1,0 +1,136 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_modalities": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Allowed Modalities",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Code",
+      "type": "string"
+    },
+    "definition_refs": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Definition Refs",
+      "type": "array"
+    },
+    "missing_evidence": {
+      "const": "report_scope_and_gaps",
+      "default": "report_scope_and_gaps",
+      "title": "Missing Evidence",
+      "type": "string"
+    },
+    "ordered_labels": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Ordered Labels",
+      "type": "array"
+    },
+    "output_kind": {
+      "enum": [
+        "binary_evidence",
+        "ordinal_evidence",
+        "observed_change",
+        "evidence_review"
+      ],
+      "title": "Output Kind",
+      "type": "string"
+    },
+    "research_only": {
+      "const": true,
+      "default": true,
+      "title": "Research Only",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "research-task-intent/1.0.0",
+      "default": "research-task-intent/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Target Code",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "code",
+    "version",
+    "target_code",
+    "output_kind",
+    "allowed_modalities",
+    "definition_refs"
+  ],
+  "title": "TaskIntent",
+  "type": "object"
+}

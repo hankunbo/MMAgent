@@ -1,0 +1,43 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "extractor-execution/2.0.0",
+      "default": "extractor-execution/2.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "implementation": {
+      "const": "registered_nice_ng81_n124",
+      "default": "registered_nice_ng81_n124",
+      "title": "Implementation",
+      "type": "string"
+    },
+    "rule_version": {
+      "const": "nice-ng81-n124/1.0.0",
+      "default": "nice-ng81-n124/1.0.0",
+      "title": "Rule Version",
+      "type": "string"
+    },
+    "transport": {
+      "const": "local",
+      "default": "local",
+      "title": "Transport",
+      "type": "string"
+    },
+    "external_services_called": {
+      "const": false,
+      "default": false,
+      "title": "External Services Called",
+      "type": "boolean"
+    },
+    "model_called": {
+      "const": false,
+      "default": false,
+      "title": "Model Called",
+      "type": "boolean"
+    }
+  },
+  "title": "N124RuleExecution",
+  "type": "object"
+}

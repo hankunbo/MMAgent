@@ -1,0 +1,143 @@
+{
+  "$defs": {
+    "EvaluationPreparation": {
+      "additionalProperties": false,
+      "properties": {
+        "decisions_pending": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Decisions Pending",
+          "type": "array"
+        },
+        "final_test_unlocked": {
+          "const": false,
+          "default": false,
+          "title": "Final Test Unlocked",
+          "type": "boolean"
+        },
+        "patient_independence_proven": {
+          "const": false,
+          "default": false,
+          "title": "Patient Independence Proven",
+          "type": "boolean"
+        },
+        "primary_question": {
+          "title": "Primary Question",
+          "type": "string"
+        },
+        "prior_exposure_policy": {
+          "const": "used_or_unknown_not_independent_test",
+          "default": "used_or_unknown_not_independent_test",
+          "title": "Prior Exposure Policy",
+          "type": "string"
+        },
+        "proposed_baselines": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Proposed Baselines",
+          "type": "array"
+        },
+        "proposed_metrics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Proposed Metrics",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "evaluation-preparation/1.0.0",
+          "default": "evaluation-preparation/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "selection_uses_labels": {
+          "const": false,
+          "default": false,
+          "title": "Selection Uses Labels",
+          "type": "boolean"
+        },
+        "status": {
+          "const": "preparation_only",
+          "default": "preparation_only",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary_question",
+        "proposed_metrics",
+        "proposed_baselines",
+        "decisions_pending"
+      ],
+      "title": "EvaluationPreparation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum_scope": {
+      "const": "selected_content_and_full_name_size_inventory",
+      "default": "selected_content_and_full_name_size_inventory",
+      "title": "Checksum Scope",
+      "type": "string"
+    },
+    "entries": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Entries",
+      "type": "array"
+    },
+    "evaluation_results": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Evaluation Results",
+      "type": "array"
+    },
+    "model_executions": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Executions",
+      "type": "integer"
+    },
+    "preparation": {
+      "$ref": "#/$defs/EvaluationPreparation"
+    },
+    "runtime_writes": {
+      "const": 0,
+      "default": 0,
+      "title": "Runtime Writes",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "evaluation-registry/1.0.0",
+      "default": "evaluation-registry/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_bindings": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Source Bindings",
+      "type": "object"
+    },
+    "stage": {
+      "const": "13A",
+      "default": "13A",
+      "title": "Stage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "entries",
+    "source_bindings",
+    "preparation"
+  ],
+  "title": "Registry",
+  "type": "object"
+}

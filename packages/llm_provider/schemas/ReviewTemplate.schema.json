@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "ReviewTask": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_sources": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Allowed Sources",
+          "type": "array"
+        },
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "assessment_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/TaskDefinition"
+        },
+        "goal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Goal",
+          "type": "string"
+        },
+        "laterality": {
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "BILATERAL",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "method": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Method",
+          "type": "string"
+        },
+        "node": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Node",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/Reference"
+        },
+        "unit": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "node",
+        "goal",
+        "definition",
+        "observation",
+        "allowed_sources",
+        "method",
+        "unit",
+        "laterality",
+        "applicable"
+      ],
+      "title": "ReviewTask",
+      "type": "object"
+    },
+    "TaskDefinition": {
+      "additionalProperties": false,
+      "description": "Visible, installed definition; a missing interpretation never invents a cutoff.",
+      "properties": {
+        "applicability_conditions": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Applicability Conditions",
+          "type": "string"
+        },
+        "examination": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Examination",
+          "type": "string"
+        },
+        "interpretation": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interpretation"
+        },
+        "interpretation_status": {
+          "enum": [
+            "installed",
+            "missing"
+          ],
+          "title": "Interpretation Status",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/Reference"
+        },
+        "source_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reference",
+        "examination",
+        "applicability_conditions",
+        "interpretation",
+        "interpretation_status",
+        "source_refs"
+      ],
+      "title": "TaskDefinition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "fixed_assessment_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Fixed Assessment Ids",
+      "type": "array"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "scale": {
+      "$ref": "#/$defs/Reference"
+    },
+    "schema_version": {
+      "const": "review-task-projection/2.0.0",
+      "default": "review-task-projection/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Scope Checksum",
+      "type": "string"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/ReviewTask"
+      },
+      "maxItems": 128,
+      "title": "Tasks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "scope_checksum",
+    "policy_checksum",
+    "scale",
+    "tasks",
+    "fixed_assessment_ids"
+  ],
+  "title": "ReviewTemplate",
+  "type": "object"
+}

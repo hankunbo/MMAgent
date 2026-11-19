@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "codes": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Codes",
+      "type": "array"
+    },
+    "executable": {
+      "const": false,
+      "default": false,
+      "title": "Executable",
+      "type": "boolean"
+    },
+    "producer": {
+      "const": "deterministic",
+      "default": "deterministic",
+      "title": "Producer",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "memory-candidate-advice/1.0.0",
+      "default": "memory-candidate-advice/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_fact": {
+      "const": false,
+      "default": false,
+      "title": "Source Fact",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "codes"
+  ],
+  "title": "Advice",
+  "type": "object"
+}

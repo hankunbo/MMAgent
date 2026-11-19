@@ -1,0 +1,333 @@
+{
+  "$defs": {
+    "BenchmarkSample": {
+      "additionalProperties": false,
+      "properties": {
+        "dataset": {
+          "enum": [
+            "PAPILA",
+            "REFUGE2"
+          ],
+          "title": "Dataset",
+          "type": "string"
+        },
+        "dataset_version": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Dataset Version",
+          "type": "string"
+        },
+        "dimensions": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Dimensions",
+          "type": "array"
+        },
+        "exposure_evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FileReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "group_basis": {
+          "enum": [
+            "papila_filename_patient",
+            "unlinked_image_only"
+          ],
+          "title": "Group Basis",
+          "type": "string"
+        },
+        "group_id": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Group Id",
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "laterality": {
+          "enum": [
+            "right",
+            "left",
+            "unknown"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "official_split": {
+          "enum": [
+            "unspecified",
+            "train",
+            "val",
+            "test"
+          ],
+          "title": "Official Split",
+          "type": "string"
+        },
+        "prior_exposure": {
+          "enum": [
+            "development",
+            "unknown",
+            "unseen_attested"
+          ],
+          "title": "Prior Exposure",
+          "type": "string"
+        },
+        "sample_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Sample Id",
+          "type": "string"
+        },
+        "split": {
+          "enum": [
+            "development",
+            "reserved"
+          ],
+          "title": "Split",
+          "type": "string"
+        },
+        "truths": {
+          "items": {
+            "$ref": "#/$defs/TruthReference"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Truths",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sample_id",
+        "dataset",
+        "dataset_version",
+        "group_id",
+        "group_basis",
+        "split",
+        "official_split",
+        "prior_exposure",
+        "image",
+        "dimensions",
+        "laterality",
+        "truths"
+      ],
+      "title": "BenchmarkSample",
+      "type": "object"
+    },
+    "FileReference": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 16777216,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "relative_path": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "uri": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_path",
+        "uri",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "FileReference",
+      "type": "object"
+    },
+    "LabelDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "background": {
+          "maximum": 255,
+          "minimum": 0,
+          "title": "Background",
+          "type": "integer"
+        },
+        "cup": {
+          "maximum": 255,
+          "minimum": 0,
+          "title": "Cup",
+          "type": "integer"
+        },
+        "disc_includes_cup": {
+          "const": true,
+          "default": true,
+          "title": "Disc Includes Cup",
+          "type": "boolean"
+        },
+        "disc_rim": {
+          "maximum": 255,
+          "minimum": 0,
+          "title": "Disc Rim",
+          "type": "integer"
+        },
+        "source": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "source_excerpt": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Source Excerpt",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "source",
+        "source_excerpt",
+        "background",
+        "disc_rim",
+        "cup"
+      ],
+      "title": "LabelDefinition",
+      "type": "object"
+    },
+    "TruthReference": {
+      "additionalProperties": false,
+      "properties": {
+        "encoding": {
+          "enum": [
+            "xy_contour",
+            "bmp_gray_labels",
+            "png_gray_labels"
+          ],
+          "title": "Encoding",
+          "type": "string"
+        },
+        "expert": {
+          "enum": [
+            "exp1",
+            "exp2",
+            "challenge"
+          ],
+          "title": "Expert",
+          "type": "string"
+        },
+        "file": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "target": {
+          "enum": [
+            "optic_disc",
+            "optic_cup"
+          ],
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "file",
+        "target",
+        "expert",
+        "encoding"
+      ],
+      "title": "TruthReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "aggregation": {
+      "const": "separate_experts_macro_mean/1.0.0",
+      "default": "separate_experts_macro_mean/1.0.0",
+      "title": "Aggregation",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "conversion": {
+      "const": "xy_integer_even_odd/1.0.0",
+      "default": "xy_integer_even_odd/1.0.0",
+      "title": "Conversion",
+      "type": "string"
+    },
+    "formal_evaluation_locked": {
+      "const": true,
+      "default": true,
+      "title": "Formal Evaluation Locked",
+      "type": "boolean"
+    },
+    "intended_use": {
+      "const": "research_only",
+      "default": "research_only",
+      "title": "Intended Use",
+      "type": "string"
+    },
+    "label_definition": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LabelDefinition"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "samples": {
+      "items": {
+        "$ref": "#/$defs/BenchmarkSample"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Samples",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tool-benchmark/1.0.0",
+      "default": "tool-benchmark/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "tool_benchmark",
+      "default": "tool_benchmark",
+      "title": "Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "samples"
+  ],
+  "title": "BenchmarkManifest",
+  "type": "object"
+}

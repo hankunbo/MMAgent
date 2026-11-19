@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "UseDeclaration": {
+      "additionalProperties": false,
+      "description": "Source-backed effective research restriction, never a validation Gate.",
+      "properties": {
+        "excerpt": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        },
+        "source_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "source_path": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Source Path",
+          "type": "string"
+        },
+        "tool_code": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Tool Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_code",
+        "source_path",
+        "source_checksum",
+        "excerpt",
+        "intended_use"
+      ],
+      "title": "UseDeclaration",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "declarations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/UseDeclaration"
+      },
+      "maxItems": 128,
+      "title": "Declarations",
+      "type": "array"
+    },
+    "effective_use_ceiling": {
+      "const": "research_only",
+      "default": "research_only",
+      "title": "Effective Use Ceiling",
+      "type": "string"
+    },
+    "resource_policy": {
+      "const": "local-tree/1.0.0",
+      "default": "local-tree/1.0.0",
+      "title": "Resource Policy",
+      "type": "string"
+    },
+    "status_policy": {
+      "const": "legacy-conservative/1.0.0",
+      "default": "legacy-conservative/1.0.0",
+      "title": "Status Policy",
+      "type": "string"
+    },
+    "version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "ProjectionPolicy",
+  "type": "object"
+}

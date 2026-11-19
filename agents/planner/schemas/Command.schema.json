@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "load",
+        "retrieve",
+        "instantiate",
+        "identify",
+        "select",
+        "prepare",
+        "execute",
+        "recover",
+        "verify",
+        "review",
+        "fallback",
+        "stop",
+        "cancel"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "expected_revision": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Expected Revision",
+      "type": "integer"
+    },
+    "input_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Input Refs",
+      "type": "array"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "expected_revision",
+    "action"
+  ],
+  "title": "Command",
+  "type": "object"
+}

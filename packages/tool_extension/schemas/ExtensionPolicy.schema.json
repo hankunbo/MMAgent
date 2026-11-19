@@ -1,0 +1,56 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "synthetic-extension-policy/1.0.0",
+      "default": "synthetic-extension-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "code": {
+      "const": "POLICY:SYNTHETIC_EXTENSION",
+      "default": "POLICY:SYNTHETIC_EXTENSION",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "max_seconds": {
+      "default": 10,
+      "maximum": 30,
+      "minimum": 1,
+      "title": "Max Seconds",
+      "type": "integer"
+    },
+    "lease_seconds": {
+      "default": 30,
+      "maximum": 60,
+      "minimum": 2,
+      "title": "Lease Seconds",
+      "type": "integer"
+    },
+    "max_attempts": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Attempts",
+      "type": "integer"
+    },
+    "real_benchmark": {
+      "default": null,
+      "title": "Real Benchmark",
+      "type": "null"
+    }
+  },
+  "title": "ExtensionPolicy",
+  "type": "object"
+}

@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "binary_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Binary Checksum",
+      "type": "string"
+    },
+    "implementation": {
+      "const": "system-curl-http1.1",
+      "default": "system-curl-http1.1",
+      "title": "Implementation",
+      "type": "string"
+    },
+    "parent_death_signal": {
+      "const": "SIGKILL",
+      "default": "SIGKILL",
+      "title": "Parent Death Signal",
+      "type": "string"
+    },
+    "redirects": {
+      "const": 0,
+      "default": 0,
+      "title": "Redirects",
+      "type": "integer"
+    },
+    "retries": {
+      "const": 0,
+      "default": 0,
+      "title": "Retries",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "bounded-http-client/1.0.0",
+      "default": "bounded-http-client/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "binary_checksum"
+  ],
+  "title": "CurlClient",
+  "type": "object"
+}

@@ -1,0 +1,34 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "conflict": {
+      "default": false,
+      "title": "Conflict",
+      "type": "boolean"
+    },
+    "high_risk": {
+      "default": false,
+      "title": "High Risk",
+      "type": "boolean"
+    },
+    "no_progress": {
+      "default": 0,
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "No Progress",
+      "type": "integer"
+    },
+    "required": {
+      "default": false,
+      "title": "Required",
+      "type": "boolean"
+    },
+    "uncertain": {
+      "default": false,
+      "title": "Uncertain",
+      "type": "boolean"
+    }
+  },
+  "title": "ReviewFacts",
+  "type": "object"
+}

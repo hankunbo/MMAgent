@@ -1,0 +1,59 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "authorization": {
+      "maxLength": 400,
+      "minLength": 12,
+      "title": "Authorization",
+      "type": "string"
+    },
+    "entry_checksum": {
+      "title": "Entry Checksum",
+      "type": "string"
+    },
+    "expansion_policy": {
+      "additionalProperties": true,
+      "title": "Expansion Policy",
+      "type": "object"
+    },
+    "initial_native_policy": {
+      "const": "deferred_not_executed",
+      "default": "deferred_not_executed",
+      "title": "Initial Native Policy",
+      "type": "string"
+    },
+    "max_new_requests": {
+      "default": 12,
+      "maximum": 12,
+      "minimum": 6,
+      "title": "Max New Requests",
+      "type": "integer"
+    },
+    "review_scope": {
+      "const": "definition_increment_only",
+      "default": "definition_increment_only",
+      "title": "Review Scope",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "multimodal-definition-trial/1.5.0",
+      "default": "multimodal-definition-trial/1.5.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seconds": {
+      "default": 3600,
+      "maximum": 3600,
+      "minimum": 900,
+      "title": "Seconds",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "entry_checksum",
+    "authorization",
+    "expansion_policy"
+  ],
+  "title": "EvidenceTrial",
+  "type": "object"
+}

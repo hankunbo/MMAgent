@@ -1,0 +1,251 @@
+{
+  "$defs": {
+    "DevelopmentSample": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "input_png": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "laterality": {
+          "const": "unknown",
+          "default": "unknown",
+          "title": "Laterality",
+          "type": "string"
+        },
+        "patient_id": {
+          "default": null,
+          "title": "Patient Id",
+          "type": "null"
+        },
+        "prediction": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "prior_exposure": {
+          "const": "development",
+          "default": "development",
+          "title": "Prior Exposure",
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/FileReference"
+        },
+        "sample_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Sample Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sample_id",
+        "data",
+        "prediction",
+        "input_png",
+        "result"
+      ],
+      "title": "DevelopmentSample",
+      "type": "object"
+    },
+    "FileReference": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 16777216,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "relative_path": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "uri": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_path",
+        "uri",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "FileReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "confidence_interval": {
+      "const": "not_estimated_independence_unverified",
+      "default": "not_estimated_independence_unverified",
+      "title": "Confidence Interval",
+      "type": "string"
+    },
+    "dataset": {
+      "const": "FairSeg",
+      "default": "FairSeg",
+      "title": "Dataset",
+      "type": "string"
+    },
+    "dataset_root": {
+      "title": "Dataset Root",
+      "type": "string"
+    },
+    "formal_evaluation_locked": {
+      "const": true,
+      "default": true,
+      "title": "Formal Evaluation Locked",
+      "type": "boolean"
+    },
+    "historical_manifest": {
+      "$ref": "#/$defs/FileReference"
+    },
+    "historical_predictions": {
+      "$ref": "#/$defs/FileReference"
+    },
+    "implementation": {
+      "additionalProperties": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Implementation",
+      "type": "object"
+    },
+    "label_semantics": {
+      "const": "raw_0_background_minus1_rim_minus2_cup",
+      "default": "raw_0_background_minus1_rim_minus2_cup",
+      "title": "Label Semantics",
+      "type": "string"
+    },
+    "max_seconds": {
+      "const": 120,
+      "default": 120,
+      "title": "Max Seconds",
+      "type": "integer"
+    },
+    "metric_version": {
+      "const": "native-mask-geometry/1.0.0",
+      "default": "native-mask-geometry/1.0.0",
+      "title": "Metric Version",
+      "type": "string"
+    },
+    "min_public_stratum": {
+      "const": 3,
+      "default": 3,
+      "title": "Min Public Stratum",
+      "type": "integer"
+    },
+    "mode": {
+      "const": "reuse_saved_predictions",
+      "default": "reuse_saved_predictions",
+      "title": "Mode",
+      "type": "string"
+    },
+    "model": {
+      "const": "segman_slo_disc_cup_segmenter",
+      "default": "segman_slo_disc_cup_segmenter",
+      "title": "Model",
+      "type": "string"
+    },
+    "new_model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "New Model Calls",
+      "type": "integer"
+    },
+    "official_split": {
+      "const": "Test",
+      "default": "Test",
+      "title": "Official Split",
+      "type": "string"
+    },
+    "prediction_root": {
+      "title": "Prediction Root",
+      "type": "string"
+    },
+    "prepared_at": {
+      "title": "Prepared At",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "development_reanalysis",
+      "default": "development_reanalysis",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "samples": {
+      "items": {
+        "$ref": "#/$defs/DevelopmentSample"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Samples",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "fairseg-development/1.0.0",
+      "default": "fairseg-development/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sources": {
+      "additionalProperties": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Sources",
+      "type": "object"
+    },
+    "strata_fields": {
+      "default": [
+        "gender",
+        "race"
+      ],
+      "items": {
+        "enum": [
+          "gender",
+          "race"
+        ],
+        "type": "string"
+      },
+      "title": "Strata Fields",
+      "type": "array"
+    },
+    "tool_qualification_updated": {
+      "const": false,
+      "default": false,
+      "title": "Tool Qualification Updated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "checksum",
+    "prepared_at",
+    "dataset_root",
+    "prediction_root",
+    "sources",
+    "implementation",
+    "historical_manifest",
+    "historical_predictions",
+    "samples"
+  ],
+  "title": "DevelopmentProtocol",
+  "type": "object"
+}

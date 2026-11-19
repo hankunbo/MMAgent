@@ -1,0 +1,92 @@
+{
+  "$defs": {
+    "BranchRoute": {
+      "additionalProperties": false,
+      "properties": {
+        "branch": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Branch",
+          "type": "string"
+        },
+        "forks": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Forks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "branch",
+        "forks"
+      ],
+      "title": "BranchRoute",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "recovery-policy/1.0.0",
+      "default": "recovery-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "routes": {
+      "items": {
+        "$ref": "#/$defs/BranchRoute"
+      },
+      "title": "Routes",
+      "type": "array"
+    },
+    "source": {
+      "$ref": "#/$defs/Reference"
+    }
+  },
+  "required": [
+    "routes",
+    "source"
+  ],
+  "title": "RecoveryPolicy",
+  "type": "object"
+}

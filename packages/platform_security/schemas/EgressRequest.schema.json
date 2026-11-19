@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "material_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Material Checksum",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "graph",
+        "visible_checksum",
+        "input_checksum",
+        "material_checksum",
+        "policy_checksum"
+      ],
+      "title": "Scope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "image_checksums": {
+      "default": [],
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Image Checksums",
+      "type": "array"
+    },
+    "payload_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Payload Checksum",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "research",
+      "default": "research",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "trace",
+        "expert",
+        "source",
+        "vision",
+        "review"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "platform-egress-request/1.0.0",
+      "default": "platform-egress-request/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "wire_bytes": {
+      "minimum": 1,
+      "title": "Wire Bytes",
+      "type": "integer"
+    },
+    "wire_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Wire Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scope",
+    "role",
+    "config_checksum",
+    "payload_checksum",
+    "wire_checksum",
+    "wire_bytes"
+  ],
+  "title": "EgressRequest",
+  "type": "object"
+}

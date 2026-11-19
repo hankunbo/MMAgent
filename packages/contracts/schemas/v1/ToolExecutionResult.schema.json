@@ -1,0 +1,607 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "Artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type_code": {
+          "title": "Artifact Type Code",
+          "type": "string"
+        },
+        "asset_code": {
+          "title": "Asset Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "contract_type": {
+          "const": "Artifact",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "derived_from": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Derived From",
+          "type": "array"
+        },
+        "dimensions": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 5,
+          "title": "Dimensions",
+          "type": "array"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "measurements": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Measurement"
+          },
+          "title": "Measurements",
+          "type": "array"
+        },
+        "media_type": {
+          "pattern": "^[a-z0-9][a-z0-9.+-]*/[a-z0-9][a-z0-9.+-]*$",
+          "title": "Media Type",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "qc_status": {
+          "$ref": "#/$defs/QCStatus"
+        },
+        "research_only": {
+          "title": "Research Only",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "uri": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "asset_code",
+        "artifact_type_code",
+        "uri",
+        "checksum",
+        "media_type",
+        "qc_status",
+        "research_only"
+      ],
+      "title": "Artifact",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "ExecutionPolicy": {
+      "enum": [
+        "research",
+        "clinical_deployment"
+      ],
+      "title": "ExecutionPolicy",
+      "type": "string"
+    },
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "Measurement": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "unit": {
+          "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "unit"
+      ],
+      "title": "Measurement",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "ToolCatalogStatus": {
+      "enum": [
+        "candidate",
+        "registered",
+        "active",
+        "quarantined",
+        "failed",
+        "deprecated"
+      ],
+      "title": "ToolCatalogStatus",
+      "type": "string"
+    },
+    "ToolExecutionStatus": {
+      "enum": [
+        "REQUESTED",
+        "DRY_RUN_VALIDATED",
+        "QUEUED",
+        "RUNNING",
+        "SUCCEEDED",
+        "FAILED",
+        "TIMED_OUT",
+        "CANCELLED",
+        "BLOCKED"
+      ],
+      "title": "ToolExecutionStatus",
+      "type": "string"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Artifact"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "catalog_status": {
+      "$ref": "#/$defs/ToolCatalogStatus"
+    },
+    "contract_type": {
+      "const": "ToolExecutionResult",
+      "title": "Contract Type",
+      "type": "string"
+    },
+    "coordinate_space": {
+      "$ref": "#/$defs/CoordinateSpace"
+    },
+    "decisive_evidence": {
+      "title": "Decisive Evidence",
+      "type": "boolean"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorDetail"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "execution_policy": {
+      "$ref": "#/$defs/ExecutionPolicy"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "implementation_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Implementation Checksum",
+      "type": "string"
+    },
+    "implementation_code": {
+      "title": "Implementation Code",
+      "type": "string"
+    },
+    "implementation_version": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+      "title": "Implementation Version",
+      "type": "string"
+    },
+    "intended_use": {
+      "$ref": "#/$defs/IntendedUse"
+    },
+    "laterality": {
+      "$ref": "#/$defs/Laterality"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "qc_status": {
+      "$ref": "#/$defs/QCStatus"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeReference"
+    },
+    "status": {
+      "$ref": "#/$defs/ToolExecutionStatus"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    },
+    "validation_status": {
+      "$ref": "#/$defs/ToolValidationStatus"
+    },
+    "workflow_run_id": {
+      "title": "Workflow Run Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_type",
+    "provenance",
+    "scope",
+    "laterality",
+    "coordinate_space",
+    "unit",
+    "request_id",
+    "workflow_run_id",
+    "status",
+    "execution_policy",
+    "implementation_code",
+    "implementation_version",
+    "implementation_checksum",
+    "catalog_status",
+    "validation_status",
+    "intended_use",
+    "decisive_evidence",
+    "qc_status"
+  ],
+  "title": "ToolExecutionResult",
+  "type": "object"
+}

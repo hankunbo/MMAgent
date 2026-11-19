@@ -1,0 +1,72 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "area_px": {
+      "exclusiveMinimum": 0,
+      "title": "Area Px",
+      "type": "integer"
+    },
+    "bbox_xyxy": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "title": "Bbox Xyxy",
+      "type": "array"
+    },
+    "height": {
+      "exclusiveMinimum": 0,
+      "title": "Height",
+      "type": "integer"
+    },
+    "height_px": {
+      "exclusiveMinimum": 0,
+      "title": "Height Px",
+      "type": "integer"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "disc-geometry/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "width": {
+      "exclusiveMinimum": 0,
+      "title": "Width",
+      "type": "integer"
+    },
+    "width_px": {
+      "exclusiveMinimum": 0,
+      "title": "Width Px",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "input_checksum",
+    "height",
+    "width",
+    "area_px",
+    "bbox_xyxy",
+    "width_px",
+    "height_px"
+  ],
+  "title": "GeometryOutput",
+  "type": "object"
+}

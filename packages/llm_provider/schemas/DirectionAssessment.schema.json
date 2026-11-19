@@ -1,0 +1,135 @@
+{
+  "additionalProperties": false,
+  "description": "Research explanation, not an automatically verified medical conclusion.",
+  "properties": {
+    "alternatives": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Alternatives",
+      "type": "array"
+    },
+    "direction": {
+      "enum": [
+        "support",
+        "refute",
+        "neutral",
+        "unassessable"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "magnitude_reason": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Magnitude Reason",
+      "type": "string"
+    },
+    "neutral_reason": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Neutral Reason"
+    },
+    "next_action": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Action"
+    },
+    "observed_features": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Observed Features",
+      "type": "string"
+    },
+    "opposing_interpretation": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Opposing Interpretation",
+      "type": "string"
+    },
+    "quality_limitation": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Quality Limitation",
+      "type": "string"
+    },
+    "resolvable_gap": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Resolvable Gap"
+    },
+    "schema_version": {
+      "const": "direction-assessment/1.0.0",
+      "default": "direction-assessment/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_relation": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Source Relation",
+      "type": "string"
+    },
+    "supporting_interpretation": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Supporting Interpretation",
+      "type": "string"
+    },
+    "unassessable_reason": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unassessable Reason"
+    }
+  },
+  "required": [
+    "direction",
+    "observed_features",
+    "source_relation",
+    "supporting_interpretation",
+    "opposing_interpretation",
+    "alternatives",
+    "magnitude_reason",
+    "quality_limitation"
+  ],
+  "title": "DirectionAssessment",
+  "type": "object"
+}

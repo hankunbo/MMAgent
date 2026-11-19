@@ -1,0 +1,40 @@
+# Local secrets and overrides
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python environments, caches, and generated output
+.venv/
+**/.venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.local/
+runs/
+artifacts/
+
+# Data, databases, and model payloads
+data/
+datasets/
+hf_cache/
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.safetensors
+*.dcm
+*.dicom
+*.nii
+*.nii.gz
+*.npz

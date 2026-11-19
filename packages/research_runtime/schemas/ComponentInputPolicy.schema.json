@@ -1,0 +1,212 @@
+{
+  "$defs": {
+    "ArtifactTypeBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "contract_type_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Contract Type Code",
+          "type": "string"
+        },
+        "contract_unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contract Unit"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "unit_term": {
+          "$ref": "#/$defs/Term"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "checksum",
+        "artifact_ref",
+        "contract_type_code",
+        "unit_term",
+        "contract_unit",
+        "source_ref"
+      ],
+      "title": "ArtifactTypeBinding",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Installed mapping, not a caller-supplied authorization flag.",
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "input_binding": {
+      "$ref": "#/$defs/ArtifactTypeBinding"
+    },
+    "modality": {
+      "$ref": "#/$defs/Term"
+    },
+    "schema_version": {
+      "const": "research-component-input-policy/1.0.0",
+      "default": "research-component-input-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_terms": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Scope Terms",
+      "type": "array"
+    },
+    "source_concept": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Source Concept",
+      "type": "string"
+    },
+    "source_dtype": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Source Dtype",
+      "type": "string"
+    },
+    "source_kind": {
+      "enum": [
+        "image",
+        "map",
+        "volume",
+        "vector"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    },
+    "source_modality": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Source Modality",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "source_kind",
+    "source_concept",
+    "source_modality",
+    "source_dtype",
+    "input_binding",
+    "modality",
+    "scope_terms"
+  ],
+  "title": "ComponentInputPolicy",
+  "type": "object"
+}

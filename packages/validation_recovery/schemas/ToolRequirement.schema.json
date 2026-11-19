@@ -1,0 +1,180 @@
+{
+  "$defs": {
+    "Gap": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "missing_data",
+            "product_demand",
+            "mapping",
+            "unknown_producer",
+            "capability",
+            "safety",
+            "technical",
+            "unavailable_port"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "capability_code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Code"
+        },
+        "requirement_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dispatch": {
+          "const": "recorded_for_11_not_dispatched",
+          "default": "recorded_for_11_not_dispatched",
+          "title": "Dispatch",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "reason"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-requirement-intent/1.0.0",
+      "default": "tool-requirement-intent/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "origin_run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Origin Run Id",
+      "type": "string"
+    },
+    "binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Binding Checksum",
+      "type": "string"
+    },
+    "catalog": {
+      "$ref": "#/$defs/Reference"
+    },
+    "gap": {
+      "$ref": "#/$defs/Gap"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "available_inputs": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Available Inputs",
+      "type": "array"
+    },
+    "attempted_branches": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Attempted Branches",
+      "type": "array"
+    },
+    "purpose": {
+      "const": "research_offline",
+      "default": "research_offline",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "extension": {
+      "const": "recorded_for_11_not_dispatched",
+      "default": "recorded_for_11_not_dispatched",
+      "title": "Extension",
+      "type": "string"
+    },
+    "replay": {
+      "const": "new_run_with_new_locks_and_admission_required",
+      "default": "new_run_with_new_locks_and_admission_required",
+      "title": "Replay",
+      "type": "string"
+    }
+  },
+  "required": [
+    "origin_run_id",
+    "binding_checksum",
+    "catalog",
+    "gap",
+    "sources",
+    "available_inputs",
+    "attempted_branches"
+  ],
+  "title": "ToolRequirement",
+  "type": "object"
+}

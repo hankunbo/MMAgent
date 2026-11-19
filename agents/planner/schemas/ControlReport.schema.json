@@ -1,0 +1,293 @@
+{
+  "$defs": {
+    "Gap": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Code"
+        },
+        "dispatch": {
+          "const": "recorded_for_11_not_dispatched",
+          "default": "recorded_for_11_not_dispatched",
+          "title": "Dispatch",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "missing_data",
+            "product_demand",
+            "mapping",
+            "unknown_producer",
+            "capability",
+            "safety",
+            "technical",
+            "unavailable_port"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "requirement_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "reason"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Phase": {
+      "enum": [
+        "initialize",
+        "retrieve",
+        "instantiate",
+        "identify",
+        "select",
+        "prepare",
+        "execute",
+        "verify",
+        "review",
+        "fallback",
+        "stopped"
+      ],
+      "title": "Phase",
+      "type": "string"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "api_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Api Requests",
+      "type": "integer"
+    },
+    "clinical_effect": {
+      "default": null,
+      "title": "Clinical Effect",
+      "type": "null"
+    },
+    "confirmed_workflows": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Confirmed Workflows",
+      "type": "integer"
+    },
+    "control_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Control Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "graph": {
+      "$ref": "#/$defs/Graph"
+    },
+    "observed_cost": {
+      "default": null,
+      "title": "Observed Cost",
+      "type": "null"
+    },
+    "pending_execution_key": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Pending Execution Key"
+    },
+    "phase": {
+      "$ref": "#/$defs/Phase"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reason"
+    },
+    "reserved_actions": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Reserved Actions",
+      "type": "integer"
+    },
+    "result_refs": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Result Refs",
+      "type": "array"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "planner-control-report/1.0.0",
+      "default": "planner-control-report/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "started_processes": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Started Processes",
+      "type": "integer"
+    },
+    "unresolved": {
+      "items": {
+        "$ref": "#/$defs/Gap"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "control_checksum",
+    "phase",
+    "reason",
+    "graph",
+    "deadline",
+    "pending_execution_key",
+    "reserved_actions",
+    "started_processes",
+    "confirmed_workflows",
+    "result_refs",
+    "unresolved"
+  ],
+  "title": "ControlReport",
+  "type": "object"
+}

@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "description": "Explicit source-bound partial index; preserve complete selected blocks/positions.",
+  "properties": {
+    "version": {
+      "const": "2.2.0",
+      "default": "2.2.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "max_chars": {
+      "default": 1200,
+      "maximum": 4096,
+      "minimum": 64,
+      "title": "Max Chars",
+      "type": "integer"
+    },
+    "overlap_chars": {
+      "default": 100,
+      "maximum": 512,
+      "minimum": 0,
+      "title": "Overlap Chars",
+      "type": "integer"
+    },
+    "max_chunks": {
+      "default": 192,
+      "maximum": 250,
+      "minimum": 1,
+      "title": "Max Chunks",
+      "type": "integer"
+    },
+    "projection_version": {
+      "const": "bounded-projection/1.0.0",
+      "default": "bounded-projection/1.0.0",
+      "title": "Projection Version",
+      "type": "string"
+    },
+    "selection": {
+      "const": "exact-section-paths/1.0.0",
+      "default": "exact-section-paths/1.0.0",
+      "title": "Selection",
+      "type": "string"
+    },
+    "source_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Checksum",
+      "type": "string"
+    },
+    "section_paths": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Section Paths",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source_checksum",
+    "section_paths"
+  ],
+  "title": "SectionChunkPolicy",
+  "type": "object"
+}

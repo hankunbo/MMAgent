@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "assessment_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "association",
+        "measurement_method",
+        "limitations"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "acquisition-search-suggestion/1.0.0",
+      "default": "acquisition-search-suggestion/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "topics": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Topics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "topics",
+    "purpose"
+  ],
+  "title": "SearchSuggestion",
+  "type": "object"
+}

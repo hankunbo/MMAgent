@@ -1,0 +1,79 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "checksum": {
+      "title": "Checksum",
+      "type": "string"
+    },
+    "max_actions": {
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Max Actions",
+      "type": "integer"
+    },
+    "max_cost": {
+      "exclusiveMinimum": 0,
+      "maximum": 10000,
+      "title": "Max Cost",
+      "type": "number"
+    },
+    "max_graph_rounds": {
+      "maximum": 64,
+      "minimum": 1,
+      "title": "Max Graph Rounds",
+      "type": "integer"
+    },
+    "max_same_action": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Same Action",
+      "type": "integer"
+    },
+    "max_seconds": {
+      "maximum": 3600,
+      "minimum": 1,
+      "title": "Max Seconds",
+      "type": "integer"
+    },
+    "network": {
+      "const": "deny",
+      "default": "deny",
+      "title": "Network",
+      "type": "string"
+    },
+    "selection": {
+      "const": "grounding_order_existing_first/1.0.0",
+      "default": "grounding_order_existing_first/1.0.0",
+      "title": "Selection",
+      "type": "string"
+    },
+    "unknown_cost_reservation": {
+      "default": 1.0,
+      "exclusiveMinimum": 0,
+      "maximum": 10000,
+      "title": "Unknown Cost Reservation",
+      "type": "number"
+    },
+    "version": {
+      "const": "deterministic-pipeline/1.0.0",
+      "default": "deterministic-pipeline/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "max_actions",
+    "max_graph_rounds",
+    "max_seconds",
+    "max_cost"
+  ],
+  "title": "PipelinePolicy",
+  "type": "object"
+}

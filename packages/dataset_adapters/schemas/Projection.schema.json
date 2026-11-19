@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "EvidenceObservationStatus": {
+      "enum": [
+        "UNOBSERVED",
+        "POSITIVE",
+        "NEGATIVE",
+        "INCONCLUSIVE",
+        "UNOBSERVED_TOOL_GAP",
+        "NOT_APPLICABLE"
+      ],
+      "title": "EvidenceObservationStatus",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "ObservationCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "extraction_version": {
+          "const": "controlled-iop/1.0.0",
+          "default": "controlled-iop/1.0.0",
+          "title": "Extraction Version",
+          "type": "string"
+        },
+        "laterality": {
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "observation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StructuredObservation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "pending_review",
+            "ambiguous"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timepoint": {
+          "enum": [
+            "current",
+            "unknown"
+          ],
+          "title": "Timepoint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "laterality",
+        "timepoint",
+        "status"
+      ],
+      "title": "ObservationCandidate",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "objective_candidate",
+            "assessment",
+            "unclassified"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "hidden": {
+          "const": true,
+          "default": true,
+          "title": "Hidden",
+          "type": "boolean"
+        },
+        "lost_evidence": {
+          "default": [],
+          "items": {
+            "enum": [
+              "IOP",
+              "OCT",
+              "RNFL",
+              "VF",
+              "ANGLE",
+              "CDR"
+            ],
+            "type": "string"
+          },
+          "title": "Lost Evidence",
+          "type": "array"
+        },
+        "reason": {
+          "enum": [
+            "review_pending",
+            "diagnosis_assessment",
+            "inseparable_or_ambiguous"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "visible_end": {
+          "const": 0,
+          "default": 0,
+          "title": "Visible End",
+          "type": "integer"
+        },
+        "visible_start": {
+          "const": 0,
+          "default": 0,
+          "title": "Visible Start",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "category",
+        "reason"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "StructuredObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "concept_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Concept Code",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/EvidenceObservationStatus"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed At"
+        },
+        "source_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Source Code",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JsonValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "concept_code",
+        "observation",
+        "value",
+        "unit",
+        "source_code"
+      ],
+      "title": "StructuredObservation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/ObservationCandidate"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "policy_version": {
+      "const": "conservative-note/1.0.0",
+      "default": "conservative-note/1.0.0",
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "raw_checksum": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Raw Checksum",
+      "type": "string"
+    },
+    "raw_length": {
+      "minimum": 0,
+      "title": "Raw Length",
+      "type": "integer"
+    },
+    "review_status": {
+      "const": "pending",
+      "default": "pending",
+      "title": "Review Status",
+      "type": "string"
+    },
+    "spans": {
+      "items": {
+        "$ref": "#/$defs/Span"
+      },
+      "title": "Spans",
+      "type": "array"
+    },
+    "visible_text": {
+      "const": "",
+      "default": "",
+      "title": "Visible Text",
+      "type": "string"
+    }
+  },
+  "required": [
+    "raw_checksum",
+    "raw_length",
+    "spans",
+    "candidates"
+  ],
+  "title": "Projection",
+  "type": "object"
+}

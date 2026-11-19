@@ -1,0 +1,317 @@
+{
+  "$defs": {
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    },
+    "OfflineReviewStatus": {
+      "enum": [
+        "OFFLINE_REVIEW_PENDING",
+        "IN_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "WITHDRAWN"
+      ],
+      "title": "OfflineReviewStatus",
+      "type": "string"
+    },
+    "ReviewAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "offline-review/1.0.0",
+          "default": "offline-review/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disposition": {
+          "enum": [
+            "accept",
+            "conditional_coexist",
+            "reject",
+            "needs_evidence",
+            "supersede"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "source_classes": {
+          "items": {
+            "enum": [
+              "guideline",
+              "consensus",
+              "systematic_review",
+              "original_research",
+              "professional_education",
+              "ordinary_web"
+            ],
+            "type": "string"
+          },
+          "maxItems": 6,
+          "minItems": 1,
+          "title": "Source Classes",
+          "type": "array"
+        },
+        "authority_note": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Authority Note",
+          "type": "string"
+        },
+        "currency_note": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Currency Note",
+          "type": "string"
+        },
+        "semantic_note": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Semantic Note",
+          "type": "string"
+        },
+        "checked_dimensions": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Checked Dimensions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "disposition",
+        "rationale",
+        "source_classes",
+        "authority_note",
+        "currency_note",
+        "semantic_note",
+        "checked_dimensions"
+      ],
+      "title": "ReviewAssessment",
+      "type": "object"
+    },
+    "ReviewerRole": {
+      "enum": [
+        "REVIEWER",
+        "EXPERT_AGENT"
+      ],
+      "title": "ReviewerRole",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "expert_review",
+      "default": "expert_review",
+      "title": "Kind",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "scope": {
+      "const": "GLOBAL",
+      "default": "GLOBAL",
+      "title": "Scope",
+      "type": "string"
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "applicability_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "unresolved_decisions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "GRA-002",
+          "KNO-008"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Unresolved Decisions",
+      "type": "array"
+    },
+    "review_assessment": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ReviewAssessment"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "subject_ref": {
+      "$ref": "#/$defs/KnowledgeReference"
+    },
+    "policy_ref": {
+      "$ref": "#/$defs/KnowledgeReference"
+    },
+    "reviewer_code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Reviewer Code",
+      "type": "string"
+    },
+    "reviewer_role": {
+      "$ref": "#/$defs/ReviewerRole"
+    },
+    "decision": {
+      "$ref": "#/$defs/OfflineReviewStatus"
+    },
+    "reviewed_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Reviewed Checksum",
+      "type": "string"
+    },
+    "dependency_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Dependency Checksum",
+      "type": "string"
+    },
+    "reason_codes": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Reason Codes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "subject_ref",
+    "policy_ref",
+    "reviewer_code",
+    "reviewer_role",
+    "decision",
+    "reviewed_checksum",
+    "dependency_checksum",
+    "reason_codes"
+  ],
+  "title": "ExpertReview",
+  "type": "object"
+}

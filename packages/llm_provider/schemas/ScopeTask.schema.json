@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "component_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Component Checksum",
+      "type": "string"
+    },
+    "component_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Component Id",
+      "type": "string"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "modality": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Modality",
+      "type": "string"
+    },
+    "representation": {
+      "enum": [
+        "image",
+        "image_series",
+        "volume",
+        "map"
+      ],
+      "title": "Representation",
+      "type": "string"
+    },
+    "requested_regions": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Requested Regions",
+      "type": "array"
+    },
+    "sampling_limits": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Sampling Limits",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "input-scope-survey/1.0.0",
+      "default": "input-scope-survey/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "component_id",
+    "component_checksum",
+    "input_checksum",
+    "modality",
+    "representation",
+    "requested_regions",
+    "sampling_limits"
+  ],
+  "title": "ScopeTask",
+  "type": "object"
+}

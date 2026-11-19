@@ -1,0 +1,388 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "EvidenceValidity": {
+      "enum": [
+        "UNASSESSED",
+        "VALID",
+        "INVALID",
+        "INCONCLUSIVE"
+      ],
+      "title": "EvidenceValidity",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "ToolGapCode": {
+      "enum": [
+        "NO_GROUNDING",
+        "NO_TOOL",
+        "NO_IMPLEMENTATION",
+        "NO_ADAPTER",
+        "MISSING_DATA",
+        "INPUT_MISMATCH",
+        "OUT_OF_SCOPE",
+        "LOW_RELIABILITY",
+        "EXECUTION_RESOURCE_UNAVAILABLE",
+        "EXECUTION_FAILED"
+      ],
+      "title": "ToolGapCode",
+      "type": "string"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "alternative_paths": {
+      "items": {
+        "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+        "type": "string"
+      },
+      "title": "Alternative Paths",
+      "type": "array"
+    },
+    "blocks_required_path": {
+      "title": "Blocks Required Path",
+      "type": "boolean"
+    },
+    "capability": {
+      "const": "UNAVAILABLE_CAPABILITY",
+      "title": "Capability",
+      "type": "string"
+    },
+    "capability_code": {
+      "title": "Capability Code",
+      "type": "string"
+    },
+    "clinical_effect": {
+      "const": "NONE",
+      "title": "Clinical Effect",
+      "type": "string"
+    },
+    "contract_type": {
+      "const": "CapabilityGap",
+      "title": "Contract Type",
+      "type": "string"
+    },
+    "coordinate_space": {
+      "$ref": "#/$defs/CoordinateSpace"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "gap_codes": {
+      "items": {
+        "$ref": "#/$defs/ToolGapCode"
+      },
+      "minItems": 1,
+      "title": "Gap Codes",
+      "type": "array"
+    },
+    "gap_id": {
+      "title": "Gap Id",
+      "type": "string"
+    },
+    "laterality": {
+      "$ref": "#/$defs/Laterality"
+    },
+    "observation": {
+      "const": "UNOBSERVED_TOOL_GAP",
+      "title": "Observation",
+      "type": "string"
+    },
+    "origin_run_id": {
+      "title": "Origin Run Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeReference"
+    },
+    "target_node_code": {
+      "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+      "title": "Target Node Code",
+      "type": "string"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    },
+    "validity": {
+      "$ref": "#/$defs/EvidenceValidity"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_type",
+    "provenance",
+    "scope",
+    "laterality",
+    "coordinate_space",
+    "unit",
+    "gap_id",
+    "origin_run_id",
+    "target_node_code",
+    "capability_code",
+    "gap_codes",
+    "observation",
+    "capability",
+    "validity",
+    "clinical_effect",
+    "alternative_paths",
+    "blocks_required_path"
+  ],
+  "title": "CapabilityGap",
+  "type": "object"
+}

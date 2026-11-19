@@ -1,0 +1,116 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "applicability": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Applicability",
+      "type": "array"
+    },
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "dependencies": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Dependencies",
+      "type": "array"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "kind": {
+      "const": "execution_snapshot",
+      "default": "execution_snapshot",
+      "title": "Kind",
+      "type": "string"
+    },
+    "nature": {
+      "enum": [
+        "source_fact",
+        "agent_opinion",
+        "technical_failure",
+        "missing_evidence",
+        "simulation",
+        "abstract_candidate"
+      ],
+      "title": "Nature",
+      "type": "string"
+    },
+    "object_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Object Checksum",
+      "type": "string"
+    },
+    "object_code": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Object Code",
+      "type": "string"
+    },
+    "owner": {
+      "const": "runtime_execution",
+      "default": "runtime_execution",
+      "title": "Owner",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "research_offline",
+      "default": "research_offline",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "semantics_version": {
+      "anyOf": [
+        {
+          "const": "counterfactual-semantics/1.1.0",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Semantics Version"
+    },
+    "version": {
+      "const": "research-memory-execution/1.0.0",
+      "default": "research-memory-execution/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_code",
+    "run_id",
+    "key",
+    "object_code",
+    "checksum",
+    "object_checksum",
+    "dependencies",
+    "applicability",
+    "nature"
+  ],
+  "title": "ExecutionSource",
+  "type": "object"
+}

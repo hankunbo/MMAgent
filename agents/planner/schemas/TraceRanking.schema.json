@@ -1,0 +1,46 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "ranked_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 1024,
+      "minItems": 1,
+      "title": "Ranked Ids",
+      "type": "array"
+    },
+    "reason": {
+      "maxLength": 240,
+      "minLength": 1,
+      "pattern": "^[^\\x00-\\x1f]+$",
+      "title": "Reason",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "trace-ranking/1.0.0",
+      "default": "trace-ranking/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "set_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Set Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "set_checksum",
+    "policy_checksum",
+    "ranked_ids",
+    "reason"
+  ],
+  "title": "TraceRanking",
+  "type": "object"
+}

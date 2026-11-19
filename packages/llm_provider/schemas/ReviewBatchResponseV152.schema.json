@@ -1,0 +1,559 @@
+{
+  "$defs": {
+    "CurlClient": {
+      "additionalProperties": false,
+      "properties": {
+        "binary_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Binary Checksum",
+          "type": "string"
+        },
+        "implementation": {
+          "const": "system-curl-http1.1",
+          "default": "system-curl-http1.1",
+          "title": "Implementation",
+          "type": "string"
+        },
+        "parent_death_signal": {
+          "const": "SIGKILL",
+          "default": "SIGKILL",
+          "title": "Parent Death Signal",
+          "type": "string"
+        },
+        "redirects": {
+          "const": 0,
+          "default": 0,
+          "title": "Redirects",
+          "type": "integer"
+        },
+        "retries": {
+          "const": 0,
+          "default": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": "bounded-http-client/1.0.0",
+          "default": "bounded-http-client/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "binary_checksum"
+      ],
+      "title": "CurlClient",
+      "type": "object"
+    },
+    "CurlNullableProviderConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_endpoints": {
+          "items": {
+            "enum": [
+              "chat_completions",
+              "responses"
+            ],
+            "type": "string"
+          },
+          "title": "Allowed Endpoints",
+          "type": "array"
+        },
+        "direction_policy": {
+          "const": "direction-assessment/1.0.0",
+          "default": "direction-assessment/1.0.0",
+          "title": "Direction Policy",
+          "type": "string"
+        },
+        "format_correction_budget": {
+          "const": 1,
+          "default": 1,
+          "title": "Format Correction Budget",
+          "type": "integer"
+        },
+        "http_client": {
+          "$ref": "#/$defs/CurlClient"
+        },
+        "image_capable": {
+          "title": "Image Capable",
+          "type": "boolean"
+        },
+        "independence": {
+          "const": "same_model_roles_are_correlated_not_clinical_review",
+          "title": "Independence",
+          "type": "string"
+        },
+        "max_concurrency": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Max Concurrency",
+          "type": "integer"
+        },
+        "max_extra_requests": {
+          "const": 3,
+          "default": 3,
+          "title": "Max Extra Requests",
+          "type": "integer"
+        },
+        "max_requests": {
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Requests",
+          "type": "integer"
+        },
+        "mode": {
+          "enum": [
+            "fake",
+            "live"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "network_route": {
+          "$ref": "#/$defs/NetworkRoute"
+        },
+        "recovery": {
+          "const": "confirmed_http_once/1.0.0",
+          "title": "Recovery",
+          "type": "string"
+        },
+        "retry_delay_seconds": {
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Retry Delay Seconds",
+          "type": "number"
+        },
+        "review_batching": {
+          "$ref": "#/$defs/ReviewBatchPolicy"
+        },
+        "review_correction_policy": {
+          "const": "schema-feedback-once/1.0.0",
+          "title": "Review Correction Policy",
+          "type": "string"
+        },
+        "review_response_policy": {
+          "const": "review-optional-null/1.1.0",
+          "default": "review-optional-null/1.1.0",
+          "title": "Review Response Policy",
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/$defs/RoleConfig"
+          },
+          "title": "Roles",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "agent-provider-config/9.2.0",
+          "default": "agent-provider-config/9.2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_quote_selection": {
+          "const": "exact-snippets/1.0.0",
+          "title": "Source Quote Selection",
+          "type": "string"
+        },
+        "transport": {
+          "$ref": "#/$defs/LLMConfig"
+        },
+        "wire_mode": {
+          "const": "json_object",
+          "default": "json_object",
+          "title": "Wire Mode",
+          "type": "string"
+        },
+        "wire_policy": {
+          "const": "normalized_arrays/1.0.0",
+          "title": "Wire Policy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "transport",
+        "mode",
+        "allowed_endpoints",
+        "max_requests",
+        "max_concurrency",
+        "retry_delay_seconds",
+        "image_capable",
+        "roles",
+        "independence",
+        "recovery",
+        "wire_policy",
+        "review_batching",
+        "review_correction_policy",
+        "source_quote_selection",
+        "network_route",
+        "http_client"
+      ],
+      "title": "CurlNullableProviderConfig",
+      "type": "object"
+    },
+    "LLMConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "api_key_env": {
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Api Key Env",
+          "type": "string"
+        },
+        "base_url": {
+          "maxLength": 2048,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "endpoint": {
+          "enum": [
+            "chat_completions",
+            "responses"
+          ],
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "max_retries": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "model": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "openai_compatible",
+            "openai"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "store": {
+          "title": "Store",
+          "type": "boolean"
+        },
+        "timeout_seconds": {
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider",
+        "api_key_env",
+        "base_url",
+        "model",
+        "endpoint",
+        "timeout_seconds",
+        "max_retries",
+        "store"
+      ],
+      "title": "LLMConfig",
+      "type": "object"
+    },
+    "NetworkRoute": {
+      "additionalProperties": false,
+      "properties": {
+        "endpoint_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Endpoint Checksum",
+          "type": "string"
+        },
+        "mode": {
+          "const": "environment_https_proxy",
+          "title": "Mode",
+          "type": "string"
+        },
+        "proxy_env": {
+          "const": "HTTPS_PROXY",
+          "title": "Proxy Env",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "llm-network-route/1.0.0",
+          "default": "llm-network-route/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode",
+        "proxy_env",
+        "endpoint_checksum"
+      ],
+      "title": "NetworkRoute",
+      "type": "object"
+    },
+    "NullableReviewAlignment": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Candidate Checksum",
+          "type": "string"
+        },
+        "optional_null_paths": {
+          "items": {
+            "maxItems": 3,
+            "minItems": 3,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "type": "array"
+          },
+          "maxItems": 64,
+          "title": "Optional Null Paths",
+          "type": "array"
+        },
+        "policy": {
+          "const": "review-optional-null/1.1.0",
+          "default": "review-optional-null/1.1.0",
+          "title": "Policy",
+          "type": "string"
+        },
+        "raw_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Raw Checksum",
+          "type": "string"
+        },
+        "redundant_observation_method_indices": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 5,
+          "title": "Redundant Observation Method Indices",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "review-response-alignment/1.1.0",
+          "default": "review-response-alignment/1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "unchanged_scores_citations_and_status": {
+          "const": true,
+          "default": true,
+          "title": "Unchanged Scores Citations And Status",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "raw_checksum",
+        "candidate_checksum",
+        "redundant_observation_method_indices",
+        "optional_null_paths"
+      ],
+      "title": "NullableReviewAlignment",
+      "type": "object"
+    },
+    "ReviewBatchPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "batch_size": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Batch Size",
+          "type": "integer"
+        },
+        "max_batches": {
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Batches",
+          "type": "integer"
+        },
+        "partition": {
+          "const": "sorted_task_ids_full_parent_material",
+          "default": "sorted_task_ids_full_parent_material",
+          "title": "Partition",
+          "type": "string"
+        },
+        "planner_actions": {
+          "const": 1,
+          "default": 1,
+          "title": "Planner Actions",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": "review-batch-policy/1.0.0",
+          "default": "review-batch-policy/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "batch_size",
+        "max_batches"
+      ],
+      "title": "ReviewBatchPolicy",
+      "type": "object"
+    },
+    "RoleConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "images": {
+          "title": "Images",
+          "type": "boolean"
+        },
+        "max_input_bytes": {
+          "maximum": 262144,
+          "minimum": 256,
+          "title": "Max Input Bytes",
+          "type": "integer"
+        },
+        "max_output_bytes": {
+          "maximum": 262144,
+          "minimum": 256,
+          "title": "Max Output Bytes",
+          "type": "integer"
+        },
+        "max_output_tokens": {
+          "maximum": 16384,
+          "minimum": 1,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "prompt_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "trace",
+            "expert",
+            "source",
+            "vision",
+            "review"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "prompt_version",
+        "prompt_checksum",
+        "max_output_tokens",
+        "max_output_bytes",
+        "max_input_bytes",
+        "images"
+      ],
+      "title": "RoleConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "accepted_medical_evidence": {
+      "const": false,
+      "default": false,
+      "title": "Accepted Medical Evidence",
+      "type": "boolean"
+    },
+    "alignment": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NullableReviewAlignment"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Error"
+    },
+    "finish_reason": {
+      "anyOf": [
+        {
+          "enum": [
+            "stop",
+            "length",
+            "content_filter",
+            "tool_calls",
+            "function_call"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Finish Reason"
+    },
+    "provider_config": {
+      "$ref": "#/$defs/CurlNullableProviderConfig"
+    },
+    "raw_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Checksum",
+      "type": "string"
+    },
+    "raw_model_text": {
+      "maxLength": 262144,
+      "title": "Raw Model Text",
+      "type": "string"
+    },
+    "record_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Record Checksum",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "review-batch-response/1.5.2",
+      "default": "review-batch-response/1.5.2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "untrusted_model_output": {
+      "const": true,
+      "default": true,
+      "title": "Untrusted Model Output",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "request_id",
+    "record_checksum",
+    "raw_model_text",
+    "raw_checksum",
+    "error",
+    "finish_reason",
+    "provider_config",
+    "alignment"
+  ],
+  "title": "ReviewBatchResponseV152",
+  "type": "object"
+}

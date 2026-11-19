@@ -1,0 +1,222 @@
+{
+  "$defs": {
+    "EngineeringBasis": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "configuration": {
+          "$ref": "#/$defs/ReviewedFile"
+        },
+        "configuration_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Configuration Version",
+          "type": "string"
+        },
+        "engine_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "owner": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Owner",
+          "type": "string"
+        },
+        "predicate": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Predicate",
+          "type": "string"
+        },
+        "reason_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "rule_version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "runtime_config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Runtime Config Checksum",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ReviewedFile"
+        },
+        "symbol": {
+          "pattern": "^[A-Za-z_][A-Za-z0-9_.]{0,127}$",
+          "title": "Symbol",
+          "type": "string"
+        },
+        "trigger": {
+          "enum": [
+            "time_budget",
+            "action_or_cost_budget",
+            "graph_round_budget",
+            "paths_exhausted",
+            "environment_error"
+          ],
+          "title": "Trigger",
+          "type": "string"
+        },
+        "version": {
+          "const": "engineering-stop-basis/1.0.0",
+          "default": "engineering-stop-basis/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "owner",
+        "trigger",
+        "reason_code",
+        "predicate",
+        "source",
+        "symbol",
+        "engine_version",
+        "configuration",
+        "configuration_version",
+        "runtime_config_checksum",
+        "rule_version"
+      ],
+      "title": "EngineeringBasis",
+      "type": "object"
+    },
+    "MedicalStopDependency": {
+      "additionalProperties": false,
+      "description": "Exact legacy references; the existing medical reader verifies lifecycle and reviews.",
+      "properties": {
+        "policy": {
+          "additionalProperties": true,
+          "title": "Policy",
+          "type": "object"
+        },
+        "stop_rule": {
+          "additionalProperties": true,
+          "title": "Stop Rule",
+          "type": "object"
+        }
+      },
+      "required": [
+        "stop_rule",
+        "policy"
+      ],
+      "title": "MedicalStopDependency",
+      "type": "object"
+    },
+    "ReviewedFile": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 8589934592,
+          "minimum": 0,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "ReviewedFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_publication_authority": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Publication Authority",
+      "type": "boolean"
+    },
+    "engineering": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EngineeringBasis"
+      },
+      "maxItems": 16,
+      "title": "Engineering",
+      "type": "array"
+    },
+    "kind": {
+      "enum": [
+        "engineering",
+        "medical",
+        "mixed"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "medical": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/MedicalStopDependency"
+      },
+      "maxItems": 16,
+      "title": "Medical",
+      "type": "array"
+    },
+    "owner": {
+      "const": "04_STOP_BASIS",
+      "default": "04_STOP_BASIS",
+      "title": "Owner",
+      "type": "string"
+    },
+    "review_files": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ReviewedFile"
+      },
+      "maxItems": 16,
+      "title": "Review Files",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "stop-basis-binding/2.0.0",
+      "default": "stop-basis-binding/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "checksum",
+    "kind",
+    "synthetic"
+  ],
+  "title": "StopBasisBinding",
+  "type": "object"
+}

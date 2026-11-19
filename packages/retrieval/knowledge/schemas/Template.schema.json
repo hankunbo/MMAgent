@@ -1,0 +1,749 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "EdgeType": {
+      "enum": [
+        "AND_CHILD",
+        "OR_CHILD",
+        "SUPPORTS",
+        "REFUTES",
+        "EXCLUDES",
+        "FALSIFIES",
+        "CAUSES",
+        "RISK_MODIFIES",
+        "REQUIRES_INPUT",
+        "PRODUCES",
+        "VALIDATED_BY",
+        "CONFLICTS_WITH"
+      ],
+      "title": "EdgeType",
+      "type": "string"
+    },
+    "GECEGTemplate": {
+      "additionalProperties": false,
+      "properties": {
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "minItems": 1,
+          "title": "Citations",
+          "type": "array"
+        },
+        "contract_type": {
+          "const": "GECEGTemplate",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "edges": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/packages__contracts__models__GraphEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "goal_node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Goal Node Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/packages__contracts__models__TemplateNode"
+          },
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "template_code": {
+          "title": "Template Code",
+          "type": "string"
+        },
+        "template_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Template Version",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "template_code",
+        "template_version",
+        "goal_node_code",
+        "nodes",
+        "citations"
+      ],
+      "title": "GECEGTemplate",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "NodeType": {
+      "enum": [
+        "GOAL",
+        "CLAIM",
+        "EVIDENCE",
+        "DATA",
+        "TOOL",
+        "QC",
+        "EXCLUSION",
+        "ACTION",
+        "LOGIC_GATE"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "StrictVersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "StrictVersionedReference",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    },
+    "db__knowledge__models__GraphEdge": {
+      "additionalProperties": false,
+      "description": "No graph algorithms are duplicated in Knowledge persistence.",
+      "properties": {
+        "edge_type": {
+          "$ref": "#/$defs/EdgeType"
+        },
+        "rule_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StrictVersionedReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Source Node Code",
+          "type": "string"
+        },
+        "target_node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Target Node Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_node_code",
+        "target_node_code",
+        "edge_type"
+      ],
+      "title": "GraphEdge",
+      "type": "object"
+    },
+    "db__knowledge__models__TemplateNode": {
+      "additionalProperties": false,
+      "description": "Public graph contract with strict persistence-time revalidation enabled.",
+      "properties": {
+        "concept_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Concept Code",
+          "type": "string"
+        },
+        "node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Node Code",
+          "type": "string"
+        },
+        "node_type": {
+          "$ref": "#/$defs/NodeType"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "node_code",
+        "node_type",
+        "concept_code",
+        "required"
+      ],
+      "title": "TemplateNode",
+      "type": "object"
+    },
+    "packages__contracts__models__GraphEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_type": {
+          "$ref": "#/$defs/EdgeType"
+        },
+        "rule_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionedReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Source Node Code",
+          "type": "string"
+        },
+        "target_node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Target Node Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_node_code",
+        "target_node_code",
+        "edge_type"
+      ],
+      "title": "GraphEdge",
+      "type": "object"
+    },
+    "packages__contracts__models__TemplateNode": {
+      "additionalProperties": false,
+      "properties": {
+        "concept_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Concept Code",
+          "type": "string"
+        },
+        "node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Node Code",
+          "type": "string"
+        },
+        "node_type": {
+          "$ref": "#/$defs/NodeType"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "node_code",
+        "node_type",
+        "concept_code",
+        "required"
+      ],
+      "title": "TemplateNode",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applicability_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "binding_refs": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/KnowledgeReference"
+          },
+          "maxItems": 128,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Binding Refs"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "edges": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/db__knowledge__models__GraphEdge"
+      },
+      "maxItems": 256,
+      "title": "Edges",
+      "type": "array"
+    },
+    "goal_node_code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Goal Node Code",
+      "type": "string"
+    },
+    "graph_template": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GECEGTemplate"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "kind": {
+      "const": "template",
+      "default": "template",
+      "title": "Kind",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/db__knowledge__models__TemplateNode"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Nodes",
+      "type": "array"
+    },
+    "rule_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Rule Refs",
+      "type": "array"
+    },
+    "scope": {
+      "const": "GLOBAL",
+      "default": "GLOBAL",
+      "title": "Scope",
+      "type": "string"
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "unresolved_decisions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "GRA-002",
+          "KNO-008"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Unresolved Decisions",
+      "type": "array"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "goal_node_code",
+    "nodes"
+  ],
+  "title": "Template",
+  "type": "object"
+}

@@ -1,0 +1,214 @@
+{
+  "$defs": {
+    "Examination": {
+      "additionalProperties": false,
+      "properties": {
+        "equivalent_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Equivalent To"
+        },
+        "evidence_unit": {
+          "title": "Evidence Unit",
+          "type": "string"
+        },
+        "goals": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Goals",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:-]{1,100}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_capabilities": {
+          "$ref": "#/$defs/Prerequisites"
+        },
+        "instruction": {
+          "minLength": 1,
+          "title": "Instruction",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "vision",
+            "disc_cup_measurement",
+            "paired_observation",
+            "source_measurement"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "modality": {
+          "title": "Modality",
+          "type": "string"
+        },
+        "parent": {
+          "title": "Parent",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 12,
+          "title": "Quote",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "parent",
+        "modality",
+        "method",
+        "source",
+        "quote",
+        "title",
+        "instruction",
+        "evidence_unit",
+        "goals",
+        "input_capabilities"
+      ],
+      "title": "Examination",
+      "type": "object"
+    },
+    "Group": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "parent": {
+          "title": "Parent",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "parent"
+      ],
+      "title": "Group",
+      "type": "object"
+    },
+    "Prerequisites": {
+      "additionalProperties": false,
+      "properties": {
+        "concepts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Concepts",
+          "type": "array"
+        },
+        "representations": {
+          "items": {
+            "enum": [
+              "image",
+              "image_series",
+              "volume",
+              "map",
+              "vector",
+              "scalar"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Representations",
+          "type": "array"
+        },
+        "required_unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Required Unit"
+        },
+        "scope": {
+          "enum": [
+            "visible_region_pending",
+            "source_measurement",
+            "paired_eyes"
+          ],
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "representations",
+        "scope"
+      ],
+      "title": "Prerequisites",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/Examination"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Checks",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/Group"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "provenance": {
+      "title": "Provenance",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-requirement-catalog/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "provenance",
+    "nodes",
+    "checks"
+  ],
+  "title": "RequirementCatalog",
+  "type": "object"
+}

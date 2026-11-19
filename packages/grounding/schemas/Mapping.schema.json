@@ -1,0 +1,454 @@
+{
+  "$defs": {
+    "ArtifactConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        },
+        "qc_required": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Qc Required",
+          "type": "array"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "qc_required",
+        "scope_terms"
+      ],
+      "title": "ArtifactConstraint",
+      "type": "object"
+    },
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "capability_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "workflow_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "output": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/Input"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "validation_required": {
+          "$ref": "#/$defs/ToolValidationStatus"
+        },
+        "intended_use": {
+          "$ref": "#/$defs/IntendedUse"
+        },
+        "execution_policy": {
+          "$ref": "#/$defs/ExecutionPolicy"
+        },
+        "estimate_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "capability_ref",
+        "tool_ref",
+        "implementation_ref",
+        "workflow_ref",
+        "output_port",
+        "output",
+        "inputs",
+        "validation_required",
+        "intended_use",
+        "execution_policy",
+        "estimate_ref"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "ExecutionPolicy": {
+      "enum": [
+        "research",
+        "clinical_deployment"
+      ],
+      "title": "ExecutionPolicy",
+      "type": "string"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "port",
+        "constraint",
+        "required",
+        "cardinality_min",
+        "cardinality_max"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "grounding/1.0.0",
+      "default": "grounding/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "kind": {
+      "const": "mapping",
+      "default": "mapping",
+      "title": "Kind",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "requirement_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "claim_refs": {
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Claim Refs",
+      "type": "array"
+    },
+    "release_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "template_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "source_refs": {
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "applicability_refs": {
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "catalog_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "policy_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "accepted_artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactConstraint"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Accepted Artifacts",
+      "type": "array"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/Candidate"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Candidates",
+      "type": "array"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "synthetic",
+    "requirement_ref",
+    "claim_refs",
+    "release_ref",
+    "template_ref",
+    "source_refs",
+    "applicability_refs",
+    "catalog_ref",
+    "policy_ref",
+    "accepted_artifacts",
+    "candidates"
+  ],
+  "title": "Mapping",
+  "type": "object"
+}

@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "connect_timeout_seconds": {
+      "default": 5,
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Connect Timeout Seconds",
+      "type": "integer"
+    },
+    "dsn_env": {
+      "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+      "title": "Dsn Env",
+      "type": "string"
+    },
+    "max_rows": {
+      "default": 512,
+      "maximum": 4096,
+      "minimum": 1,
+      "title": "Max Rows",
+      "type": "integer"
+    },
+    "max_snapshot_bytes": {
+      "default": 8388608,
+      "maximum": 16777216,
+      "minimum": 1024,
+      "title": "Max Snapshot Bytes",
+      "type": "integer"
+    },
+    "source_code": {
+      "pattern": "^[A-Z][A-Z0-9_]{0,31}$",
+      "title": "Source Code",
+      "type": "string"
+    },
+    "statement_timeout_ms": {
+      "default": 5000,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Statement Timeout Ms",
+      "type": "integer"
+    },
+    "transaction_timeout_ms": {
+      "default": 30000,
+      "maximum": 60000,
+      "minimum": 1,
+      "title": "Transaction Timeout Ms",
+      "type": "integer"
+    },
+    "version": {
+      "default": "1.0.0",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_code",
+    "dsn_env"
+  ],
+  "title": "AdapterConfig",
+  "type": "object"
+}

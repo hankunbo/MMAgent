@@ -1,0 +1,102 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "coordinate_system": {
+      "const": "pixel_xy_top_left",
+      "title": "Coordinate System",
+      "type": "string"
+    },
+    "height": {
+      "maximum": 32768,
+      "minimum": 1,
+      "title": "Height",
+      "type": "integer"
+    },
+    "location": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "title": "Location",
+      "type": "array"
+    },
+    "media_type": {
+      "enum": [
+        "image/png",
+        "image/jpeg"
+      ],
+      "title": "Media Type",
+      "type": "string"
+    },
+    "preprocessing": {
+      "$ref": "#/$defs/Reference"
+    },
+    "reference": {
+      "$ref": "#/$defs/Reference"
+    },
+    "width": {
+      "maximum": 32768,
+      "minimum": 1,
+      "title": "Width",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "reference",
+    "media_type",
+    "width",
+    "height",
+    "coordinate_system",
+    "preprocessing",
+    "location"
+  ],
+  "title": "ImageBinding",
+  "type": "object"
+}

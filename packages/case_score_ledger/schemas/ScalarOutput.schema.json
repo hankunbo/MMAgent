@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "metric": {
+      "enum": [
+        "quality",
+        "measurement",
+        "logit",
+        "segmentation_confidence",
+        "uncertainty"
+      ],
+      "title": "Metric",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "scalar-score-output/1.0.0",
+      "default": "scalar-score-output/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unit": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Unit",
+      "type": "string"
+    },
+    "value": {
+      "title": "Value",
+      "type": "number"
+    }
+  },
+  "required": [
+    "metric",
+    "value",
+    "unit",
+    "input_checksum"
+  ],
+  "title": "ScalarOutput",
+  "type": "object"
+}

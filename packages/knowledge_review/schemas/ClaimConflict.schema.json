@@ -1,0 +1,212 @@
+{
+  "$defs": {
+    "ConflictType": {
+      "enum": [
+        "SUPPORT",
+        "CONTRADICTION",
+        "POPULATION",
+        "METHOD",
+        "THRESHOLD",
+        "UNIT",
+        "TIME",
+        "CORRECTION",
+        "RETRACTION",
+        "STAGE",
+        "ANATOMY",
+        "MODALITY",
+        "STRENGTH",
+        "UPDATE",
+        "NON_EQUIVALENT",
+        "UNDETERMINED"
+      ],
+      "title": "ConflictType",
+      "type": "string"
+    },
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "claim_conflict",
+      "default": "claim_conflict",
+      "title": "Kind",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "scope": {
+      "const": "GLOBAL",
+      "default": "GLOBAL",
+      "title": "Scope",
+      "type": "string"
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "applicability_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "unresolved_decisions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "GRA-002",
+          "KNO-008"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Unresolved Decisions",
+      "type": "array"
+    },
+    "left_claim_ref": {
+      "$ref": "#/$defs/KnowledgeReference"
+    },
+    "right_claim_ref": {
+      "$ref": "#/$defs/KnowledgeReference"
+    },
+    "conflict_type": {
+      "$ref": "#/$defs/ConflictType"
+    },
+    "description": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "resolved": {
+      "default": false,
+      "title": "Resolved",
+      "type": "boolean"
+    },
+    "resolution_review_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "left_claim_ref",
+    "right_claim_ref",
+    "conflict_type",
+    "description"
+  ],
+  "title": "ClaimConflict",
+  "type": "object"
+}

@@ -1,0 +1,48 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Binding Checksum",
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "candidate_supported",
+        "candidate_rejected",
+        "needs_more_cases"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "memory-agent-advice/1.0.0",
+      "default": "memory-agent-advice/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Target Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "target_checksum",
+    "binding_checksum",
+    "decision",
+    "reasons"
+  ],
+  "title": "Advice",
+  "type": "object"
+}

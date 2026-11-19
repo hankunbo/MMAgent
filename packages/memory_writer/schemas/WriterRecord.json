@@ -1,0 +1,947 @@
+{
+  "$defs": {
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "relation": {
+          "default": "derived_from",
+          "enum": [
+            "derived_from",
+            "revision_of",
+            "episode_member"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "checksum"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "EpisodeData": {
+      "additionalProperties": false,
+      "properties": {
+        "completeness": {
+          "const": "recorded_events_only_missing_fields_explicit",
+          "default": "recorded_events_only_missing_fields_explicit",
+          "title": "Completeness",
+          "type": "string"
+        },
+        "completion": {
+          "const": "atomic_candidate",
+          "default": "atomic_candidate",
+          "title": "Completion",
+          "type": "string"
+        },
+        "cross_run_rule": {
+          "const": "independent_episode_original_source_links_only",
+          "default": "independent_episode_original_source_links_only",
+          "title": "Cross Run Rule",
+          "type": "string"
+        },
+        "execution_attempts": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "extension_state": {
+          "const": "only_original_intent_no_dispatch",
+          "default": "only_original_intent_no_dispatch",
+          "title": "Extension State",
+          "type": "string"
+        },
+        "final_graph": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "graph_members": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 2,
+          "title": "Graph Members",
+          "type": "array"
+        },
+        "initial_graph": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "request_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Request Key",
+          "type": "string"
+        },
+        "runtime_report": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "runtime_versions": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "scores": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "segments": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Segments",
+          "type": "array"
+        },
+        "supplemental_members": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Supplemental Members",
+          "type": "array"
+        },
+        "terminal": {
+          "$ref": "#/$defs/Terminal"
+        },
+        "trajectory_count": {
+          "maximum": 256,
+          "minimum": 0,
+          "title": "Trajectory Count",
+          "type": "integer"
+        },
+        "trajectory_missing_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Trajectory Missing Reason"
+        },
+        "type": {
+          "const": "episode",
+          "default": "episode",
+          "title": "Type",
+          "type": "string"
+        },
+        "versions": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 64,
+          "title": "Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "request_key",
+        "input_checksum",
+        "terminal",
+        "initial_graph",
+        "final_graph",
+        "scores",
+        "versions",
+        "runtime_versions",
+        "execution_attempts",
+        "runtime_report",
+        "trajectory_count",
+        "trajectory_missing_reason",
+        "segments",
+        "graph_members",
+        "supplemental_members"
+      ],
+      "title": "EpisodeData",
+      "type": "object"
+    },
+    "ExecutionSource": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "const": "execution_snapshot",
+          "default": "execution_snapshot",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "const": "runtime_execution",
+          "default": "runtime_execution",
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "const": "research-memory-execution/1.0.0",
+          "default": "research-memory-execution/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "ExecutionSource",
+      "type": "object"
+    },
+    "FieldRef": {
+      "additionalProperties": false,
+      "description": "A saved owner value location, or explicit absence; never caller JSON in a key.",
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^/[A-Za-z0-9_/-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "title": "FieldRef",
+      "type": "object"
+    },
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "Segment": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "exclusiveMaximum": 256,
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/Step"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        },
+        "type": {
+          "const": "trajectory_segment",
+          "default": "trajectory_segment",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "steps"
+      ],
+      "title": "Segment",
+      "type": "object"
+    },
+    "Snapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "role": {
+          "enum": [
+            "initial_historical",
+            "final_current"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "type": {
+          "const": "graph_snapshot",
+          "default": "graph_snapshot",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "graph",
+        "evidence"
+      ],
+      "title": "Snapshot",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "enum": [
+            "research_fact",
+            "planner_event",
+            "simulation",
+            "recovery",
+            "agent_review"
+          ],
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner",
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "kind",
+        "version",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Step": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Action",
+          "type": "string"
+        },
+        "after": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "After",
+          "type": "string"
+        },
+        "before": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Before",
+          "type": "string"
+        },
+        "command_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Command Key",
+          "type": "string"
+        },
+        "controlled_decision": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "domain_acceptance": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "event": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "execution": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "expert_advice": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "expert_decision": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "feedback": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "index": {
+          "exclusiveMaximum": 256,
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "legal_actions": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "observation": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "original_revision": {
+          "minimum": 0,
+          "title": "Original Revision",
+          "type": "integer"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "review_result": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "selection": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "state": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "status": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Status",
+          "type": "string"
+        },
+        "versions": {
+          "$ref": "#/$defs/FieldRef"
+        }
+      },
+      "required": [
+        "index",
+        "command_key",
+        "original_revision",
+        "action",
+        "before",
+        "after",
+        "event",
+        "state",
+        "legal_actions",
+        "selection",
+        "execution",
+        "observation",
+        "feedback",
+        "expert_advice",
+        "expert_decision",
+        "review_result",
+        "controlled_decision",
+        "domain_acceptance",
+        "versions",
+        "status",
+        "reason"
+      ],
+      "title": "Step",
+      "type": "object"
+    },
+    "Terminal": {
+      "additionalProperties": false,
+      "properties": {
+        "cancelled": {
+          "title": "Cancelled",
+          "type": "boolean"
+        },
+        "control_phase": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Control Phase"
+        },
+        "evidence": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "execution_confirmed": {
+          "const": true,
+          "default": true,
+          "title": "Execution Confirmed",
+          "type": "boolean"
+        },
+        "lifecycle_phase": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lifecycle Phase"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "runtime_status": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Runtime Status",
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "planner_control",
+            "runtime_lifecycle",
+            "preparation_rejection"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "technical_status": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Technical Status"
+        }
+      },
+      "required": [
+        "scope",
+        "runtime_status",
+        "control_phase",
+        "lifecycle_phase",
+        "technical_status",
+        "reason",
+        "cancelled",
+        "evidence"
+      ],
+      "title": "Terminal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applicability": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Applicability",
+      "type": "array"
+    },
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "detail": {
+      "discriminator": {
+        "mapping": {
+          "episode": "#/$defs/EpisodeData",
+          "graph_snapshot": "#/$defs/Snapshot",
+          "trajectory_segment": "#/$defs/Segment"
+        },
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EpisodeData"
+        },
+        {
+          "$ref": "#/$defs/Segment"
+        },
+        {
+          "$ref": "#/$defs/Snapshot"
+        }
+      ],
+      "title": "Detail"
+    },
+    "identity": {
+      "const": "research_candidate",
+      "default": "research_candidate",
+      "title": "Identity",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "episode",
+        "graph_snapshot",
+        "trajectory_step",
+        "counterfactual_pair",
+        "recovery_experience",
+        "tool_experience",
+        "abstract_pattern"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "nature": {
+      "enum": [
+        "source_fact",
+        "agent_opinion",
+        "technical_failure",
+        "missing_evidence",
+        "simulation",
+        "abstract_candidate"
+      ],
+      "title": "Nature",
+      "type": "string"
+    },
+    "parents": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Dependency"
+      },
+      "maxItems": 64,
+      "title": "Parents",
+      "type": "array"
+    },
+    "purpose": {
+      "const": "research_offline",
+      "default": "research_offline",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-memory/1.1.0",
+      "default": "research-memory/1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Source"
+          },
+          {
+            "$ref": "#/$defs/ExecutionSource"
+          }
+        ]
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Sources",
+      "type": "array"
+    }
+  },
+  "required": [
+    "key",
+    "kind",
+    "case_code",
+    "run_id",
+    "applicability",
+    "sources",
+    "nature",
+    "detail"
+  ],
+  "title": "WriterRecord",
+  "type": "object"
+}

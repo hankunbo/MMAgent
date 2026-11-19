@@ -1,0 +1,272 @@
+{
+  "$defs": {
+    "Binding": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "synthetic_fixture_mapping",
+          "default": "synthetic_fixture_mapping",
+          "title": "Basis",
+          "type": "string"
+        },
+        "conditions": {
+          "$ref": "#/$defs/Conditions"
+        },
+        "content_version": {
+          "enum": [
+            "research-memory/1.0.0",
+            "research-memory/1.1.0",
+            "research-memory/1.2.0"
+          ],
+          "title": "Content Version",
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "success",
+            "counterfactual",
+            "recovery"
+          ],
+          "title": "Group",
+          "type": "string"
+        },
+        "preferred_branches": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Preferred Branches",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "memory-use-binding/1.0.0",
+          "default": "memory-use-binding/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "target_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Target Checksum",
+          "type": "string"
+        },
+        "terms": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "target",
+        "target_checksum",
+        "content_version",
+        "conditions",
+        "group",
+        "preferred_branches"
+      ],
+      "title": "Binding",
+      "type": "object"
+    },
+    "Conditions": {
+      "additionalProperties": false,
+      "properties": {
+        "domain": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Domain",
+          "type": "string"
+        },
+        "failure_types": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Failure Types",
+          "type": "array"
+        },
+        "goal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Goal",
+          "type": "string"
+        },
+        "graph_conditions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Graph Conditions",
+          "type": "array"
+        },
+        "inputs": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "modalities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Modalities",
+          "type": "array"
+        },
+        "patient_conditions": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Patient Conditions",
+          "type": "object"
+        },
+        "rule_versions": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Rule Versions",
+          "type": "object"
+        },
+        "template": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Template",
+          "type": "string"
+        },
+        "tool_versions": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Tool Versions",
+          "type": "object"
+        },
+        "validation": {
+          "const": "synthetic_engineering",
+          "default": "synthetic_engineering",
+          "title": "Validation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "goal",
+        "template",
+        "graph_conditions",
+        "modalities",
+        "inputs",
+        "patient_conditions",
+        "tool_versions",
+        "rule_versions",
+        "failure_types",
+        "domain"
+      ],
+      "title": "Conditions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "binding": {
+      "$ref": "#/$defs/Binding"
+    },
+    "clinical_approval": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Approval",
+      "type": "boolean"
+    },
+    "decision": {
+      "enum": [
+        "candidate_supported",
+        "candidate_rejected",
+        "needs_more_cases"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "agent",
+        "engineering"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "request_checksums": {
+      "default": [],
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Request Checksums",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "memory-opinion/1.0.0",
+      "default": "memory-opinion/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Source Checksums",
+      "type": "array"
+    },
+    "valid_from": {
+      "format": "date-time",
+      "title": "Valid From",
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "binding",
+    "kind",
+    "decision",
+    "reasons",
+    "source_checksums",
+    "valid_from",
+    "expires_at"
+  ],
+  "title": "Opinion",
+  "type": "object"
+}

@@ -1,0 +1,748 @@
+{
+  "$defs": {
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "ImageBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinate_system": {
+          "const": "pixel_xy_top_left",
+          "title": "Coordinate System",
+          "type": "string"
+        },
+        "height": {
+          "maximum": 32768,
+          "minimum": 1,
+          "title": "Height",
+          "type": "integer"
+        },
+        "location": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Location",
+          "type": "array"
+        },
+        "media_type": {
+          "enum": [
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "preprocessing": {
+          "$ref": "#/$defs/Reference"
+        },
+        "reference": {
+          "$ref": "#/$defs/Reference"
+        },
+        "width": {
+          "maximum": 32768,
+          "minimum": 1,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "reference",
+        "media_type",
+        "width",
+        "height",
+        "coordinate_system",
+        "preprocessing",
+        "location"
+      ],
+      "title": "ImageBinding",
+      "type": "object"
+    },
+    "ObservationInput": {
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImageBinding"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "method": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Method",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/Reference"
+        },
+        "status": {
+          "enum": [
+            "obtained",
+            "missing",
+            "ungradable",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unit": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "reference",
+        "status",
+        "method",
+        "unit",
+        "value"
+      ],
+      "title": "ObservationInput",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "RegionScopeV2": {
+      "additionalProperties": false,
+      "description": "Bounded full descriptions; visibility and numeric invariants unchanged.",
+      "properties": {
+        "clarity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Clarity",
+          "type": "number"
+        },
+        "coverage": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage",
+          "type": "number"
+        },
+        "finding": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Finding",
+          "type": "string"
+        },
+        "limitation": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Limitation",
+          "type": "string"
+        },
+        "region": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Region",
+          "type": "string"
+        },
+        "visibility": {
+          "enum": [
+            "visible",
+            "partly_visible",
+            "not_identified",
+            "uncertain"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        }
+      },
+      "required": [
+        "region",
+        "visibility",
+        "coverage",
+        "clarity",
+        "finding",
+        "limitation"
+      ],
+      "title": "RegionScopeV2",
+      "type": "object"
+    },
+    "ReviewTask": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_sources": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Allowed Sources",
+          "type": "array"
+        },
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "assessment_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/TaskDefinition"
+        },
+        "goal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Goal",
+          "type": "string"
+        },
+        "laterality": {
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "BILATERAL",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "method": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Method",
+          "type": "string"
+        },
+        "node": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Node",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/Reference"
+        },
+        "unit": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "node",
+        "goal",
+        "definition",
+        "observation",
+        "allowed_sources",
+        "method",
+        "unit",
+        "laterality",
+        "applicable"
+      ],
+      "title": "ReviewTask",
+      "type": "object"
+    },
+    "ReviewTemplate": {
+      "additionalProperties": false,
+      "properties": {
+        "fixed_assessment_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Fixed Assessment Ids",
+          "type": "array"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "scale": {
+          "$ref": "#/$defs/Reference"
+        },
+        "schema_version": {
+          "const": "review-task-projection/2.0.0",
+          "default": "review-task-projection/2.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        },
+        "tasks": {
+          "items": {
+            "$ref": "#/$defs/ReviewTask"
+          },
+          "maxItems": 128,
+          "title": "Tasks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "scope_checksum",
+        "policy_checksum",
+        "scale",
+        "tasks",
+        "fixed_assessment_ids"
+      ],
+      "title": "ReviewTemplate",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "material_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Material Checksum",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "graph",
+        "visible_checksum",
+        "input_checksum",
+        "material_checksum",
+        "policy_checksum"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "ScopeTask": {
+      "additionalProperties": false,
+      "properties": {
+        "component_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Component Checksum",
+          "type": "string"
+        },
+        "component_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Component Id",
+          "type": "string"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "modality": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Modality",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "image",
+            "image_series",
+            "volume",
+            "map"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "requested_regions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Requested Regions",
+          "type": "array"
+        },
+        "sampling_limits": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Sampling Limits",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "input-scope-survey/1.0.0",
+          "default": "input-scope-survey/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component_id",
+        "component_checksum",
+        "input_checksum",
+        "modality",
+        "representation",
+        "requested_regions",
+        "sampling_limits"
+      ],
+      "title": "ScopeTask",
+      "type": "object"
+    },
+    "ScopeVisionProposalV3": {
+      "additionalProperties": false,
+      "description": "Explicit local text-capacity interpretation, not an old wire relaxation.",
+      "properties": {
+        "finding": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Finding",
+          "type": "string"
+        },
+        "image_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Image Checksum",
+          "type": "string"
+        },
+        "location": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Location",
+          "type": "array"
+        },
+        "preprocessing_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Preprocessing Checksum",
+          "type": "string"
+        },
+        "regions": {
+          "items": {
+            "$ref": "#/$defs/RegionScopeV2"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Regions",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "visual-input-scope-candidate/1.2.0",
+          "default": "visual-input-scope-candidate/1.2.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "ungradable",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope_checksum",
+        "image_checksum",
+        "preprocessing_checksum",
+        "location",
+        "status",
+        "finding",
+        "regions"
+      ],
+      "title": "ScopeVisionProposalV3",
+      "type": "object"
+    },
+    "TaskDefinition": {
+      "additionalProperties": false,
+      "description": "Visible, installed definition; a missing interpretation never invents a cutoff.",
+      "properties": {
+        "applicability_conditions": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Applicability Conditions",
+          "type": "string"
+        },
+        "examination": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Examination",
+          "type": "string"
+        },
+        "interpretation": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interpretation"
+        },
+        "interpretation_status": {
+          "enum": [
+            "installed",
+            "missing"
+          ],
+          "title": "Interpretation Status",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/Reference"
+        },
+        "source_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reference",
+        "examination",
+        "applicability_conditions",
+        "interpretation",
+        "interpretation_status",
+        "source_refs"
+      ],
+      "title": "TaskDefinition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidate": {
+      "$ref": "#/$defs/ScopeVisionProposalV3"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "interpretations": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Interpretations",
+      "type": "array"
+    },
+    "invalidated_assessment_ids": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Invalidated Assessment Ids",
+      "type": "array"
+    },
+    "observation_facts": {
+      "items": {
+        "$ref": "#/$defs/ObservationInput"
+      },
+      "maxItems": 128,
+      "title": "Observation Facts",
+      "type": "array"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/ObservationInput"
+      },
+      "title": "Observations",
+      "type": "array"
+    },
+    "parent_records": {
+      "const": "preserved_by_parent_graph",
+      "title": "Parent Records",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "review_tasks": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ReviewTemplate"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "schema_version": {
+      "const": "case-input-scope-observation/3.0.0",
+      "default": "case-input-scope-observation/3.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "scope_task": {
+      "$ref": "#/$defs/ScopeTask"
+    },
+    "status": {
+      "const": "accepted_research_fixture",
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scope",
+    "parent_records",
+    "candidate",
+    "observations",
+    "request_id",
+    "status",
+    "review_tasks",
+    "observation_facts",
+    "scope_task"
+  ],
+  "title": "ScopeRecordsV3",
+  "type": "object"
+}

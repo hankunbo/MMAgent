@@ -1,0 +1,118 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "age_max": {
+      "anyOf": [
+        {
+          "maximum": 150,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Age Max"
+    },
+    "age_min": {
+      "anyOf": [
+        {
+          "maximum": 150,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Age Min"
+    },
+    "devices": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Devices",
+      "type": "array"
+    },
+    "disease_packs": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Disease Packs",
+      "type": "array"
+    },
+    "exams": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Exams",
+      "type": "array"
+    },
+    "lateralities": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Lateralities",
+      "type": "array"
+    },
+    "sexes": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Sexes",
+      "type": "array"
+    },
+    "targets": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Targets",
+      "type": "array"
+    },
+    "times": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Times",
+      "type": "array"
+    },
+    "version": {
+      "const": "clinical-scope/1.0.0",
+      "default": "clinical-scope/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "ClinicalScope",
+  "type": "object"
+}

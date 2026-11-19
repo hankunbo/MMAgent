@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "counterfactual-policy/1.0.0",
+      "default": "counterfactual-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Reference"
+    },
+    "case_code": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "fact_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Fact Checksum",
+      "type": "string"
+    },
+    "rule": {
+      "$ref": "#/$defs/Reference"
+    },
+    "synthetic": {
+      "const": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "applicability": {
+      "const": "synthetic_same_case_input_exact_definition_unit",
+      "default": "synthetic_same_case_input_exact_definition_unit",
+      "title": "Applicability",
+      "type": "string"
+    },
+    "allowed": {
+      "additionalProperties": {
+        "items": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "propertyNames": {
+        "enum": [
+          "remove_evidence",
+          "remove_resource",
+          "reverse",
+          "select_check",
+          "replace_tool",
+          "replace_path"
+        ]
+      },
+      "title": "Allowed",
+      "type": "object"
+    },
+    "alternatives": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "title": "Alternatives",
+      "type": "object"
+    },
+    "forbidden_combinations": {
+      "default": [],
+      "items": {
+        "items": {
+          "enum": [
+            "remove_evidence",
+            "remove_resource",
+            "reverse",
+            "select_check",
+            "replace_tool",
+            "replace_path"
+          ],
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Forbidden Combinations",
+      "type": "array"
+    },
+    "max_candidates": {
+      "maximum": 128,
+      "minimum": 1,
+      "title": "Max Candidates",
+      "type": "integer"
+    },
+    "max_search": {
+      "maximum": 256,
+      "minimum": 1,
+      "title": "Max Search",
+      "type": "integer"
+    },
+    "tolerance": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Tolerance",
+      "type": "number"
+    },
+    "coverage_retention": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Coverage Retention",
+      "type": "number"
+    },
+    "preserve_roles": {
+      "title": "Preserve Roles",
+      "type": "boolean"
+    },
+    "metrics": {
+      "items": {
+        "enum": [
+          "score",
+          "support",
+          "refutation",
+          "conflict",
+          "coverage"
+        ],
+        "type": "string"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "expert_required": {
+      "default": false,
+      "title": "Expert Required",
+      "type": "boolean"
+    },
+    "expected_cost": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expected Cost"
+    },
+    "expected_failure_risk": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expected Failure Risk"
+    }
+  },
+  "required": [
+    "source",
+    "case_code",
+    "run_id",
+    "fact_checksum",
+    "rule",
+    "synthetic",
+    "allowed",
+    "max_candidates",
+    "max_search",
+    "tolerance",
+    "coverage_retention",
+    "preserve_roles",
+    "metrics"
+  ],
+  "title": "SimulationPolicy",
+  "type": "object"
+}

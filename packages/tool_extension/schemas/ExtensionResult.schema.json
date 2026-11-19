@@ -1,0 +1,152 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "synthetic-extension-result/1.0.0",
+      "default": "synthetic-extension-result/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "task_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "plan_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Plan Checksum",
+      "type": "string"
+    },
+    "adapter_outcome": {
+      "enum": [
+        "missing",
+        "failed",
+        "incompatible",
+        "technical_failure",
+        "unknown",
+        "not_executed"
+      ],
+      "title": "Adapter Outcome",
+      "type": "string"
+    },
+    "catalog_status": {
+      "enum": [
+        "candidate",
+        "quarantined",
+        "failed"
+      ],
+      "title": "Catalog Status",
+      "type": "string"
+    },
+    "extension_job_status": {
+      "enum": [
+        "REQUIREMENT_DOCUMENTED",
+        "FAILED"
+      ],
+      "title": "Extension Job Status",
+      "type": "string"
+    },
+    "validation_status": {
+      "const": "unvalidated",
+      "default": "unvalidated",
+      "title": "Validation Status",
+      "type": "string"
+    },
+    "intended_use": {
+      "const": "research_only",
+      "default": "research_only",
+      "title": "Intended Use",
+      "type": "string"
+    },
+    "fake_catalog_ready": {
+      "title": "Fake Catalog Ready",
+      "type": "boolean"
+    },
+    "future_check": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Future Check"
+    },
+    "missing": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Missing",
+      "type": "array"
+    },
+    "catalog_written": {
+      "const": false,
+      "default": false,
+      "title": "Catalog Written",
+      "type": "boolean"
+    },
+    "formal_job_created": {
+      "const": false,
+      "default": false,
+      "title": "Formal Job Created",
+      "type": "boolean"
+    },
+    "completed": {
+      "const": false,
+      "default": false,
+      "title": "Completed",
+      "type": "boolean"
+    },
+    "available_next_run": {
+      "const": false,
+      "default": false,
+      "title": "Available Next Run",
+      "type": "boolean"
+    },
+    "real_evaluation": {
+      "const": "not_executed",
+      "default": "not_executed",
+      "title": "Real Evaluation",
+      "type": "string"
+    },
+    "execution": {
+      "const": "original_06_not_installed",
+      "default": "original_06_not_installed",
+      "title": "Execution",
+      "type": "string"
+    },
+    "memory_published": {
+      "const": false,
+      "default": false,
+      "title": "Memory Published",
+      "type": "boolean"
+    },
+    "live_domain_acceptance": {
+      "const": "live_domain_acceptance_not_enabled",
+      "default": "live_domain_acceptance_not_enabled",
+      "title": "Live Domain Acceptance",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "plan_checksum",
+    "adapter_outcome",
+    "catalog_status",
+    "extension_job_status",
+    "fake_catalog_ready",
+    "future_check",
+    "missing"
+  ],
+  "title": "ExtensionResult",
+  "type": "object"
+}

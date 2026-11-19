@@ -1,0 +1,231 @@
+{
+  "$defs": {
+    "ComponentAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Acquisition",
+          "type": "number"
+        },
+        "acquisition_basis": {
+          "title": "Acquisition Basis",
+          "type": "string"
+        },
+        "clinical_reliability": {
+          "default": null,
+          "title": "Clinical Reliability",
+          "type": "null"
+        },
+        "component_id": {
+          "title": "Component Id",
+          "type": "string"
+        },
+        "disease_direction_score": {
+          "default": null,
+          "title": "Disease Direction Score",
+          "type": "null"
+        },
+        "finite_values": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Finite Values"
+        },
+        "input_status": {
+          "enum": [
+            "obtained",
+            "partial",
+            "missing",
+            "withheld"
+          ],
+          "title": "Input Status",
+          "type": "string"
+        },
+        "issues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "next_step": {
+          "enum": [
+            "retain_input_gap",
+            "review_source_measurement",
+            "qualify_array_semantics",
+            "qualify_image_tool",
+            "qualify_volume_tool"
+          ],
+          "title": "Next Step",
+          "type": "string"
+        },
+        "total_values": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Values"
+        }
+      },
+      "required": [
+        "component_id",
+        "input_status",
+        "acquisition",
+        "acquisition_basis",
+        "issues",
+        "next_step"
+      ],
+      "title": "ComponentAudit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "api_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Api Requests",
+      "type": "integer"
+    },
+    "available_actions": {
+      "items": {
+        "enum": [
+          "check",
+          "prepare",
+          "plan",
+          "verify"
+        ],
+        "type": "string"
+      },
+      "title": "Available Actions",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_evaluation_ready": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Evaluation Ready",
+      "type": "boolean"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/ComponentAudit"
+      },
+      "title": "Components",
+      "type": "array"
+    },
+    "inference_ready": {
+      "const": false,
+      "default": false,
+      "title": "Inference Ready",
+      "type": "boolean"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "integration_gaps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Integration Gaps",
+      "type": "array"
+    },
+    "medical_requirement_snapshot": {
+      "default": null,
+      "title": "Medical Requirement Snapshot",
+      "type": "null"
+    },
+    "model_runs": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Runs",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "multimodal-input-plan/1.0.0",
+      "default": "multimodal-input-plan/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score": {
+      "default": null,
+      "title": "Score",
+      "type": "null"
+    },
+    "shared_dependency_groups": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Shared Dependency Groups",
+      "type": "object"
+    },
+    "task": {
+      "enum": [
+        "glaucoma_detection",
+        "glaucoma_grading",
+        "observed_change"
+      ],
+      "title": "Task",
+      "type": "string"
+    },
+    "task_gaps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Task Gaps",
+      "type": "array"
+    },
+    "task_meaning": {
+      "title": "Task Meaning",
+      "type": "string"
+    },
+    "visit_groups": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Visit Groups",
+      "type": "object"
+    }
+  },
+  "required": [
+    "checksum",
+    "input_checksum",
+    "task",
+    "task_meaning",
+    "components",
+    "visit_groups",
+    "task_gaps",
+    "shared_dependency_groups",
+    "integration_gaps",
+    "available_actions"
+  ],
+  "title": "InputPlan",
+  "type": "object"
+}

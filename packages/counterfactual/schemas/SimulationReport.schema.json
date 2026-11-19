@@ -1,0 +1,240 @@
+{
+  "$defs": {
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "interventions": {
+          "items": {
+            "$ref": "#/$defs/Intervention"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Interventions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "interventions"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "Intervention": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "remove_evidence",
+            "remove_resource",
+            "reverse",
+            "select_check",
+            "replace_tool",
+            "replace_path"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "targets": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Targets",
+          "type": "array"
+        },
+        "alternative": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Alternative"
+        }
+      },
+      "required": [
+        "kind",
+        "targets"
+      ],
+      "title": "Intervention",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "counterfactual-report/1.1.0",
+      "enum": [
+        "counterfactual-report/1.0.0",
+        "counterfactual-report/1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "simulation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Simulation Id",
+      "type": "string"
+    },
+    "identity": {
+      "const": "hypothetical_candidate",
+      "default": "hypothetical_candidate",
+      "title": "Identity",
+      "type": "string"
+    },
+    "case_code": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "fact_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Fact Checksum",
+      "type": "string"
+    },
+    "candidate": {
+      "$ref": "#/$defs/Candidate"
+    },
+    "baseline": {
+      "additionalProperties": true,
+      "title": "Baseline",
+      "type": "object"
+    },
+    "simulated": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Simulated"
+    },
+    "affected": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Affected",
+      "type": "array"
+    },
+    "remaining": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Remaining",
+      "type": "array"
+    },
+    "comparisons": {
+      "additionalProperties": true,
+      "title": "Comparisons",
+      "type": "object"
+    },
+    "alternatives": {
+      "additionalProperties": true,
+      "title": "Alternatives",
+      "type": "object"
+    },
+    "classification": {
+      "enum": [
+        "context_redundant",
+        "components_changed",
+        "conclusion_changed",
+        "necessary",
+        "indeterminate"
+      ],
+      "title": "Classification",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "counters": {
+      "additionalProperties": true,
+      "title": "Counters",
+      "type": "object"
+    },
+    "applicability": {
+      "const": "frozen_snapshot_and_rule_only",
+      "default": "frozen_snapshot_and_rule_only",
+      "title": "Applicability",
+      "type": "string"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "disease_probability": {
+      "default": null,
+      "title": "Disease Probability",
+      "type": "null"
+    },
+    "medical_causal_effect": {
+      "default": null,
+      "title": "Medical Causal Effect",
+      "type": "null"
+    },
+    "memory_status": {
+      "const": "candidate_not_published",
+      "default": "candidate_not_published",
+      "title": "Memory Status",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "simulation_id",
+    "case_code",
+    "run_id",
+    "policy_checksum",
+    "fact_checksum",
+    "candidate",
+    "baseline",
+    "simulated",
+    "affected",
+    "remaining",
+    "comparisons",
+    "alternatives",
+    "classification",
+    "reasons",
+    "counters",
+    "checksum"
+  ],
+  "title": "SimulationReport",
+  "type": "object"
+}

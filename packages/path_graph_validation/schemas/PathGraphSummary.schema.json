@@ -1,0 +1,195 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "path-graph-validation/1.0.0",
+      "default": "path-graph-validation/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "domain": {
+      "enum": [
+        "research",
+        "formal_synthetic"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "research_offline",
+        "synthetic_mechanism"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "case_code": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "graph": {
+      "additionalProperties": true,
+      "title": "Graph",
+      "type": "object"
+    },
+    "binding": {
+      "additionalProperties": true,
+      "title": "Binding",
+      "type": "object"
+    },
+    "paths": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Paths",
+      "type": "array"
+    },
+    "goals": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Goals",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "unresolved": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    },
+    "relations": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Relations",
+      "type": "array"
+    },
+    "duplicate_groups": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Duplicate Groups",
+      "type": "array"
+    },
+    "coverage": {
+      "additionalProperties": true,
+      "title": "Coverage",
+      "type": "object"
+    },
+    "risk": {
+      "additionalProperties": true,
+      "title": "Risk",
+      "type": "object"
+    },
+    "review_facts": {
+      "additionalProperties": true,
+      "title": "Review Facts",
+      "type": "object"
+    },
+    "original_report": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Original Report"
+    },
+    "original_report_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Original Report Checksum"
+    },
+    "legal_candidates": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Legal Candidates",
+      "type": "array"
+    },
+    "stop_candidate": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Stop Candidate"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "live_status": {
+      "const": "live_domain_acceptance_not_enabled",
+      "default": "live_domain_acceptance_not_enabled",
+      "title": "Live Status",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "domain",
+    "purpose",
+    "case_code",
+    "run_id",
+    "graph",
+    "binding",
+    "paths",
+    "goals",
+    "evidence",
+    "unresolved",
+    "coverage",
+    "risk",
+    "review_facts",
+    "checksum"
+  ],
+  "title": "PathGraphSummary",
+  "type": "object"
+}

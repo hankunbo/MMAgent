@@ -1,0 +1,1267 @@
+{
+  "$defs": {
+    "AbstractData": {
+      "additionalProperties": false,
+      "properties": {
+        "accuracy": {
+          "default": null,
+          "title": "Accuracy",
+          "type": "null"
+        },
+        "advice": {
+          "$ref": "#/$defs/Advice"
+        },
+        "case_count": {
+          "minimum": 1,
+          "title": "Case Count",
+          "type": "integer"
+        },
+        "contexts": {
+          "items": {
+            "$ref": "#/$defs/Context"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Contexts",
+          "type": "array"
+        },
+        "counterexamples": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Counterexamples",
+          "type": "array"
+        },
+        "evidence_count": {
+          "minimum": 1,
+          "title": "Evidence Count",
+          "type": "integer"
+        },
+        "experiences": {
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "title": "Experiences",
+          "type": "array"
+        },
+        "generalization": {
+          "const": "unestablished_candidate_only",
+          "default": "unestablished_candidate_only",
+          "title": "Generalization",
+          "type": "string"
+        },
+        "independent_patient_count": {
+          "default": null,
+          "title": "Independent Patient Count",
+          "type": "null"
+        },
+        "medical_causal_effect": {
+          "default": null,
+          "title": "Medical Causal Effect",
+          "type": "null"
+        },
+        "missing": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Missing",
+          "type": "array"
+        },
+        "not_applicable": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Not Applicable",
+          "type": "array"
+        },
+        "request_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Request Key",
+          "type": "string"
+        },
+        "review_status": {
+          "const": "pending_memory_review",
+          "default": "pending_memory_review",
+          "title": "Review Status",
+          "type": "string"
+        },
+        "run_count": {
+          "minimum": 1,
+          "title": "Run Count",
+          "type": "integer"
+        },
+        "source_roles": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Source Roles",
+          "type": "array"
+        },
+        "supporting_episodes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Supporting Episodes",
+          "type": "array"
+        },
+        "type": {
+          "const": "abstract_pattern",
+          "default": "abstract_pattern",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_key",
+        "contexts",
+        "supporting_episodes",
+        "counterexamples",
+        "experiences",
+        "missing",
+        "advice",
+        "case_count",
+        "run_count",
+        "evidence_count",
+        "source_roles",
+        "not_applicable"
+      ],
+      "title": "AbstractData",
+      "type": "object"
+    },
+    "Advice": {
+      "additionalProperties": false,
+      "properties": {
+        "codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Codes",
+          "type": "array"
+        },
+        "executable": {
+          "const": false,
+          "default": false,
+          "title": "Executable",
+          "type": "boolean"
+        },
+        "producer": {
+          "const": "deterministic",
+          "default": "deterministic",
+          "title": "Producer",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "memory-candidate-advice/1.0.0",
+          "default": "memory-candidate-advice/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_fact": {
+          "const": false,
+          "default": false,
+          "title": "Source Fact",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "codes"
+      ],
+      "title": "Advice",
+      "type": "object"
+    },
+    "Change": {
+      "additionalProperties": false,
+      "properties": {
+        "intervention": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Intervention",
+          "type": "string"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Missing Reason"
+        },
+        "operation": {
+          "enum": [
+            "remove",
+            "reverse",
+            "replace"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "original_observation": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Original Observation"
+        },
+        "original_value": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "removed": {
+          "title": "Removed",
+          "type": "boolean"
+        },
+        "simulated_observation": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Simulated Observation"
+        },
+        "simulated_value": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "value_kind": {
+          "enum": [
+            "interpretation_effect",
+            "resource_reference"
+          ],
+          "title": "Value Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "intervention",
+        "target",
+        "operation",
+        "removed",
+        "value_kind",
+        "original_value",
+        "simulated_value",
+        "original_observation",
+        "simulated_observation",
+        "missing_reason"
+      ],
+      "title": "Change",
+      "type": "object"
+    },
+    "Context": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "clinical_validity": {
+          "default": null,
+          "title": "Clinical Validity",
+          "type": "null"
+        },
+        "episode": {
+          "$ref": "#/$defs/Dependency"
+        },
+        "episode_input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Episode Input Checksum",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "input_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Checksum"
+        },
+        "input_missing_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Missing Reason"
+        },
+        "patient_independence": {
+          "const": "unknown",
+          "default": "unknown",
+          "title": "Patient Independence",
+          "type": "string"
+        },
+        "population": {
+          "default": null,
+          "title": "Population",
+          "type": "null"
+        },
+        "run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "runtime_context_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Runtime Context Checksum",
+          "type": "string"
+        },
+        "runtime_versions": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "scope": {
+          "const": "exact_saved_context_only",
+          "default": "exact_saved_context_only",
+          "title": "Scope",
+          "type": "string"
+        },
+        "scores": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "terminal": {
+          "$ref": "#/$defs/Terminal"
+        },
+        "versions": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "episode",
+        "case_code",
+        "run_id",
+        "input_checksum",
+        "input_missing_reason",
+        "episode_input_checksum",
+        "runtime_context_checksum",
+        "terminal",
+        "graph",
+        "scores",
+        "versions",
+        "runtime_versions"
+      ],
+      "title": "Context",
+      "type": "object"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "relation": {
+          "default": "derived_from",
+          "enum": [
+            "derived_from",
+            "revision_of",
+            "episode_member"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "checksum"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "ExecutionSource": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "const": "execution_snapshot",
+          "default": "execution_snapshot",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "const": "runtime_execution",
+          "default": "runtime_execution",
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "const": "research-memory-execution/1.0.0",
+          "default": "research-memory-execution/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "ExecutionSource",
+      "type": "object"
+    },
+    "FieldRef": {
+      "additionalProperties": false,
+      "description": "A saved owner value location, or explicit absence; never caller JSON in a key.",
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^/[A-Za-z0-9_/-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "title": "FieldRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "PairData": {
+      "additionalProperties": false,
+      "properties": {
+        "affected": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Affected",
+          "type": "array"
+        },
+        "alternatives": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Alternatives",
+          "type": "object"
+        },
+        "assessment_contexts": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Assessment Contexts",
+          "type": "object"
+        },
+        "baseline": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Baseline",
+          "type": "object"
+        },
+        "changes": {
+          "items": {
+            "$ref": "#/$defs/Change"
+          },
+          "title": "Changes",
+          "type": "array"
+        },
+        "classification": {
+          "enum": [
+            "necessary",
+            "context_redundant",
+            "components_changed",
+            "conclusion_changed",
+            "indeterminate"
+          ],
+          "title": "Classification",
+          "type": "string"
+        },
+        "comparisons": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Comparisons",
+          "type": "object"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "display": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Display",
+          "type": "string"
+        },
+        "identity": {
+          "const": "hypothetical_comparison",
+          "default": "hypothetical_comparison",
+          "title": "Identity",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "original_counters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Original Counters",
+          "type": "object"
+        },
+        "policy": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Policy",
+          "type": "object"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "remaining": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Remaining",
+          "type": "array"
+        },
+        "report_source": {
+          "$ref": "#/$defs/Source"
+        },
+        "request_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Request Key",
+          "type": "string"
+        },
+        "review": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Review",
+          "type": "object"
+        },
+        "review_status": {
+          "const": "pending_memory_review",
+          "default": "pending_memory_review",
+          "title": "Review Status",
+          "type": "string"
+        },
+        "semantics_version": {
+          "const": "counterfactual-semantics/1.1.0",
+          "title": "Semantics Version",
+          "type": "string"
+        },
+        "simulated": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Simulated"
+        },
+        "simulation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Simulation Id",
+          "type": "string"
+        },
+        "source_roles": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Source Roles",
+          "type": "array"
+        },
+        "type": {
+          "const": "counterfactual_pair",
+          "default": "counterfactual_pair",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_key",
+        "context",
+        "report_source",
+        "simulation_id",
+        "policy",
+        "assessment_contexts",
+        "semantics_version",
+        "changes",
+        "affected",
+        "remaining",
+        "baseline",
+        "simulated",
+        "comparisons",
+        "alternatives",
+        "classification",
+        "display",
+        "reasons",
+        "review",
+        "source_roles",
+        "limitations",
+        "original_counters"
+      ],
+      "title": "PairData",
+      "type": "object"
+    },
+    "RecoveryData": {
+      "additionalProperties": false,
+      "properties": {
+        "attempted_alternatives": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Attempted Alternatives",
+          "type": "array"
+        },
+        "before_phase": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Before Phase",
+          "type": "string"
+        },
+        "command": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Command",
+          "type": "object"
+        },
+        "conclusion_status": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Conclusion Status",
+          "type": "string"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "expert_result_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Expert Result Checksum",
+          "type": "string"
+        },
+        "expert_role": {
+          "const": "agent_opinion_not_fact",
+          "default": "agent_opinion_not_fact",
+          "title": "Expert Role",
+          "type": "string"
+        },
+        "failure": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Failure",
+          "type": "object"
+        },
+        "observed_phase": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Observed Phase",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "recovery_success": {
+          "const": "not_inferred_from_report",
+          "default": "not_inferred_from_report",
+          "title": "Recovery Success",
+          "type": "string"
+        },
+        "report_source": {
+          "$ref": "#/$defs/Source"
+        },
+        "request_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Request Key",
+          "type": "string"
+        },
+        "retained_evidence": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Retained Evidence",
+          "type": "array"
+        },
+        "review_status": {
+          "const": "pending_memory_review",
+          "default": "pending_memory_review",
+          "title": "Review Status",
+          "type": "string"
+        },
+        "stop_reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Stop Reason",
+          "type": "string"
+        },
+        "type": {
+          "const": "recovery_experience",
+          "default": "recovery_experience",
+          "title": "Type",
+          "type": "string"
+        },
+        "unresolved": {
+          "items": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Unresolved",
+          "type": "array"
+        }
+      },
+      "required": [
+        "request_key",
+        "context",
+        "report_source",
+        "failure",
+        "policy_checksum",
+        "command",
+        "before_phase",
+        "observed_phase",
+        "conclusion_status",
+        "stop_reason",
+        "unresolved",
+        "attempted_alternatives",
+        "retained_evidence",
+        "expert_result_checksum"
+      ],
+      "title": "RecoveryData",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "enum": [
+            "research_fact",
+            "planner_event",
+            "simulation",
+            "recovery",
+            "agent_review"
+          ],
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner",
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "kind",
+        "version",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Terminal": {
+      "additionalProperties": false,
+      "properties": {
+        "cancelled": {
+          "title": "Cancelled",
+          "type": "boolean"
+        },
+        "control_phase": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Control Phase"
+        },
+        "evidence": {
+          "$ref": "#/$defs/FieldRef"
+        },
+        "execution_confirmed": {
+          "const": true,
+          "default": true,
+          "title": "Execution Confirmed",
+          "type": "boolean"
+        },
+        "lifecycle_phase": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lifecycle Phase"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "runtime_status": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Runtime Status",
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "planner_control",
+            "runtime_lifecycle",
+            "preparation_rejection"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "technical_status": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Technical Status"
+        }
+      },
+      "required": [
+        "scope",
+        "runtime_status",
+        "control_phase",
+        "lifecycle_phase",
+        "technical_status",
+        "reason",
+        "cancelled",
+        "evidence"
+      ],
+      "title": "Terminal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applicability": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Applicability",
+      "type": "array"
+    },
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "detail": {
+      "discriminator": {
+        "mapping": {
+          "abstract_pattern": "#/$defs/AbstractData",
+          "counterfactual_pair": "#/$defs/PairData",
+          "recovery_experience": "#/$defs/RecoveryData"
+        },
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PairData"
+        },
+        {
+          "$ref": "#/$defs/RecoveryData"
+        },
+        {
+          "$ref": "#/$defs/AbstractData"
+        }
+      ],
+      "title": "Detail"
+    },
+    "identity": {
+      "const": "research_candidate",
+      "default": "research_candidate",
+      "title": "Identity",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "episode",
+        "graph_snapshot",
+        "trajectory_step",
+        "counterfactual_pair",
+        "recovery_experience",
+        "tool_experience",
+        "abstract_pattern"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "nature": {
+      "enum": [
+        "source_fact",
+        "agent_opinion",
+        "technical_failure",
+        "missing_evidence",
+        "simulation",
+        "abstract_candidate"
+      ],
+      "title": "Nature",
+      "type": "string"
+    },
+    "parents": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Dependency"
+      },
+      "maxItems": 64,
+      "title": "Parents",
+      "type": "array"
+    },
+    "purpose": {
+      "const": "research_offline",
+      "default": "research_offline",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-memory/1.2.0",
+      "default": "research-memory/1.2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Source"
+          },
+          {
+            "$ref": "#/$defs/ExecutionSource"
+          }
+        ]
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Sources",
+      "type": "array"
+    }
+  },
+  "required": [
+    "key",
+    "kind",
+    "case_code",
+    "run_id",
+    "applicability",
+    "sources",
+    "nature",
+    "detail"
+  ],
+  "title": "DistillationRecord",
+  "type": "object"
+}

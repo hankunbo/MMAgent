@@ -1,0 +1,37 @@
+{
+  "additionalProperties": false,
+  "description": "Owner-supplied confirmed outcomes; unknown requests are never auto-retried.",
+  "properties": {
+    "cancelled": {
+      "default": false,
+      "title": "Cancelled",
+      "type": "boolean"
+    },
+    "deadline_reached": {
+      "default": false,
+      "title": "Deadline Reached",
+      "type": "boolean"
+    },
+    "no_progress": {
+      "default": 0,
+      "maximum": 2,
+      "minimum": 0,
+      "title": "No Progress",
+      "type": "integer"
+    },
+    "pending_unknown": {
+      "default": false,
+      "title": "Pending Unknown",
+      "type": "boolean"
+    },
+    "rounds": {
+      "default": 0,
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Rounds",
+      "type": "integer"
+    }
+  },
+  "title": "SearchProgress",
+  "type": "object"
+}

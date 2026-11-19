@@ -1,0 +1,404 @@
+{
+  "$defs": {
+    "EvidenceDependencyContract": {
+      "additionalProperties": false,
+      "description": "Availability predicates are not substitutes for method/quality qualification.",
+      "properties": {
+        "blocks": {
+          "items": {
+            "enum": [
+              "acquisition",
+              "interpretation"
+            ],
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Blocks",
+          "type": "array"
+        },
+        "concept": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Concept"
+        },
+        "excerpt_indices": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Excerpt Indices",
+          "type": "array"
+        },
+        "index": {
+          "maximum": 15,
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "patient_input",
+            "method",
+            "quality"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "const": "source_numeric_read",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "modality": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modality"
+        },
+        "predicate": {
+          "enum": [
+            "input_available",
+            "source_numeric_available",
+            "unresolved"
+          ],
+          "title": "Predicate",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "index",
+        "text",
+        "kind",
+        "blocks",
+        "rationale",
+        "excerpt_indices",
+        "predicate"
+      ],
+      "title": "EvidenceDependencyContract",
+      "type": "object"
+    },
+    "QuotedEvidenceResearchDefinitionDraft": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "enum": [
+            "vision",
+            "source_measurement"
+          ],
+          "title": "Acquisition",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "applicability": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "automatically_accepted": {
+          "const": false,
+          "default": false,
+          "title": "Automatically Accepted",
+          "type": "boolean"
+        },
+        "dependencies": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "dependency_contracts": {
+          "items": {
+            "$ref": "#/$defs/EvidenceDependencyContract"
+          },
+          "maxItems": 16,
+          "title": "Dependency Contracts",
+          "type": "array"
+        },
+        "examination": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Examination",
+          "type": "string"
+        },
+        "excerpts": {
+          "items": {
+            "$ref": "#/$defs/QuotedExcerpt"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Excerpts",
+          "type": "array"
+        },
+        "extraction_reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Extraction Reason",
+          "type": "string"
+        },
+        "input_concepts": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Input Concepts",
+          "type": "array"
+        },
+        "interpretation": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Method"
+        },
+        "modalities": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "relation": {
+          "enum": [
+            "qualitative",
+            "quantitative",
+            "context",
+            "dependency"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "relation_use": {
+          "enum": [
+            "directional",
+            "examination_only"
+          ],
+          "title": "Relation Use",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "source-definition-draft/4.1.0",
+          "default": "source-definition-draft/4.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "visible_scope": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Visible Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "relation",
+        "examination",
+        "interpretation",
+        "applicability",
+        "input_concepts",
+        "method",
+        "unit",
+        "excerpts",
+        "modalities",
+        "acquisition",
+        "relation_use",
+        "visible_scope",
+        "extraction_reason",
+        "alternatives",
+        "limitations",
+        "dependencies",
+        "dependency_contracts"
+      ],
+      "title": "QuotedEvidenceResearchDefinitionDraft",
+      "type": "object"
+    },
+    "QuotedExcerpt": {
+      "additionalProperties": false,
+      "description": "Model supplies exact text; only the source owner computes coordinates.",
+      "properties": {
+        "prefix": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prefix"
+        },
+        "source_checksum": {
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "source_code": {
+          "title": "Source Code",
+          "type": "string"
+        },
+        "suffix": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suffix"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_code",
+        "source_checksum",
+        "text"
+      ],
+      "title": "QuotedExcerpt",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "definitions": {
+      "items": {
+        "$ref": "#/$defs/QuotedEvidenceResearchDefinitionDraft"
+      },
+      "maxItems": 3,
+      "title": "Definitions",
+      "type": "array"
+    },
+    "no_addition_reason": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "No Addition Reason"
+    },
+    "schema_version": {
+      "const": "research-definition-proposal/3.0.0",
+      "default": "research-definition-proposal/3.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "definitions"
+  ],
+  "title": "EvidenceDefinitionProposal",
+  "type": "object"
+}

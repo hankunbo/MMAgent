@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "FileBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 33554432,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "relative_path": {
+          "maxLength": 200,
+          "title": "Relative Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_path",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "FileBinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_actions": {
+      "default": [
+        "inspect_visible_inputs",
+        "report_gap",
+        "safe_stop"
+      ],
+      "items": {
+        "enum": [
+          "inspect_visible_inputs",
+          "report_gap",
+          "safe_stop"
+        ],
+        "type": "string"
+      },
+      "title": "Allowed Actions",
+      "type": "array"
+    },
+    "automatic_assertions": {
+      "default": [
+        "unique_source_alignment",
+        "checksum",
+        "contract_readback"
+      ],
+      "items": {
+        "enum": [
+          "unique_source_alignment",
+          "checksum",
+          "contract_readback"
+        ],
+        "type": "string"
+      },
+      "title": "Automatic Assertions",
+      "type": "array"
+    },
+    "candidate_id": {
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "expected_template_version": {
+      "default": null,
+      "title": "Expected Template Version",
+      "type": "null"
+    },
+    "expert_expected_evidence": {
+      "default": null,
+      "title": "Expert Expected Evidence",
+      "type": "null"
+    },
+    "fingerprint_version": {
+      "const": "registration-fingerprint/2.0.0",
+      "default": "registration-fingerprint/2.0.0",
+      "title": "Fingerprint Version",
+      "type": "string"
+    },
+    "forbidden_conclusions": {
+      "default": [
+        "definitive_poag_diagnosis",
+        "treatment_order"
+      ],
+      "items": {
+        "enum": [
+          "definitive_poag_diagnosis",
+          "treatment_order"
+        ],
+        "type": "string"
+      },
+      "title": "Forbidden Conclusions",
+      "type": "array"
+    },
+    "input_fingerprint": {
+      "title": "Input Fingerprint",
+      "type": "string"
+    },
+    "level": {
+      "enum": [
+        "G3",
+        "G4"
+      ],
+      "title": "Level",
+      "type": "string"
+    },
+    "reference_status": {
+      "const": "pending",
+      "default": "pending",
+      "title": "Reference Status",
+      "type": "string"
+    },
+    "required_reviews": {
+      "default": [
+        "visibility",
+        "node_edge_reference",
+        "image_quality",
+        "stop_rules",
+        "coverage_and_grouping"
+      ],
+      "items": {
+        "enum": [
+          "visibility",
+          "node_edge_reference",
+          "image_quality",
+          "stop_rules",
+          "coverage_and_grouping"
+        ],
+        "type": "string"
+      },
+      "title": "Required Reviews",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "golden-candidate/2.0.0",
+      "default": "golden-candidate/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selection_bias": {
+      "const": "ordered_engineering_baseline_not_representative",
+      "default": "ordered_engineering_baseline_not_representative",
+      "title": "Selection Bias",
+      "type": "string"
+    },
+    "selection_version": {
+      "const": "training-ordered-dev/1.0.0",
+      "default": "training-ordered-dev/1.0.0",
+      "title": "Selection Version",
+      "type": "string"
+    },
+    "source_files": {
+      "items": {
+        "$ref": "#/$defs/FileBinding"
+      },
+      "title": "Source Files",
+      "type": "array"
+    },
+    "split": {
+      "const": "training",
+      "default": "training",
+      "title": "Split",
+      "type": "string"
+    },
+    "tool_dag": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Tool Dag",
+      "type": "array"
+    }
+  },
+  "required": [
+    "checksum",
+    "candidate_id",
+    "level",
+    "source_files",
+    "input_fingerprint"
+  ],
+  "title": "BoundGoldenCandidate",
+  "type": "object"
+}

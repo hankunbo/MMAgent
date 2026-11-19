@@ -1,0 +1,533 @@
+{
+  "$defs": {
+    "EvidenceSlot": {
+      "additionalProperties": false,
+      "properties": {
+        "node_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Node Code",
+          "type": "string"
+        },
+        "observation_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Observation Code",
+          "type": "string"
+        },
+        "modality": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Modality",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "image_tool",
+            "redacted_note",
+            "external_exam"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "capability_code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Code"
+        },
+        "input_artifact_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Input Artifact Code",
+          "type": "string"
+        },
+        "output_artifact_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Output Artifact Code",
+          "type": "string"
+        },
+        "input_coordinate_space": {
+          "default": "PIXEL_2D",
+          "enum": [
+            "PIXEL_2D",
+            "NOT_APPLICABLE"
+          ],
+          "title": "Input Coordinate Space",
+          "type": "string"
+        },
+        "output_coordinate_space": {
+          "default": "NOT_APPLICABLE",
+          "enum": [
+            "PIXEL_2D",
+            "NOT_APPLICABLE"
+          ],
+          "title": "Output Coordinate Space",
+          "type": "string"
+        },
+        "missing_behavior": {
+          "enum": [
+            "capability_gap_and_requirement",
+            "evidence_missing"
+          ],
+          "title": "Missing Behavior",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_code",
+        "observation_code",
+        "modality",
+        "origin",
+        "input_artifact_code",
+        "output_artifact_code",
+        "missing_behavior"
+      ],
+      "title": "EvidenceSlot",
+      "type": "object"
+    },
+    "KnowledgeBindings": {
+      "additionalProperties": false,
+      "properties": {
+        "release_ref": {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        "claim_refs": {
+          "items": {
+            "$ref": "#/$defs/KnowledgeReference"
+          },
+          "minItems": 1,
+          "title": "Claim Refs",
+          "type": "array"
+        },
+        "evidence_requirement_refs": {
+          "items": {
+            "$ref": "#/$defs/KnowledgeReference"
+          },
+          "minItems": 1,
+          "title": "Evidence Requirement Refs",
+          "type": "array"
+        },
+        "template_ref": {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        "rule_refs": {
+          "items": {
+            "$ref": "#/$defs/KnowledgeReference"
+          },
+          "minItems": 1,
+          "title": "Rule Refs",
+          "type": "array"
+        },
+        "stop_rule_refs": {
+          "items": {
+            "$ref": "#/$defs/KnowledgeReference"
+          },
+          "minItems": 1,
+          "title": "Stop Rule Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "release_ref",
+        "claim_refs",
+        "evidence_requirement_refs",
+        "template_ref",
+        "rule_refs",
+        "stop_rule_refs"
+      ],
+      "title": "KnowledgeBindings",
+      "type": "object"
+    },
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    },
+    "PackDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "disease-pack-definition/1.0.0",
+          "default": "disease-pack-definition/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "pack_code": {
+          "pattern": "^[a-z][a-z0-9_]{0,127}$",
+          "title": "Pack Code",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "target_proposition": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Target Proposition",
+          "type": "string"
+        },
+        "target_node_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Target Node Code",
+          "type": "string"
+        },
+        "goal_level": {
+          "enum": [
+            "evidence_planning",
+            "coarse_multilabel_triage"
+          ],
+          "title": "Goal Level",
+          "type": "string"
+        },
+        "applicable_conditions": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Applicable Conditions",
+          "type": "array"
+        },
+        "excluded_conditions": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Excluded Conditions",
+          "type": "array"
+        },
+        "modalities": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "evidence_slots": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSlot"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Evidence Slots",
+          "type": "array"
+        },
+        "dataset_refs": {
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Dataset Refs",
+          "type": "array"
+        },
+        "allowed_conclusions": {
+          "items": {
+            "enum": [
+              "unsupported",
+              "insufficient",
+              "suspicious",
+              "evidence_supported"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Conclusions",
+          "type": "array"
+        },
+        "forbidden_conclusions": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Forbidden Conclusions",
+          "type": "array"
+        },
+        "expected_golden_levels": {
+          "items": {
+            "enum": [
+              "G1",
+              "G2",
+              "G3",
+              "G4"
+            ],
+            "type": "string"
+          },
+          "title": "Expected Golden Levels",
+          "type": "array"
+        },
+        "triage_labels": {
+          "default": [],
+          "items": {
+            "enum": [
+              "N",
+              "D",
+              "G",
+              "C",
+              "A",
+              "H",
+              "M",
+              "O"
+            ],
+            "type": "string"
+          },
+          "title": "Triage Labels",
+          "type": "array"
+        },
+        "triage_boundaries": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Triage Boundaries",
+          "type": "array"
+        },
+        "online_review_owner": {
+          "const": "08_Expert_Agent_legal_actions_only",
+          "default": "08_Expert_Agent_legal_actions_only",
+          "title": "Online Review Owner",
+          "type": "string"
+        },
+        "offline_reference_owner": {
+          "const": "07A_expert_reviewed_hidden_reference",
+          "default": "07A_expert_reviewed_hidden_reference",
+          "title": "Offline Reference Owner",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "pack_code",
+        "version",
+        "synthetic",
+        "target_proposition",
+        "target_node_code",
+        "goal_level",
+        "applicable_conditions",
+        "excluded_conditions",
+        "modalities",
+        "evidence_slots",
+        "dataset_refs",
+        "allowed_conclusions",
+        "forbidden_conclusions",
+        "expected_golden_levels"
+      ],
+      "title": "PackDefinition",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "disease-pack/1.0.0",
+      "default": "disease-pack/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "definition": {
+      "$ref": "#/$defs/PackDefinition"
+    },
+    "status": {
+      "enum": [
+        "Draft",
+        "Reviewed",
+        "Published"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "engineering_level": {
+      "const": "L3",
+      "default": "L3",
+      "title": "Engineering Level",
+      "type": "string"
+    },
+    "clinical_level": {
+      "enum": [
+        "pending_L4",
+        "L4",
+        "synthetic_only"
+      ],
+      "title": "Clinical Level",
+      "type": "string"
+    },
+    "bindings": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeBindings"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "knowledge_gaps": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Knowledge Gaps",
+      "type": "array"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VersionedReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "checksum",
+    "definition",
+    "status",
+    "clinical_level",
+    "knowledge_gaps"
+  ],
+  "title": "DiseasePack",
+  "type": "object"
+}

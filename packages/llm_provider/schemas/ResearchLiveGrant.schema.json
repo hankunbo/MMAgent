@@ -1,0 +1,134 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "case_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "enabled": {
+      "const": true,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "formal_graph": {
+      "const": false,
+      "default": false,
+      "title": "Formal Graph",
+      "type": "boolean"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "max_no_progress": {
+      "const": 2,
+      "default": 2,
+      "title": "Max No Progress",
+      "type": "integer"
+    },
+    "max_requests": {
+      "const": 40,
+      "default": 40,
+      "title": "Max Requests",
+      "type": "integer"
+    },
+    "max_searches": {
+      "const": 8,
+      "default": 8,
+      "title": "Max Searches",
+      "type": "integer"
+    },
+    "max_steps": {
+      "const": 20,
+      "default": 20,
+      "title": "Max Steps",
+      "type": "integer"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "publication": {
+      "const": false,
+      "default": false,
+      "title": "Publication",
+      "type": "boolean"
+    },
+    "purpose": {
+      "const": "bounded_single_case_research",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "roles": {
+      "items": {
+        "enum": [
+          "source",
+          "vision",
+          "review"
+        ],
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Roles",
+      "type": "array"
+    },
+    "root_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Root Checksum",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-live-grant/1.0.0",
+      "default": "research-live-grant/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seconds": {
+      "const": 2700,
+      "default": 2700,
+      "title": "Seconds",
+      "type": "integer"
+    },
+    "visible_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Visible Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "enabled",
+    "case_code",
+    "run_id",
+    "input_checksum",
+    "visible_checksum",
+    "policy_checksum",
+    "config_checksum",
+    "root_checksum",
+    "purpose",
+    "deadline",
+    "roles"
+  ],
+  "title": "ResearchLiveGrant",
+  "type": "object"
+}

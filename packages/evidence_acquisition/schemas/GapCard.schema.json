@@ -1,0 +1,162 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assessment_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "blockers": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "disposition": {
+      "enum": [
+        "ready_for_review",
+        "needs_acquisition",
+        "current_input_unavailable",
+        "auxiliary_observed",
+        "quality_limited"
+      ],
+      "title": "Disposition",
+      "type": "string"
+    },
+    "interpretation_status": {
+      "enum": [
+        "installed",
+        "missing",
+        "not_independent_disease_rule"
+      ],
+      "title": "Interpretation Status",
+      "type": "string"
+    },
+    "missing_inputs": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Missing Inputs",
+      "type": "array"
+    },
+    "missing_source_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Missing Source Ids",
+      "type": "array"
+    },
+    "next_actions": {
+      "items": {
+        "enum": [
+          "bind_existing_reference",
+          "search_knowledge",
+          "read_method_provenance",
+          "reuse_observation",
+          "targeted_vision",
+          "review",
+          "request_tool_approval"
+        ],
+        "type": "string"
+      },
+      "title": "Next Actions",
+      "type": "array"
+    },
+    "node": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Node",
+      "type": "string"
+    },
+    "observation": {
+      "$ref": "#/$defs/Reference"
+    },
+    "observation_status": {
+      "enum": [
+        "obtained",
+        "missing",
+        "ungradable",
+        "unknown"
+      ],
+      "title": "Observation Status",
+      "type": "string"
+    },
+    "priority": {
+      "title": "Priority",
+      "type": "integer"
+    },
+    "public_topics": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Public Topics",
+      "type": "array"
+    },
+    "purpose": {
+      "enum": [
+        "disease_relation",
+        "measurement_dependency",
+        "quality",
+        "context"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "node",
+    "purpose",
+    "observation",
+    "observation_status",
+    "interpretation_status",
+    "blockers",
+    "missing_inputs",
+    "missing_source_ids",
+    "next_actions",
+    "public_topics",
+    "priority",
+    "disposition"
+  ],
+  "title": "GapCard",
+  "type": "object"
+}

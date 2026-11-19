@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "Excerpt": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "source_checksum": {
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "source_code": {
+          "title": "Source Code",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_code",
+        "source_checksum",
+        "start",
+        "end",
+        "text"
+      ],
+      "title": "Excerpt",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applicability": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Applicability",
+      "type": "string"
+    },
+    "automatically_accepted": {
+      "const": false,
+      "default": false,
+      "title": "Automatically Accepted",
+      "type": "boolean"
+    },
+    "examination": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Examination",
+      "type": "string"
+    },
+    "excerpts": {
+      "items": {
+        "$ref": "#/$defs/Excerpt"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Excerpts",
+      "type": "array"
+    },
+    "input_concepts": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Input Concepts",
+      "type": "array"
+    },
+    "interpretation": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Interpretation",
+      "type": "string"
+    },
+    "method": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Method"
+    },
+    "relation": {
+      "enum": [
+        "qualitative",
+        "quantitative",
+        "context",
+        "dependency"
+      ],
+      "title": "Relation",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "source-definition-draft/1.0.0",
+      "default": "source-definition-draft/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target": {
+      "title": "Target",
+      "type": "string"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    }
+  },
+  "required": [
+    "target",
+    "relation",
+    "examination",
+    "interpretation",
+    "applicability",
+    "input_concepts",
+    "method",
+    "unit",
+    "excerpts"
+  ],
+  "title": "DefinitionDraft",
+  "type": "object"
+}

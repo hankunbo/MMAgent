@@ -1,0 +1,175 @@
+{
+  "additionalProperties": false,
+  "description": "Versioned selectors; no model-supplied assertion of satisfaction.",
+  "properties": {
+    "blocks": {
+      "items": {
+        "enum": [
+          "acquisition",
+          "interpretation"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Blocks",
+      "type": "array"
+    },
+    "concept": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Concept"
+    },
+    "excerpt_indices": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Excerpt Indices",
+      "type": "array"
+    },
+    "index": {
+      "maximum": 15,
+      "minimum": 0,
+      "title": "Index",
+      "type": "integer"
+    },
+    "input_alias": {
+      "anyOf": [
+        {
+          "pattern": "^input:(?:0|[1-9][0-9]{0,2})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Input Alias"
+    },
+    "kind": {
+      "enum": [
+        "patient_input",
+        "method",
+        "quality"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "method": {
+      "anyOf": [
+        {
+          "maxLength": 240,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Method"
+    },
+    "modality": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Modality"
+    },
+    "predicate": {
+      "enum": [
+        "input_available",
+        "source_numeric_available",
+        "confirmed_method",
+        "confirmed_technical_qc",
+        "unresolved"
+      ],
+      "title": "Predicate",
+      "type": "string"
+    },
+    "quality_check": {
+      "anyOf": [
+        {
+          "enum": [
+            "artifact_integrity",
+            "mask_measurement_available"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Quality Check"
+    },
+    "rationale": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "requirement_alias": {
+      "anyOf": [
+        {
+          "pattern": "^requirement:(?:[0-9]|[1-5][0-9]|6[0-3])$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Requirement Alias"
+    },
+    "text": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unit"
+    }
+  },
+  "required": [
+    "index",
+    "text",
+    "kind",
+    "blocks",
+    "rationale",
+    "excerpt_indices",
+    "predicate"
+  ],
+  "title": "OwnerDependencyContract",
+  "type": "object"
+}

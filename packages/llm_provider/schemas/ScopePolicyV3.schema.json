@@ -1,0 +1,95 @@
+{
+  "$defs": {
+    "RegionQuestions": {
+      "additionalProperties": false,
+      "properties": {
+        "modality": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Modality",
+          "type": "string"
+        },
+        "regions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Regions",
+          "type": "array"
+        },
+        "representations": {
+          "items": {
+            "enum": [
+              "image",
+              "image_series",
+              "volume",
+              "map"
+            ],
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Representations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "modality",
+        "representations",
+        "regions"
+      ],
+      "title": "RegionQuestions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "max_components": {
+      "maximum": 8,
+      "minimum": 1,
+      "title": "Max Components",
+      "type": "integer"
+    },
+    "observation_storage": {
+      "const": "bound_candidate_reference",
+      "title": "Observation Storage",
+      "type": "string"
+    },
+    "procedure": {
+      "maxLength": 1000,
+      "minLength": 20,
+      "title": "Procedure",
+      "type": "string"
+    },
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/RegionQuestions"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Questions",
+      "type": "array"
+    },
+    "region_text_contract": {
+      "const": "bounded_full_text_512",
+      "title": "Region Text Contract",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "input-scope-phase-policy/1.2.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "max_components",
+    "questions",
+    "procedure",
+    "observation_storage",
+    "region_text_contract"
+  ],
+  "title": "ScopePolicyV3",
+  "type": "object"
+}

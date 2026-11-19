@@ -1,0 +1,796 @@
+{
+  "$defs": {
+    "Demand": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance_rule_ref": {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        "applicability": {
+          "enum": [
+            "APPLICABLE",
+            "UNKNOWN"
+          ],
+          "title": "Applicability",
+          "type": "string"
+        },
+        "availability": {
+          "const": "UNAVAILABLE",
+          "default": "UNAVAILABLE",
+          "title": "Availability",
+          "type": "string"
+        },
+        "input_artifact_code": {
+          "maxLength": 256,
+          "pattern": "^ARTIFACT:",
+          "title": "Input Artifact Code",
+          "type": "string"
+        },
+        "input_assets": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Input Assets",
+          "type": "array"
+        },
+        "input_qc": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 128,
+          "title": "Input Qc",
+          "type": "array"
+        },
+        "input_state": {
+          "enum": [
+            "present",
+            "missing"
+          ],
+          "title": "Input State",
+          "type": "string"
+        },
+        "node_ref": {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        "output_artifact_code": {
+          "maxLength": 256,
+          "pattern": "^ARTIFACT:",
+          "title": "Output Artifact Code",
+          "type": "string"
+        },
+        "producer_qualification": {
+          "const": "discovery_only",
+          "default": "discovery_only",
+          "title": "Producer Qualification",
+          "type": "string"
+        },
+        "producer_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 128,
+          "title": "Producer Refs",
+          "type": "array"
+        },
+        "reasons": {
+          "items": {
+            "enum": [
+              "mapping_not_configured",
+              "producer_unresolved",
+              "patient_input_missing",
+              "input_qc_unassessed",
+              "input_qc_pending",
+              "input_qc_failed",
+              "applicability_unknown",
+              "catalog_unreadable",
+              "catalog_version_conflict",
+              "catalog_scope_conflict",
+              "reviewed_result_interpreter_required"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reasons",
+          "type": "array"
+        },
+        "requirement_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "requirement_ref",
+        "node_ref",
+        "acceptance_rule_ref",
+        "input_artifact_code",
+        "output_artifact_code",
+        "input_assets",
+        "input_state",
+        "input_qc",
+        "applicability",
+        "producer_refs",
+        "reasons"
+      ],
+      "title": "Demand",
+      "type": "object"
+    },
+    "DemandResolution": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_manifest_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Catalog Manifest Checksum"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "catalog_state": {
+          "enum": [
+            "not_queried",
+            "readable",
+            "unreadable",
+            "version_conflict",
+            "scope_conflict"
+          ],
+          "title": "Catalog State",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "demands": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Demand"
+          },
+          "maxItems": 128,
+          "title": "Demands",
+          "type": "array"
+        },
+        "extension_enqueued": {
+          "const": false,
+          "default": false,
+          "title": "Extension Enqueued",
+          "type": "boolean"
+        },
+        "grants_execution": {
+          "const": false,
+          "default": false,
+          "title": "Grants Execution",
+          "type": "boolean"
+        },
+        "graph_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Graph Checksum",
+          "type": "string"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "grounding_lock": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GroundingLock"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "manifest_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Manifest Checksum",
+          "type": "string"
+        },
+        "release_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "resolver_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VersionedReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rule_refs": {
+          "items": {
+            "$ref": "#/$defs/KnowledgeReference"
+          },
+          "minItems": 1,
+          "title": "Rule Refs",
+          "type": "array"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "demand-resolution/1.0.0",
+          "default": "demand-resolution/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "mapped",
+            "unresolved"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "template_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "checksum",
+        "state",
+        "run_id",
+        "graph_code",
+        "graph_checksum",
+        "input_checksum",
+        "config_checksum",
+        "catalog_ref",
+        "release_ref",
+        "template_ref",
+        "rule_refs",
+        "manifest_checksum",
+        "catalog_state"
+      ],
+      "title": "DemandResolution",
+      "type": "object"
+    },
+    "GroundingLock": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "graph_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Graph Checksum",
+          "type": "string"
+        },
+        "graph_code": {
+          "pattern": "^GRAPH:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_template_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "knowledge_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 512,
+          "minItems": 1,
+          "title": "Knowledge Refs",
+          "type": "array"
+        },
+        "mapping_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Mapping Refs",
+          "type": "array"
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        },
+        "release_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "run_id": {
+          "pattern": "^RUN:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "grounding-lock/1.0.0",
+          "default": "grounding-lock/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "template_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "run_id",
+        "graph_code",
+        "graph_version",
+        "graph_checksum",
+        "catalog_ref",
+        "mapping_refs",
+        "release_ref",
+        "template_ref",
+        "graph_template_ref",
+        "knowledge_refs",
+        "policy",
+        "checksum"
+      ],
+      "title": "GroundingLock",
+      "type": "object"
+    },
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    },
+    "ObjectReference": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 4194304,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "uri": {
+          "pattern": "^object://knowledge/objects/[a-f0-9]{32}$",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "ObjectReference",
+      "type": "object"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted_validation": {
+          "items": {
+            "$ref": "#/$defs/ToolValidationStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Accepted Validation",
+          "type": "array"
+        },
+        "admissible_states": {
+          "items": {
+            "const": "Active",
+            "type": "string"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "title": "Admissible States",
+          "type": "array"
+        },
+        "allowed_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Allowed Terms",
+          "type": "array"
+        },
+        "baseline_only": {
+          "const": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "execution_policy": {
+          "const": "research",
+          "title": "Execution Policy",
+          "type": "string"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        },
+        "kind": {
+          "const": "policy",
+          "default": "policy",
+          "title": "Kind",
+          "type": "string"
+        },
+        "max_artifacts": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Max Artifacts",
+          "type": "integer"
+        },
+        "max_bytes": {
+          "maximum": 65536,
+          "minimum": 1024,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_candidates": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_inputs": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Inputs",
+          "type": "integer"
+        },
+        "max_mappings": {
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Max Mappings",
+          "type": "integer"
+        },
+        "synthetic_only": {
+          "title": "Synthetic Only",
+          "type": "boolean"
+        },
+        "type_compatibility": {
+          "const": "exact",
+          "title": "Type Compatibility",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version",
+        "checksum",
+        "baseline_only",
+        "synthetic_only",
+        "admissible_states",
+        "type_compatibility",
+        "accepted_validation",
+        "intended_use",
+        "execution_policy",
+        "max_bytes",
+        "max_candidates",
+        "max_inputs",
+        "max_artifacts",
+        "max_mappings",
+        "allowed_terms"
+      ],
+      "title": "Policy",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Actions",
+      "type": "array"
+    },
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "config_checksum": {
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "cost": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Cost",
+      "type": "number"
+    },
+    "demand_resolution": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DemandResolution"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "input_checksum": {
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "report": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "revision": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Run Id"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "trace": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectReference"
+      },
+      "maxItems": 256,
+      "title": "Trace",
+      "type": "array"
+    },
+    "version": {
+      "default": "case-pipeline-request/1.0.0",
+      "enum": [
+        "case-pipeline-request/1.0.0",
+        "case-pipeline-request/2.0.0"
+      ],
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_code",
+    "input_checksum",
+    "config_checksum",
+    "synthetic",
+    "started_at"
+  ],
+  "title": "RequestState",
+  "type": "object"
+}

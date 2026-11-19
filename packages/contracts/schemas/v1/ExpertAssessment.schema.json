@@ -1,0 +1,478 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "ExpertAssessmentDecision": {
+      "enum": [
+        "ACCEPT_PROPOSAL",
+        "REJECT_PROPOSAL",
+        "SELECT_ALLOWED_ALTERNATIVE",
+        "STOP_INSUFFICIENT_EVIDENCE",
+        "STOP_UNSAFE"
+      ],
+      "title": "ExpertAssessmentDecision",
+      "type": "string"
+    },
+    "ExpertAssessmentStatus": {
+      "enum": [
+        "REQUESTED",
+        "RUNNING",
+        "COMPLETED",
+        "FAILED",
+        "INVALID_OUTPUT",
+        "TIMED_OUT"
+      ],
+      "title": "ExpertAssessmentStatus",
+      "type": "string"
+    },
+    "ExpertTaskType": {
+      "enum": [
+        "ACTION_REVIEW",
+        "EVIDENCE_REVIEW",
+        "GRAPH_REVIEW",
+        "STOP_REVIEW",
+        "COUNTERFACTUAL_REVIEW"
+      ],
+      "title": "ExpertTaskType",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "PlanAction": {
+      "enum": [
+        "INSTANTIATE_TEMPLATE",
+        "EXPAND_CLAIM",
+        "SELECT_EVIDENCE_TASK",
+        "REQUEST_DATA",
+        "SELECT_WORKFLOW",
+        "EXECUTE_WORKFLOW",
+        "VERIFY",
+        "BACKTRACK",
+        "SWITCH_PATH",
+        "EXPERT_ASSESSMENT",
+        "STOP"
+      ],
+      "title": "PlanAction",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "PublishedKnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "release_status": {
+          "const": "PUBLISHED",
+          "title": "Release Status",
+          "type": "string"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/VersionedReference"
+        }
+      },
+      "required": [
+        "source_ref",
+        "release_status"
+      ],
+      "title": "PublishedKnowledgeReference",
+      "type": "object"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_action_codes": {
+      "items": {
+        "$ref": "#/$defs/PlanAction"
+      },
+      "title": "Allowed Action Codes",
+      "type": "array"
+    },
+    "contract_type": {
+      "const": "ExpertAssessment",
+      "title": "Contract Type",
+      "type": "string"
+    },
+    "coordinate_space": {
+      "$ref": "#/$defs/CoordinateSpace"
+    },
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExpertAssessmentDecision"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "expert_assessment_id": {
+      "title": "Expert Assessment Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "finding_codes": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Finding Codes",
+      "type": "array"
+    },
+    "input_versions": {
+      "items": {
+        "$ref": "#/$defs/VersionedReference"
+      },
+      "minItems": 1,
+      "title": "Input Versions",
+      "type": "array"
+    },
+    "knowledge_refs": {
+      "items": {
+        "$ref": "#/$defs/PublishedKnowledgeReference"
+      },
+      "minItems": 1,
+      "title": "Knowledge Refs",
+      "type": "array"
+    },
+    "laterality": {
+      "$ref": "#/$defs/Laterality"
+    },
+    "proposal_code": {
+      "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+      "title": "Proposal Code",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeReference"
+    },
+    "scope_limitations": {
+      "items": {
+        "maxLength": 1000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Scope Limitations",
+      "type": "array"
+    },
+    "selected_action_code": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlanAction"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status": {
+      "$ref": "#/$defs/ExpertAssessmentStatus"
+    },
+    "step_id": {
+      "title": "Step Id",
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "task_type": {
+      "$ref": "#/$defs/ExpertTaskType"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    },
+    "unresolved_nodes": {
+      "items": {
+        "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+        "type": "string"
+      },
+      "title": "Unresolved Nodes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_type",
+    "provenance",
+    "scope",
+    "laterality",
+    "coordinate_space",
+    "unit",
+    "expert_assessment_id",
+    "run_id",
+    "step_id",
+    "status",
+    "task_type",
+    "input_versions",
+    "proposal_code",
+    "allowed_action_codes",
+    "finding_codes",
+    "knowledge_refs",
+    "unresolved_nodes",
+    "scope_limitations",
+    "summary"
+  ],
+  "title": "ExpertAssessment",
+  "type": "object"
+}

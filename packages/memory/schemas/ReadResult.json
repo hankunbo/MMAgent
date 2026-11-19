@@ -1,0 +1,324 @@
+{
+  "$defs": {
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "relation": {
+          "default": "derived_from",
+          "enum": [
+            "derived_from",
+            "revision_of",
+            "episode_member"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "checksum"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "Record": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "identity": {
+          "const": "research_candidate",
+          "default": "research_candidate",
+          "title": "Identity",
+          "type": "string"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "episode",
+            "graph_snapshot",
+            "trajectory_step",
+            "counterfactual_pair",
+            "recovery_experience",
+            "tool_experience",
+            "abstract_pattern"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "parents": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "maxItems": 64,
+          "title": "Parents",
+          "type": "array"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "research-memory/1.0.0",
+          "default": "research-memory/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "kind",
+        "case_code",
+        "run_id",
+        "applicability",
+        "sources",
+        "nature"
+      ],
+      "title": "Record",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "enum": [
+            "research_fact",
+            "planner_event",
+            "simulation",
+            "recovery",
+            "agent_review"
+          ],
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner",
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "kind",
+        "version",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "Source",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_level": {
+      "const": "not_evaluated",
+      "default": "not_evaluated",
+      "title": "Clinical Level",
+      "type": "string"
+    },
+    "current": {
+      "title": "Current",
+      "type": "boolean"
+    },
+    "eligible_for_planning": {
+      "const": false,
+      "default": false,
+      "title": "Eligible For Planning",
+      "type": "boolean"
+    },
+    "eligible_for_retrieval": {
+      "const": false,
+      "default": false,
+      "title": "Eligible For Retrieval",
+      "type": "boolean"
+    },
+    "invalid_reason": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Invalid Reason"
+    },
+    "record": {
+      "$ref": "#/$defs/Record"
+    },
+    "state": {
+      "enum": [
+        "candidate",
+        "reviewed",
+        "published",
+        "rejected",
+        "deprecated"
+      ],
+      "title": "State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "record",
+    "checksum",
+    "state",
+    "invalid_reason",
+    "current"
+  ],
+  "title": "ReadResult",
+  "type": "object"
+}

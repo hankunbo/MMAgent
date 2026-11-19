@@ -1,0 +1,709 @@
+{
+  "$defs": {
+    "ContinuousReview": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "$ref": "#/$defs/Rating"
+        },
+        "assessment_checksum": {
+          "title": "Assessment Checksum",
+          "type": "string"
+        },
+        "correlation_group": {
+          "title": "Correlation Group",
+          "type": "string"
+        },
+        "criterion_checked": {
+          "title": "Criterion Checked",
+          "type": "boolean"
+        },
+        "dependence_block": {
+          "title": "Dependence Block",
+          "type": "string"
+        },
+        "dependency_paths": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "maxItems": 8,
+          "title": "Dependency Paths",
+          "type": "array"
+        },
+        "direction": {
+          "enum": [
+            "support",
+            "refute",
+            "neutral",
+            "unavailable"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "judgment": {
+          "$ref": "#/$defs/Judgment"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/Rating"
+        },
+        "observation_available": {
+          "title": "Observation Available",
+          "type": "boolean"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "refutation": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Refutation",
+          "type": "number"
+        },
+        "relation": {
+          "$ref": "#/$defs/Rating"
+        },
+        "role": {
+          "enum": [
+            "diagnostic",
+            "risk",
+            "measurement",
+            "model",
+            "visual",
+            "association"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "source_binding_checksum": {
+          "title": "Source Binding Checksum",
+          "type": "string"
+        },
+        "support": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Support",
+          "type": "number"
+        },
+        "target": {
+          "const": "glaucoma_research_hypothesis",
+          "title": "Target",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "weight": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Weight"
+        }
+      },
+      "required": [
+        "id",
+        "node",
+        "title",
+        "kind",
+        "assessment_checksum",
+        "source_binding_checksum",
+        "observation",
+        "relation",
+        "applicability",
+        "role",
+        "target",
+        "judgment",
+        "direction",
+        "observation_available",
+        "criterion_checked",
+        "reason",
+        "correlation_group",
+        "dependence_block",
+        "dependency_paths",
+        "weight",
+        "support",
+        "refutation"
+      ],
+      "title": "ContinuousReview",
+      "type": "object"
+    },
+    "CoverageGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "importance": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "enum": [
+              "slo_image_research",
+              "comprehensive_research"
+            ]
+          },
+          "title": "Importance",
+          "type": "object"
+        },
+        "slots": {
+          "items": {
+            "items": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Slots",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "slots",
+        "importance"
+      ],
+      "title": "CoverageGroup",
+      "type": "object"
+    },
+    "EvidenceRequirement": {
+      "additionalProperties": false,
+      "description": "Frozen, source-backed demand; it is NOT a patient observation or a score.",
+      "properties": {
+        "basis_kind": {
+          "enum": [
+            "quantitative",
+            "qualitative",
+            "model_validation"
+          ],
+          "title": "Basis Kind",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/TaskDefinition"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_modalities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Input Modalities",
+          "type": "array"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        }
+      },
+      "required": [
+        "id",
+        "definition",
+        "input_modalities",
+        "basis_kind"
+      ],
+      "title": "EvidenceRequirement",
+      "type": "object"
+    },
+    "Judgment": {
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lower"
+        },
+        "method": {
+          "enum": [
+            "manual_source_bound_review",
+            "fixed_model_margin",
+            "not_assessed"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upper"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "lower",
+        "upper",
+        "reason",
+        "method"
+      ],
+      "title": "Judgment",
+      "type": "object"
+    },
+    "ObservedItemPolicy": {
+      "additionalProperties": false,
+      "description": "New evidence has no compulsory classifier row or historical fixed ratings.",
+      "properties": {
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "correlation_group": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Correlation Group",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/TaskDefinition"
+        },
+        "dependence_block": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Dependence Block",
+          "type": "string"
+        },
+        "dependency_paths": {
+          "items": {
+            "items": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Dependency Paths",
+          "type": "array"
+        },
+        "fixed_model_row": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContinuousReview"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "fixed_observation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "criterion",
+            "visual",
+            "association",
+            "model",
+            "measurement"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "laterality": {
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "BILATERAL",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "method": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Method",
+          "type": "string"
+        },
+        "model_direction": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Direction"
+        },
+        "model_mapping_version": {
+          "anyOf": [
+            {
+              "const": "normalized-class-margin/1.0.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Mapping Version"
+        },
+        "model_observation_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "node": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Node",
+          "type": "string"
+        },
+        "observation_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Observation Code",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "diagnostic",
+            "risk",
+            "measurement",
+            "model",
+            "visual",
+            "association"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "unit": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "node",
+        "kind",
+        "role",
+        "observation_code",
+        "method",
+        "unit",
+        "laterality",
+        "source_codes",
+        "applicable",
+        "correlation_group",
+        "dependence_block",
+        "dependency_paths",
+        "definition"
+      ],
+      "title": "ObservedItemPolicy",
+      "type": "object"
+    },
+    "Rating": {
+      "additionalProperties": false,
+      "properties": {
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "reason"
+      ],
+      "title": "Rating",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "TaskDefinition": {
+      "additionalProperties": false,
+      "description": "Visible, installed definition; a missing interpretation never invents a cutoff.",
+      "properties": {
+        "applicability_conditions": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Applicability Conditions",
+          "type": "string"
+        },
+        "examination": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Examination",
+          "type": "string"
+        },
+        "interpretation": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interpretation"
+        },
+        "interpretation_status": {
+          "enum": [
+            "installed",
+            "missing"
+          ],
+          "title": "Interpretation Status",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/Reference"
+        },
+        "source_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reference",
+        "examination",
+        "applicability_conditions",
+        "interpretation",
+        "interpretation_status",
+        "source_refs"
+      ],
+      "title": "TaskDefinition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "aggregation_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Aggregation Checksum",
+      "type": "string"
+    },
+    "groups": {
+      "items": {
+        "$ref": "#/$defs/CoverageGroup"
+      },
+      "maxItems": 64,
+      "title": "Groups",
+      "type": "array"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/ObservedItemPolicy"
+      },
+      "maxItems": 128,
+      "title": "Items",
+      "type": "array"
+    },
+    "requirements": {
+      "items": {
+        "$ref": "#/$defs/EvidenceRequirement"
+      },
+      "maxItems": 128,
+      "title": "Requirements",
+      "type": "array"
+    },
+    "scale": {
+      "$ref": "#/$defs/Reference"
+    },
+    "schema_version": {
+      "const": "research-task-policy/3.0.0",
+      "default": "research-task-policy/3.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "scale",
+    "aggregation_checksum",
+    "items",
+    "groups",
+    "requirements"
+  ],
+  "title": "TaskPolicyV3",
+  "type": "object"
+}

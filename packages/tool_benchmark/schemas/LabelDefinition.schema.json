@@ -1,0 +1,92 @@
+{
+  "$defs": {
+    "FileReference": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 16777216,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "relative_path": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "uri": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_path",
+        "uri",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "FileReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "background": {
+      "maximum": 255,
+      "minimum": 0,
+      "title": "Background",
+      "type": "integer"
+    },
+    "cup": {
+      "maximum": 255,
+      "minimum": 0,
+      "title": "Cup",
+      "type": "integer"
+    },
+    "disc_includes_cup": {
+      "const": true,
+      "default": true,
+      "title": "Disc Includes Cup",
+      "type": "boolean"
+    },
+    "disc_rim": {
+      "maximum": 255,
+      "minimum": 0,
+      "title": "Disc Rim",
+      "type": "integer"
+    },
+    "source": {
+      "$ref": "#/$defs/FileReference"
+    },
+    "source_excerpt": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Source Excerpt",
+      "type": "string"
+    },
+    "version": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "source",
+    "source_excerpt",
+    "background",
+    "disc_rim",
+    "cup"
+  ],
+  "title": "LabelDefinition",
+  "type": "object"
+}

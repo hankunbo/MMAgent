@@ -1,0 +1,53 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "candidate-submission/1.0.0",
+      "default": "candidate-submission/1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "producer": {
+      "pattern": "^[A-Za-z0-9:_-]{1,128}$",
+      "title": "Producer",
+      "type": "string"
+    },
+    "request_key": {
+      "pattern": "^[A-Za-z0-9:_-]{1,128}$",
+      "title": "Request Key",
+      "type": "string"
+    },
+    "request_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Request Checksum",
+      "type": "string"
+    },
+    "source_binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Binding Checksum",
+      "type": "string"
+    },
+    "display_zh": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Display Zh"
+    }
+  },
+  "required": [
+    "producer",
+    "request_key",
+    "request_checksum",
+    "source_binding_checksum"
+  ],
+  "title": "CandidateSubmission",
+  "type": "object"
+}

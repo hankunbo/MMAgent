@@ -1,0 +1,640 @@
+{
+  "$defs": {
+    "OwnerDependencyContract": {
+      "additionalProperties": false,
+      "description": "Versioned selectors; no model-supplied assertion of satisfaction.",
+      "properties": {
+        "blocks": {
+          "items": {
+            "enum": [
+              "acquisition",
+              "interpretation"
+            ],
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Blocks",
+          "type": "array"
+        },
+        "concept": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Concept"
+        },
+        "excerpt_indices": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Excerpt Indices",
+          "type": "array"
+        },
+        "index": {
+          "maximum": 15,
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "input_alias": {
+          "anyOf": [
+            {
+              "pattern": "^input:(?:0|[1-9][0-9]{0,2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Alias"
+        },
+        "kind": {
+          "enum": [
+            "patient_input",
+            "method",
+            "quality"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "modality": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modality"
+        },
+        "predicate": {
+          "enum": [
+            "input_available",
+            "source_numeric_available",
+            "confirmed_method",
+            "confirmed_technical_qc",
+            "unresolved"
+          ],
+          "title": "Predicate",
+          "type": "string"
+        },
+        "quality_check": {
+          "anyOf": [
+            {
+              "enum": [
+                "artifact_integrity",
+                "mask_measurement_available"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quality Check"
+        },
+        "rationale": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "requirement_alias": {
+          "anyOf": [
+            {
+              "pattern": "^requirement:(?:[0-9]|[1-5][0-9]|6[0-3])$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requirement Alias"
+        },
+        "text": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "index",
+        "text",
+        "kind",
+        "blocks",
+        "rationale",
+        "excerpt_indices",
+        "predicate"
+      ],
+      "title": "OwnerDependencyContract",
+      "type": "object"
+    },
+    "QuotedExcerpt": {
+      "additionalProperties": false,
+      "description": "Model supplies exact text; only the source owner computes coordinates.",
+      "properties": {
+        "prefix": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prefix"
+        },
+        "source_checksum": {
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "source_code": {
+          "title": "Source Code",
+          "type": "string"
+        },
+        "suffix": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suffix"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_code",
+        "source_checksum",
+        "text"
+      ],
+      "title": "QuotedExcerpt",
+      "type": "object"
+    },
+    "QuotedOwnerBoundConfirmedInterpretationDraft": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "const": "confirmed_observation",
+          "default": "confirmed_observation",
+          "title": "Acquisition",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "applicability": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "automatically_accepted": {
+          "const": false,
+          "default": false,
+          "title": "Automatically Accepted",
+          "type": "boolean"
+        },
+        "dependencies": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "dependency_contracts": {
+          "items": {
+            "$ref": "#/$defs/OwnerDependencyContract"
+          },
+          "maxItems": 16,
+          "title": "Dependency Contracts",
+          "type": "array"
+        },
+        "examination": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Examination",
+          "type": "string"
+        },
+        "excerpts": {
+          "items": {
+            "$ref": "#/$defs/QuotedExcerpt"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Excerpts",
+          "type": "array"
+        },
+        "extraction_reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Extraction Reason",
+          "type": "string"
+        },
+        "input_concepts": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Input Concepts",
+          "type": "array"
+        },
+        "interpretation": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "method": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "modalities": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "relation": {
+          "enum": [
+            "qualitative",
+            "quantitative",
+            "context",
+            "dependency"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "relation_use": {
+          "enum": [
+            "directional",
+            "examination_only"
+          ],
+          "title": "Relation Use",
+          "type": "string"
+        },
+        "requirement_alias": {
+          "pattern": "^requirement:(?:[0-9]|[1-5][0-9]|6[0-3])$",
+          "title": "Requirement Alias",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "source-definition-draft/7.1.0",
+          "default": "source-definition-draft/7.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "unit": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "visible_scope": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Visible Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "relation",
+        "examination",
+        "interpretation",
+        "applicability",
+        "input_concepts",
+        "method",
+        "unit",
+        "excerpts",
+        "modalities",
+        "relation_use",
+        "visible_scope",
+        "extraction_reason",
+        "alternatives",
+        "limitations",
+        "dependencies",
+        "dependency_contracts",
+        "requirement_alias"
+      ],
+      "title": "QuotedOwnerBoundConfirmedInterpretationDraft",
+      "type": "object"
+    },
+    "QuotedOwnerBoundResearchDefinitionDraft": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "enum": [
+            "vision",
+            "source_measurement"
+          ],
+          "title": "Acquisition",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "applicability": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "automatically_accepted": {
+          "const": false,
+          "default": false,
+          "title": "Automatically Accepted",
+          "type": "boolean"
+        },
+        "dependencies": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "dependency_contracts": {
+          "items": {
+            "$ref": "#/$defs/OwnerDependencyContract"
+          },
+          "maxItems": 16,
+          "title": "Dependency Contracts",
+          "type": "array"
+        },
+        "examination": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Examination",
+          "type": "string"
+        },
+        "excerpts": {
+          "items": {
+            "$ref": "#/$defs/QuotedExcerpt"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Excerpts",
+          "type": "array"
+        },
+        "extraction_reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Extraction Reason",
+          "type": "string"
+        },
+        "input_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Input Aliases",
+          "type": "array"
+        },
+        "input_concepts": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Input Concepts",
+          "type": "array"
+        },
+        "interpretation": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Method"
+        },
+        "modalities": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "relation": {
+          "enum": [
+            "qualitative",
+            "quantitative",
+            "context",
+            "dependency"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "relation_use": {
+          "enum": [
+            "directional",
+            "examination_only"
+          ],
+          "title": "Relation Use",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "source-definition-draft/6.1.0",
+          "default": "source-definition-draft/6.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "visible_scope": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Visible Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "relation",
+        "examination",
+        "interpretation",
+        "applicability",
+        "input_concepts",
+        "method",
+        "unit",
+        "excerpts",
+        "modalities",
+        "acquisition",
+        "relation_use",
+        "visible_scope",
+        "extraction_reason",
+        "alternatives",
+        "limitations",
+        "dependencies",
+        "dependency_contracts",
+        "input_aliases"
+      ],
+      "title": "QuotedOwnerBoundResearchDefinitionDraft",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "definitions": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/QuotedOwnerBoundResearchDefinitionDraft"
+          },
+          {
+            "$ref": "#/$defs/QuotedOwnerBoundConfirmedInterpretationDraft"
+          }
+        ]
+      },
+      "maxItems": 3,
+      "title": "Definitions",
+      "type": "array"
+    },
+    "no_addition_reason": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "No Addition Reason"
+    },
+    "schema_version": {
+      "const": "research-definition-proposal/5.0.0",
+      "default": "research-definition-proposal/5.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "definitions"
+  ],
+  "title": "OwnerBoundDefinitionProposal",
+  "type": "object"
+}

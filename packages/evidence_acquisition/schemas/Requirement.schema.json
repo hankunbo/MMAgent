@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "acquisition": {
+      "enum": [
+        "existing",
+        "image",
+        "external_exam",
+        "tool_gap"
+      ],
+      "title": "Acquisition",
+      "type": "string"
+    },
+    "assessment_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "method_details_required": {
+      "default": false,
+      "title": "Method Details Required",
+      "type": "boolean"
+    },
+    "missing_source_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Missing Source Ids",
+      "type": "array"
+    },
+    "priority": {
+      "default": 50,
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Priority",
+      "type": "integer"
+    },
+    "public_topics": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 4,
+      "title": "Public Topics",
+      "type": "array"
+    },
+    "purpose": {
+      "enum": [
+        "disease_relation",
+        "measurement_dependency",
+        "quality",
+        "context"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "required_inputs": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Required Inputs",
+      "type": "array"
+    },
+    "unavailable_inputs": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 12,
+      "title": "Unavailable Inputs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "purpose",
+    "acquisition",
+    "required_inputs"
+  ],
+  "title": "Requirement",
+  "type": "object"
+}

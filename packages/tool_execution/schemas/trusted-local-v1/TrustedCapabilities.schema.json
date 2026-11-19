@@ -1,0 +1,67 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "backend": {
+      "const": "trusted_local_gpu_research/1.0.0",
+      "default": "trusted_local_gpu_research/1.0.0",
+      "title": "Backend",
+      "type": "string"
+    },
+    "cleanup": {
+      "const": "observed_process_group_only_escape_not_prevented",
+      "default": "observed_process_group_only_escape_not_prevented",
+      "title": "Cleanup",
+      "type": "string"
+    },
+    "code_files": {
+      "const": "inventory_and_digest_checks_no_immutable_mount",
+      "default": "inventory_and_digest_checks_no_immutable_mount",
+      "title": "Code Files",
+      "type": "string"
+    },
+    "credentials": {
+      "const": "minimal_environment_not_file_secrecy",
+      "default": "minimal_environment_not_file_secrecy",
+      "title": "Credentials",
+      "type": "string"
+    },
+    "devices": {
+      "const": "uuid_visibility_and_project_lock_not_device_isolation",
+      "default": "uuid_visibility_and_project_lock_not_device_isolation",
+      "title": "Devices",
+      "type": "string"
+    },
+    "files": {
+      "const": "per_file_limit_not_aggregate_disk_quota",
+      "default": "per_file_limit_not_aggregate_disk_quota",
+      "title": "Files",
+      "type": "string"
+    },
+    "filesystem": {
+      "const": "admission_paths_only_no_process_confinement",
+      "default": "admission_paths_only_no_process_confinement",
+      "title": "Filesystem",
+      "type": "string"
+    },
+    "memory": {
+      "const": "no_tree_ram_or_vram_hard_limit",
+      "default": "no_tree_ram_or_vram_hard_limit",
+      "title": "Memory",
+      "type": "string"
+    },
+    "network": {
+      "const": "not_guaranteed",
+      "default": "not_guaranteed",
+      "title": "Network",
+      "type": "string"
+    },
+    "version": {
+      "const": "trusted-local-capabilities/1.0.0",
+      "default": "trusted-local-capabilities/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "TrustedCapabilities",
+  "type": "object"
+}

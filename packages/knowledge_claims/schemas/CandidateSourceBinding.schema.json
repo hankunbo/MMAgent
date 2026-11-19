@@ -1,0 +1,280 @@
+{
+  "$defs": {
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Section Path",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "paragraph",
+            "heading",
+            "list",
+            "table",
+            "caption"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "ordinal": {
+          "minimum": 1,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "span_start": {
+          "minimum": 0,
+          "title": "Span Start",
+          "type": "integer"
+        },
+        "span_end": {
+          "minimum": 1,
+          "title": "Span End",
+          "type": "integer"
+        },
+        "table_status": {
+          "default": "not_applicable",
+          "enum": [
+            "structured",
+            "unavailable",
+            "not_applicable"
+          ],
+          "title": "Table Status",
+          "type": "string"
+        },
+        "table_capability": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TableCapability"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "section_path",
+        "kind",
+        "ordinal",
+        "span_start",
+        "span_end"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "source",
+            "source_version",
+            "source_document",
+            "document_chunk"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "maxLength": 256,
+              "minLength": 129,
+              "type": "string"
+            }
+          ],
+          "title": "Code"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "TableCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "table-grid/1.0.0",
+          "default": "table-grid/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "structured",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "rows": {
+          "anyOf": [
+            {
+              "maximum": 64,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rows"
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "maximum": 32,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Columns"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "numeric_evidence": {
+          "title": "Numeric Evidence",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "numeric_evidence"
+      ],
+      "title": "TableCapability",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "index_key": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Index Key",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Reference"
+    },
+    "source_version": {
+      "$ref": "#/$defs/Reference"
+    },
+    "document": {
+      "$ref": "#/$defs/Reference"
+    },
+    "chunk": {
+      "$ref": "#/$defs/Reference"
+    },
+    "original_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Original Checksum",
+      "type": "string"
+    },
+    "parse_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parse Checksum",
+      "type": "string"
+    },
+    "chunk_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Chunk Checksum",
+      "type": "string"
+    },
+    "parse_uri": {
+      "maxLength": 256,
+      "pattern": "^object://knowledge/objects/[A-Za-z0-9_-]+$",
+      "title": "Parse Uri",
+      "type": "string"
+    },
+    "fidelity_policy": {
+      "const": "text-fidelity/2.0.0",
+      "title": "Fidelity Policy",
+      "type": "string"
+    },
+    "position": {
+      "$ref": "#/$defs/Position"
+    }
+  },
+  "required": [
+    "index_key",
+    "source",
+    "source_version",
+    "document",
+    "chunk",
+    "original_checksum",
+    "parse_checksum",
+    "chunk_checksum",
+    "parse_uri",
+    "fidelity_policy",
+    "position"
+  ],
+  "title": "CandidateSourceBinding",
+  "type": "object"
+}

@@ -1,0 +1,55 @@
+{
+  "additionalProperties": false,
+  "description": "Bounded selection from a complete parse; never merges or renumbers blocks.",
+  "properties": {
+    "version": {
+      "const": "2.1.0",
+      "default": "2.1.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "max_chars": {
+      "default": 1200,
+      "maximum": 4096,
+      "minimum": 64,
+      "title": "Max Chars",
+      "type": "integer"
+    },
+    "overlap_chars": {
+      "default": 100,
+      "maximum": 512,
+      "minimum": 0,
+      "title": "Overlap Chars",
+      "type": "integer"
+    },
+    "max_chunks": {
+      "default": 192,
+      "maximum": 250,
+      "minimum": 1,
+      "title": "Max Chunks",
+      "type": "integer"
+    },
+    "projection_version": {
+      "const": "bounded-projection/1.0.0",
+      "default": "bounded-projection/1.0.0",
+      "title": "Projection Version",
+      "type": "string"
+    },
+    "selection": {
+      "const": "nice-ng81-n124-paragraph/1.0.0",
+      "title": "Selection",
+      "type": "string"
+    },
+    "source_checksum": {
+      "const": "sha256:2bcf6cc2147ce8f986d58b99b86a164fd3cf4bd53f4e99771b45270f8abcdb26",
+      "default": "sha256:2bcf6cc2147ce8f986d58b99b86a164fd3cf4bd53f4e99771b45270f8abcdb26",
+      "title": "Source Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "selection"
+  ],
+  "title": "N124ChunkPolicy",
+  "type": "object"
+}

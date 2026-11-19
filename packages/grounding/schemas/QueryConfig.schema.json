@@ -1,0 +1,108 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "const": "POLICY:GROUNDING:QUERY_BASELINE",
+      "default": "POLICY:GROUNDING:QUERY_BASELINE",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "max_depth": {
+      "maximum": 12,
+      "minimum": 1,
+      "title": "Max Depth",
+      "type": "integer"
+    },
+    "max_evaluations": {
+      "maximum": 512,
+      "minimum": 1,
+      "title": "Max Evaluations",
+      "type": "integer"
+    },
+    "max_operations": {
+      "default": 10000,
+      "maximum": 100000,
+      "minimum": 1,
+      "title": "Max Operations",
+      "type": "integer"
+    },
+    "max_findings": {
+      "default": 4096,
+      "maximum": 8192,
+      "minimum": 2,
+      "title": "Max Findings",
+      "type": "integer"
+    },
+    "top_k": {
+      "maximum": 128,
+      "minimum": 1,
+      "title": "Top K",
+      "type": "integer"
+    },
+    "information_gain_enabled": {
+      "title": "Information Gain Enabled",
+      "type": "boolean"
+    },
+    "order": {
+      "items": {
+        "enum": [
+          "information_gain",
+          "directness",
+          "cost",
+          "latency",
+          "failure_risk"
+        ],
+        "type": "string"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Order",
+      "type": "array"
+    },
+    "missing_order": {
+      "const": "last",
+      "default": "last",
+      "title": "Missing Order",
+      "type": "string"
+    },
+    "tie_break": {
+      "const": "mapping_ref,candidate_code,dependency_checksum",
+      "default": "mapping_ref,candidate_code,dependency_checksum",
+      "title": "Tie Break",
+      "type": "string"
+    },
+    "score_scope": {
+      "const": "individual_tool_estimates_not_chain_totals",
+      "default": "individual_tool_estimates_not_chain_totals",
+      "title": "Score Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "checksum",
+    "max_depth",
+    "max_evaluations",
+    "top_k",
+    "information_gain_enabled",
+    "order"
+  ],
+  "title": "QueryConfig",
+  "type": "object"
+}

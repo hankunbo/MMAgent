@@ -1,0 +1,521 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "CounterfactualIntervention": {
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "$ref": "#/$defs/CounterfactualOperation"
+        },
+        "replacement_code": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Replacement Code"
+        },
+        "target_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Target Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target_code",
+        "operation"
+      ],
+      "title": "CounterfactualIntervention",
+      "type": "object"
+    },
+    "CounterfactualOperation": {
+      "enum": [
+        "REMOVE",
+        "REVERSE",
+        "REPLACE",
+        "RETRY_WITH_ALTERNATIVE"
+      ],
+      "title": "CounterfactualOperation",
+      "type": "string"
+    },
+    "CounterfactualOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "completeness_delta": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completeness Delta"
+        },
+        "refute_delta": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refute Delta"
+        },
+        "root_status_after": {
+          "$ref": "#/$defs/GraphNodeStatus"
+        },
+        "root_status_before": {
+          "$ref": "#/$defs/GraphNodeStatus"
+        },
+        "support_delta": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Support Delta"
+        }
+      },
+      "required": [
+        "root_status_before",
+        "root_status_after"
+      ],
+      "title": "CounterfactualOutcome",
+      "type": "object"
+    },
+    "CounterfactualPairType": {
+      "enum": [
+        "REMOVE_EVIDENCE",
+        "REVERSE_EVIDENCE",
+        "SELECT_ALTERNATIVE_CHECK",
+        "REPLACE_TOOL",
+        "FAILURE_RECOVERY"
+      ],
+      "title": "CounterfactualPairType",
+      "type": "string"
+    },
+    "GraphNodeStatus": {
+      "enum": [
+        "UNKNOWN",
+        "PENDING",
+        "SUPPORTED",
+        "REFUTED",
+        "CONFLICTED",
+        "EXCLUDED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "title": "GraphNodeStatus",
+      "type": "string"
+    },
+    "GraphSnapshotReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "graph_code",
+        "graph_version",
+        "checksum"
+      ],
+      "title": "GraphSnapshotReference",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "OfflineReviewStatus": {
+      "enum": [
+        "OFFLINE_REVIEW_PENDING",
+        "IN_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "WITHDRAWN"
+      ],
+      "title": "OfflineReviewStatus",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applicability_codes": {
+      "items": {
+        "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Applicability Codes",
+      "type": "array"
+    },
+    "contract_type": {
+      "const": "CounterfactualPair",
+      "title": "Contract Type",
+      "type": "string"
+    },
+    "coordinate_space": {
+      "$ref": "#/$defs/CoordinateSpace"
+    },
+    "eligible_for_planning": {
+      "title": "Eligible For Planning",
+      "type": "boolean"
+    },
+    "episode_code": {
+      "title": "Episode Code",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "factual_graph_ref": {
+      "$ref": "#/$defs/GraphSnapshotReference"
+    },
+    "intervention": {
+      "$ref": "#/$defs/CounterfactualIntervention"
+    },
+    "laterality": {
+      "$ref": "#/$defs/Laterality"
+    },
+    "lesson_codes": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Lesson Codes",
+      "type": "array"
+    },
+    "outcome": {
+      "$ref": "#/$defs/CounterfactualOutcome"
+    },
+    "pair_code": {
+      "title": "Pair Code",
+      "type": "string"
+    },
+    "pair_type": {
+      "$ref": "#/$defs/CounterfactualPairType"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "review_status": {
+      "$ref": "#/$defs/OfflineReviewStatus"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeReference"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    },
+    "validation_refs": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Validation Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_type",
+    "provenance",
+    "scope",
+    "laterality",
+    "coordinate_space",
+    "unit",
+    "pair_code",
+    "episode_code",
+    "pair_type",
+    "factual_graph_ref",
+    "intervention",
+    "outcome",
+    "applicability_codes",
+    "validation_refs",
+    "review_status",
+    "eligible_for_planning",
+    "lesson_codes"
+  ],
+  "title": "CounterfactualPair",
+  "type": "object"
+}

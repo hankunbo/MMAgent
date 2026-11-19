@@ -1,0 +1,346 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "SelectedComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "axis_semantics": {
+          "title": "Axis Semantics",
+          "type": "string"
+        },
+        "disposition": {
+          "enum": [
+            "available_input",
+            "partial_input",
+            "input_missing",
+            "excluded"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "input_status": {
+          "enum": [
+            "obtained",
+            "partial",
+            "missing",
+            "withheld"
+          ],
+          "title": "Input Status",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "laterality": {
+          "title": "Laterality",
+          "type": "string"
+        },
+        "modality": {
+          "title": "Modality",
+          "type": "string"
+        },
+        "next_step": {
+          "enum": [
+            "bind_measurement_definition",
+            "bind_view_and_tool",
+            "retain_gap",
+            "not_in_task"
+          ],
+          "title": "Next Step",
+          "type": "string"
+        },
+        "payload_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Payload Ids",
+          "type": "array"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "requires_semantic_binding": {
+          "title": "Requires Semantic Binding",
+          "type": "boolean"
+        },
+        "selected": {
+          "title": "Selected",
+          "type": "boolean"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "visit": {
+          "title": "Visit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "modality",
+        "kind",
+        "input_status",
+        "selected",
+        "disposition",
+        "reason",
+        "unit",
+        "axis_semantics",
+        "requires_semantic_binding",
+        "visit",
+        "laterality",
+        "payload_ids",
+        "next_step"
+      ],
+      "title": "SelectedComponent",
+      "type": "object"
+    },
+    "TaskIntent": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_modalities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Allowed Modalities",
+          "type": "array"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "clinical_acceptance": {
+          "const": false,
+          "default": false,
+          "title": "Clinical Acceptance",
+          "type": "boolean"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "definition_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Definition Refs",
+          "type": "array"
+        },
+        "missing_evidence": {
+          "const": "report_scope_and_gaps",
+          "default": "report_scope_and_gaps",
+          "title": "Missing Evidence",
+          "type": "string"
+        },
+        "ordered_labels": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Ordered Labels",
+          "type": "array"
+        },
+        "output_kind": {
+          "enum": [
+            "binary_evidence",
+            "ordinal_evidence",
+            "observed_change",
+            "evidence_review"
+          ],
+          "title": "Output Kind",
+          "type": "string"
+        },
+        "research_only": {
+          "const": true,
+          "default": true,
+          "title": "Research Only",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "research-task-intent/1.0.0",
+          "default": "research-task-intent/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Target Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "code",
+        "version",
+        "target_code",
+        "output_kind",
+        "allowed_modalities",
+        "definition_refs"
+      ],
+      "title": "TaskIntent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/SelectedComponent"
+      },
+      "title": "Components",
+      "type": "array"
+    },
+    "cutoff_visit": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Cutoff Visit"
+    },
+    "execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Execution Authorized",
+      "type": "boolean"
+    },
+    "input_checksum": {
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "medical_requirement_snapshot": {
+      "default": null,
+      "title": "Medical Requirement Snapshot",
+      "type": "null"
+    },
+    "registry_checksum": {
+      "title": "Registry Checksum",
+      "type": "string"
+    },
+    "required_classifier": {
+      "default": null,
+      "title": "Required Classifier",
+      "type": "null"
+    },
+    "schema_version": {
+      "const": "multimodal-task-projection/1.0.0",
+      "default": "multimodal-task-projection/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score": {
+      "default": null,
+      "title": "Score",
+      "type": "null"
+    },
+    "selected_components": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Selected Components",
+      "type": "array"
+    },
+    "source_task_hint": {
+      "title": "Source Task Hint",
+      "type": "string"
+    },
+    "task": {
+      "$ref": "#/$defs/TaskIntent"
+    },
+    "task_gaps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Task Gaps",
+      "type": "array"
+    }
+  },
+  "required": [
+    "checksum",
+    "input_checksum",
+    "registry_checksum",
+    "source_task_hint",
+    "task",
+    "components",
+    "selected_components",
+    "cutoff_visit",
+    "task_gaps"
+  ],
+  "title": "TaskProjection",
+  "type": "object"
+}

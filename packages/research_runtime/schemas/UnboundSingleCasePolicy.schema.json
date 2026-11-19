@@ -1,0 +1,396 @@
+{
+  "$defs": {
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "ReviewedFile": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 8589934592,
+          "minimum": 0,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "ReviewedFile",
+      "type": "object"
+    },
+    "TrustedCapabilities": {
+      "additionalProperties": false,
+      "properties": {
+        "backend": {
+          "const": "trusted_local_gpu_research/1.0.0",
+          "default": "trusted_local_gpu_research/1.0.0",
+          "title": "Backend",
+          "type": "string"
+        },
+        "cleanup": {
+          "const": "observed_process_group_only_escape_not_prevented",
+          "default": "observed_process_group_only_escape_not_prevented",
+          "title": "Cleanup",
+          "type": "string"
+        },
+        "code_files": {
+          "const": "inventory_and_digest_checks_no_immutable_mount",
+          "default": "inventory_and_digest_checks_no_immutable_mount",
+          "title": "Code Files",
+          "type": "string"
+        },
+        "credentials": {
+          "const": "minimal_environment_not_file_secrecy",
+          "default": "minimal_environment_not_file_secrecy",
+          "title": "Credentials",
+          "type": "string"
+        },
+        "devices": {
+          "const": "uuid_visibility_and_project_lock_not_device_isolation",
+          "default": "uuid_visibility_and_project_lock_not_device_isolation",
+          "title": "Devices",
+          "type": "string"
+        },
+        "files": {
+          "const": "per_file_limit_not_aggregate_disk_quota",
+          "default": "per_file_limit_not_aggregate_disk_quota",
+          "title": "Files",
+          "type": "string"
+        },
+        "filesystem": {
+          "const": "admission_paths_only_no_process_confinement",
+          "default": "admission_paths_only_no_process_confinement",
+          "title": "Filesystem",
+          "type": "string"
+        },
+        "memory": {
+          "const": "no_tree_ram_or_vram_hard_limit",
+          "default": "no_tree_ram_or_vram_hard_limit",
+          "title": "Memory",
+          "type": "string"
+        },
+        "network": {
+          "const": "not_guaranteed",
+          "default": "not_guaranteed",
+          "title": "Network",
+          "type": "string"
+        },
+        "version": {
+          "const": "trusted-local-capabilities/1.0.0",
+          "default": "trusted-local-capabilities/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "TrustedCapabilities",
+      "type": "object"
+    },
+    "TrustedToolReview": {
+      "additionalProperties": false,
+      "description": "Installed by deployment assembly, not accepted on the execute request port.\n\nDigests detect drift. They do not make code reviewed. review_record must explain\nprovenance, inspected implementation/weights and the exact research scope.",
+      "properties": {
+        "allowlist_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Allowlist Checksum",
+          "type": "string"
+        },
+        "decisive_evidence": {
+          "const": false,
+          "default": false,
+          "title": "Decisive Evidence",
+          "type": "boolean"
+        },
+        "entrypoint": {
+          "$ref": "#/$defs/ReviewedFile"
+        },
+        "environment_root": {
+          "title": "Environment Root",
+          "type": "string"
+        },
+        "executable": {
+          "$ref": "#/$defs/ReviewedFile"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/ReviewedFile"
+          },
+          "maxItems": 16384,
+          "minItems": 1,
+          "title": "Files",
+          "type": "array"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "inventory_roots": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Inventory Roots",
+          "type": "array"
+        },
+        "manifest_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Manifest Checksum",
+          "type": "string"
+        },
+        "research_only": {
+          "const": true,
+          "default": true,
+          "title": "Research Only",
+          "type": "boolean"
+        },
+        "review_record": {
+          "$ref": "#/$defs/ReviewedFile"
+        },
+        "version": {
+          "default": "trusted-tool-review/1.0.0",
+          "enum": [
+            "trusted-tool-review/1.0.0",
+            "trusted-tool-review/1.1.0"
+          ],
+          "title": "Version",
+          "type": "string"
+        },
+        "working_directory": {
+          "const": "attempt/root",
+          "default": "attempt/root",
+          "title": "Working Directory",
+          "type": "string"
+        }
+      },
+      "required": [
+        "implementation_ref",
+        "manifest_checksum",
+        "allowlist_checksum",
+        "review_record",
+        "environment_root",
+        "executable",
+        "entrypoint",
+        "files",
+        "inventory_roots"
+      ],
+      "title": "TrustedToolReview",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_plan_checksums": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Allowed Plan Checksums",
+      "type": "array"
+    },
+    "capabilities": {
+      "$ref": "#/$defs/TrustedCapabilities"
+    },
+    "cleanup_seconds": {
+      "default": 5,
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Cleanup Seconds",
+      "type": "integer"
+    },
+    "closure_timeout_seconds": {
+      "default": 60,
+      "maximum": 600,
+      "minimum": 1,
+      "title": "Closure Timeout Seconds",
+      "type": "integer"
+    },
+    "cpu_count": {
+      "maximum": 128,
+      "minimum": 1,
+      "title": "Cpu Count",
+      "type": "integer"
+    },
+    "decision": {
+      "const": "06E-TRUSTED-LOCAL-001",
+      "default": "06E-TRUSTED-LOCAL-001",
+      "title": "Decision",
+      "type": "string"
+    },
+    "decisive_evidence": {
+      "const": false,
+      "default": false,
+      "title": "Decisive Evidence",
+      "type": "boolean"
+    },
+    "gpu_pool": {
+      "items": {
+        "pattern": "^GPU-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$",
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Gpu Pool",
+      "type": "array"
+    },
+    "log_bytes": {
+      "default": 65536,
+      "maximum": 1048576,
+      "minimum": 1024,
+      "title": "Log Bytes",
+      "type": "integer"
+    },
+    "max_concurrent": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Concurrent",
+      "type": "integer"
+    },
+    "max_resource_bytes": {
+      "default": 8589934592,
+      "maximum": 8589934592,
+      "minimum": 1,
+      "title": "Max Resource Bytes",
+      "type": "integer"
+    },
+    "nvidia_smi": {
+      "$ref": "#/$defs/ReviewedFile"
+    },
+    "per_gpu_concurrent": {
+      "const": 1,
+      "default": 1,
+      "title": "Per Gpu Concurrent",
+      "type": "integer"
+    },
+    "purpose": {
+      "enum": [
+        "debug",
+        "shadow"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "ram_budget_bytes": {
+      "maximum": 1099511627776,
+      "minimum": 1048576,
+      "title": "Ram Budget Bytes",
+      "type": "integer"
+    },
+    "reference": {
+      "$ref": "#/$defs/Ref"
+    },
+    "research_only": {
+      "const": true,
+      "default": true,
+      "title": "Research Only",
+      "type": "boolean"
+    },
+    "reviews": {
+      "items": {
+        "$ref": "#/$defs/TrustedToolReview"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Reviews",
+      "type": "array"
+    },
+    "selected_gpu": {
+      "pattern": "^GPU-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$",
+      "title": "Selected Gpu",
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "maximum": 3600,
+      "minimum": 1,
+      "title": "Timeout Seconds",
+      "type": "integer"
+    },
+    "version": {
+      "default": "trusted-local-policy/1.0.0",
+      "enum": [
+        "trusted-local-policy/1.0.0",
+        "trusted-local-policy/1.1.0"
+      ],
+      "title": "Version",
+      "type": "string"
+    },
+    "vram_budget_mib": {
+      "maximum": 1048576,
+      "minimum": 1,
+      "title": "Vram Budget Mib",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "reference",
+    "purpose",
+    "reviews",
+    "gpu_pool",
+    "selected_gpu",
+    "cpu_count",
+    "ram_budget_bytes",
+    "vram_budget_mib",
+    "timeout_seconds",
+    "nvidia_smi"
+  ],
+  "title": "UnboundSingleCasePolicy",
+  "type": "object"
+}

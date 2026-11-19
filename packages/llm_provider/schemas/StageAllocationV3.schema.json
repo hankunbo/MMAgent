@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "HistoricalRunUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Configuration Checksum",
+          "type": "string"
+        },
+        "control_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Control Checksum",
+          "type": "string"
+        },
+        "journal_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Journal Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "stage": {
+          "enum": [
+            "public",
+            "case"
+          ],
+          "title": "Stage",
+          "type": "string"
+        },
+        "used": {
+          "maximum": 40,
+          "minimum": 1,
+          "title": "Used",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run_id",
+        "configuration_checksum",
+        "control_checksum",
+        "journal_checksum",
+        "used",
+        "stage"
+      ],
+      "title": "HistoricalRunUsage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "configuration_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Configuration Checksums",
+      "type": "array"
+    },
+    "history": {
+      "items": {
+        "$ref": "#/$defs/HistoricalRunUsage"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "History",
+      "type": "array"
+    },
+    "public_journal_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Public Journal Checksum"
+    },
+    "public_run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Public Run Id",
+      "type": "string"
+    },
+    "public_used": {
+      "maximum": 12,
+      "minimum": 0,
+      "title": "Public Used",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "bounded-live-allocation/3.0.0",
+      "default": "bounded-live-allocation/3.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "session_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Session Id",
+      "type": "string"
+    },
+    "stage": {
+      "enum": [
+        "public",
+        "case"
+      ],
+      "title": "Stage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_id",
+    "stage",
+    "public_run_id",
+    "public_used",
+    "public_journal_checksum",
+    "configuration_checksums",
+    "history"
+  ],
+  "title": "StageAllocationV3",
+  "type": "object"
+}

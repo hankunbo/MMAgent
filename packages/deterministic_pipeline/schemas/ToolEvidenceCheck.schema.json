@@ -1,0 +1,199 @@
+{
+  "$defs": {
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "ToolExecutionStatus": {
+      "enum": [
+        "REQUESTED",
+        "DRY_RUN_VALIDATED",
+        "QUEUED",
+        "RUNNING",
+        "SUCCEEDED",
+        "FAILED",
+        "TIMED_OUT",
+        "CANCELLED",
+        "BLOCKED"
+      ],
+      "title": "ToolExecutionStatus",
+      "type": "string"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Artifact Checksums",
+      "type": "array"
+    },
+    "catalog_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "clinical_effect": {
+      "const": "NONE",
+      "default": "NONE",
+      "title": "Clinical Effect",
+      "type": "string"
+    },
+    "evidence_candidate": {
+      "title": "Evidence Candidate",
+      "type": "boolean"
+    },
+    "execution_status": {
+      "$ref": "#/$defs/ToolExecutionStatus"
+    },
+    "implementation_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "intended_use": {
+      "$ref": "#/$defs/IntendedUse"
+    },
+    "plan_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Plan Checksum",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "decisive_research",
+        "debug",
+        "shadow"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "qc_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Qc Checksums",
+      "type": "array"
+    },
+    "qc_status": {
+      "$ref": "#/$defs/QCStatus"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "tool-evidence-check/1.0.0",
+      "default": "tool-evidence-check/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Step Checksum",
+      "type": "string"
+    },
+    "technical_pass": {
+      "title": "Technical Pass",
+      "type": "boolean"
+    },
+    "tool_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "validation_status": {
+      "$ref": "#/$defs/ToolValidationStatus"
+    }
+  },
+  "required": [
+    "plan_checksum",
+    "step_checksum",
+    "implementation_ref",
+    "catalog_ref",
+    "tool_ref",
+    "execution_status",
+    "qc_status",
+    "validation_status",
+    "intended_use",
+    "purpose",
+    "technical_pass",
+    "evidence_candidate",
+    "reason",
+    "artifact_checksums",
+    "qc_checksums"
+  ],
+  "title": "ToolEvidenceCheck",
+  "type": "object"
+}

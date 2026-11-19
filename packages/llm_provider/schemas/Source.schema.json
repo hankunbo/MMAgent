@@ -1,0 +1,91 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "locator": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Locator",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "published_evidence",
+        "research_material"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "reference": {
+      "$ref": "#/$defs/Reference"
+    },
+    "release": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "state": {
+      "enum": [
+        "published",
+        "research_only"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "text": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    }
+  },
+  "required": [
+    "reference",
+    "locator",
+    "purpose",
+    "state",
+    "text"
+  ],
+  "title": "Source",
+  "type": "object"
+}

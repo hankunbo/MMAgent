@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "description": "Bounded retrieval coverage, not a claim that a passage proves an intent.",
+  "properties": {
+    "context_radius": {
+      "default": 1,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Context Radius",
+      "type": "integer"
+    },
+    "max_characters": {
+      "default": 12000,
+      "maximum": 16000,
+      "minimum": 1000,
+      "title": "Max Characters",
+      "type": "integer"
+    },
+    "max_per_document": {
+      "default": 3,
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Per Document",
+      "type": "integer"
+    },
+    "queries": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 6,
+      "minItems": 1,
+      "title": "Queries",
+      "type": "array"
+    },
+    "query_intents": {
+      "additionalProperties": {
+        "enum": [
+          "examination",
+          "target",
+          "alternative"
+        ],
+        "type": "string"
+      },
+      "title": "Query Intents",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "definition-passage-plan/2.0.0",
+      "default": "definition-passage-plan/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "queries",
+    "query_intents"
+  ],
+  "title": "IntentPassagePlan",
+  "type": "object"
+}

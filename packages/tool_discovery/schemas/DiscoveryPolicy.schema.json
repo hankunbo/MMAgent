@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-discovery-policy/1.0.0",
+      "default": "tool-discovery-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "max_records": {
+      "default": 32,
+      "maximum": 128,
+      "minimum": 1,
+      "title": "Max Records",
+      "type": "integer"
+    },
+    "max_sources": {
+      "default": 8,
+      "maximum": 16,
+      "minimum": 1,
+      "title": "Max Sources",
+      "type": "integer"
+    },
+    "max_seconds": {
+      "default": 10,
+      "maximum": 30,
+      "minimum": 1,
+      "title": "Max Seconds",
+      "type": "integer"
+    },
+    "commit_margin_seconds": {
+      "default": 2,
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Commit Margin Seconds",
+      "type": "integer"
+    },
+    "max_metadata_bytes": {
+      "default": 262144,
+      "maximum": 524288,
+      "minimum": 1024,
+      "title": "Max Metadata Bytes",
+      "type": "integer"
+    },
+    "top_k": {
+      "default": 5,
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Top K",
+      "type": "integer"
+    },
+    "max_memory_mb": {
+      "default": 4096,
+      "maximum": 65536,
+      "minimum": 1,
+      "title": "Max Memory Mb",
+      "type": "integer"
+    },
+    "allow_gpu": {
+      "const": false,
+      "default": false,
+      "title": "Allow Gpu",
+      "type": "boolean"
+    },
+    "weights": {
+      "default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.0,
+        0.5
+      ],
+      "items": {
+        "type": "number"
+      },
+      "title": "Weights",
+      "type": "array"
+    }
+  },
+  "title": "DiscoveryPolicy",
+  "type": "object"
+}

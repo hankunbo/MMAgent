@@ -1,0 +1,69 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "control_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Control Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "issued_at": {
+      "format": "date-time",
+      "title": "Issued At",
+      "type": "string"
+    },
+    "new_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "New Requests",
+      "type": "integer"
+    },
+    "origins_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Origins Checksum",
+      "type": "string"
+    },
+    "policy": {
+      "const": "accepted-local-review-aggregation/1.0.0",
+      "default": "accepted-local-review-aggregation/1.0.0",
+      "title": "Policy",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "accepted-aggregation-grant/1.0.0",
+      "default": "accepted-aggregation-grant/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "State Checksum",
+      "type": "string"
+    },
+    "submission_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Submission Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "state_checksum",
+    "origins_checksum",
+    "control_checksum",
+    "submission_checksum",
+    "issued_at",
+    "deadline"
+  ],
+  "title": "AggregationGrant",
+  "type": "object"
+}

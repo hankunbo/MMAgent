@@ -1,0 +1,181 @@
+{
+  "$defs": {
+    "EncodedFundusPNG": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "data_base64": {
+          "maxLength": 1398104,
+          "minLength": 1,
+          "title": "Data Base64",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "data_base64"
+      ],
+      "title": "EncodedFundusPNG",
+      "type": "object"
+    },
+    "FundusMasks": {
+      "additionalProperties": false,
+      "properties": {
+        "cup": {
+          "$ref": "#/$defs/EncodedFundusPNG"
+        },
+        "disc": {
+          "$ref": "#/$defs/EncodedFundusPNG"
+        },
+        "labels": {
+          "$ref": "#/$defs/EncodedFundusPNG"
+        },
+        "rim": {
+          "$ref": "#/$defs/EncodedFundusPNG"
+        }
+      },
+      "required": [
+        "labels",
+        "disc",
+        "cup",
+        "rim"
+      ],
+      "title": "FundusMasks",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_shape": {
+      "default": [
+        512,
+        512
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "const": 512,
+          "type": "integer"
+        },
+        {
+          "const": 512,
+          "type": "integer"
+        }
+      ],
+      "title": "Analysis Shape",
+      "type": "array"
+    },
+    "device": {
+      "enum": [
+        "cpu",
+        "cuda:0"
+      ],
+      "title": "Device",
+      "type": "string"
+    },
+    "disease_probability": {
+      "default": null,
+      "title": "Disease Probability",
+      "type": "null"
+    },
+    "engine": {
+      "const": "automorph-eight-wnet-single-file/1.0.0",
+      "default": "automorph-eight-wnet-single-file/1.0.0",
+      "title": "Engine",
+      "type": "string"
+    },
+    "ensemble_std_mean": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Ensemble Std Mean",
+      "type": "number"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "input_shape": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "maximum": 16777216,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "maximum": 16777216,
+          "minimum": 1,
+          "type": "integer"
+        }
+      ],
+      "title": "Input Shape",
+      "type": "array"
+    },
+    "masks": {
+      "$ref": "#/$defs/FundusMasks"
+    },
+    "masks_modified": {
+      "const": false,
+      "default": false,
+      "title": "Masks Modified",
+      "type": "boolean"
+    },
+    "physical_scale": {
+      "default": null,
+      "title": "Physical Scale",
+      "type": "null"
+    },
+    "quality_is_calibrated_accuracy": {
+      "const": false,
+      "default": false,
+      "title": "Quality Is Calibrated Accuracy",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "automorph-fundus-bundle/1.0.0",
+      "default": "automorph-fundus-bundle/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Checksum",
+      "type": "string"
+    },
+    "source_commit": {
+      "const": "9a953e5edfa419b454e9fb7b06235eb413828d05",
+      "default": "9a953e5edfa419b454e9fb7b06235eb413828d05",
+      "title": "Source Commit",
+      "type": "string"
+    },
+    "training_overlap": {
+      "const": "GAMMA_REFUGE_in_upstream_training_config_not_external_test",
+      "default": "GAMMA_REFUGE_in_upstream_training_config_not_external_test",
+      "title": "Training Overlap",
+      "type": "string"
+    },
+    "transform": {
+      "const": "RGB_bilinear_512_tensor_0_1_no_normalization",
+      "default": "RGB_bilinear_512_tensor_0_1_no_normalization",
+      "title": "Transform",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_checksum",
+    "input_checksum",
+    "input_shape",
+    "masks",
+    "device",
+    "ensemble_std_mean"
+  ],
+  "title": "FundusBundle",
+  "type": "object"
+}

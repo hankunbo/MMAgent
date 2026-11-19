@@ -1,0 +1,2464 @@
+{
+  "$defs": {
+    "ActionBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "steps": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Steps",
+          "type": "integer"
+        },
+        "reserved": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Reserved",
+          "type": "integer"
+        },
+        "started": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Started",
+          "type": "integer"
+        },
+        "confirmed": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Confirmed",
+          "type": "integer"
+        },
+        "branches": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Branches",
+          "type": "integer"
+        },
+        "retries": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "no_progress": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "No Progress",
+          "type": "integer"
+        },
+        "cancelled": {
+          "title": "Cancelled",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "steps",
+        "reserved",
+        "started",
+        "confirmed",
+        "branches",
+        "retries",
+        "no_progress",
+        "cancelled"
+      ],
+      "title": "ActionBudget",
+      "type": "object"
+    },
+    "ActionDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "planner-selection/1.0.0",
+          "default": "planner-selection/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "action_set": {
+          "$ref": "#/$defs/LegalActionSet"
+        },
+        "ranking": {
+          "$ref": "#/$defs/TraceRanking"
+        },
+        "strategy": {
+          "enum": [
+            "trace-ranking/1.0.0",
+            "semantic-baseline/1.0.0",
+            "legacy-id/1.0.0"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "selected_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Selected Id",
+          "type": "string"
+        },
+        "attempts": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "rejected_advice": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Rejected Advice",
+          "type": "array"
+        },
+        "decided_at": {
+          "format": "date-time",
+          "title": "Decided At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action_set",
+        "ranking",
+        "strategy",
+        "selected_id",
+        "attempts",
+        "decided_at"
+      ],
+      "title": "ActionDecision",
+      "type": "object"
+    },
+    "ActionRejection": {
+      "additionalProperties": false,
+      "properties": {
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "empty",
+            "search_truncated",
+            "missing_data",
+            "unknown_producer",
+            "missing_implementation",
+            "safety",
+            "technical",
+            "and_unsatisfied",
+            "budget",
+            "already_attempted",
+            "graph_not_legal"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "source_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Checksum"
+        }
+      },
+      "required": [
+        "target",
+        "category",
+        "reason"
+      ],
+      "title": "ActionRejection",
+      "type": "object"
+    },
+    "ArtifactConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        },
+        "qc_required": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Qc Required",
+          "type": "array"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "qc_required",
+        "scope_terms"
+      ],
+      "title": "ArtifactConstraint",
+      "type": "object"
+    },
+    "Binding": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "run_context_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Run Context Checksum",
+          "type": "string"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "locks": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Locks",
+          "type": "array"
+        },
+        "profile": {
+          "$ref": "#/$defs/Profile"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "deadline": {
+          "format": "date-time",
+          "title": "Deadline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "run_context_checksum",
+        "input_checksum",
+        "visible_checksum",
+        "graph",
+        "locks",
+        "profile",
+        "started_at",
+        "deadline"
+      ],
+      "title": "Binding",
+      "type": "object"
+    },
+    "Command": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "expected_revision": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Expected Revision",
+          "type": "integer"
+        },
+        "action": {
+          "enum": [
+            "load",
+            "retrieve",
+            "instantiate",
+            "identify",
+            "select",
+            "prepare",
+            "execute",
+            "recover",
+            "verify",
+            "review",
+            "fallback",
+            "stop",
+            "cancel"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "input_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Input Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "expected_revision",
+        "action"
+      ],
+      "title": "Command",
+      "type": "object"
+    },
+    "Component": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "information_gain",
+            "directness",
+            "cost",
+            "latency",
+            "failure_risk"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "disabled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "state",
+        "value",
+        "source_ref"
+      ],
+      "title": "Component",
+      "type": "object"
+    },
+    "Control": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "planner-control/1.0.0",
+          "default": "planner-control/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "binding": {
+          "$ref": "#/$defs/Binding"
+        },
+        "phase": {
+          "$ref": "#/$defs/Phase",
+          "default": "initialize"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "revision": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "steps": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Steps",
+          "type": "integer"
+        },
+        "reserved": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Reserved",
+          "type": "integer"
+        },
+        "started": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Started",
+          "type": "integer"
+        },
+        "confirmed": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Confirmed",
+          "type": "integer"
+        },
+        "api_requests": {
+          "const": 0,
+          "default": 0,
+          "title": "Api Requests",
+          "type": "integer"
+        },
+        "observed_cost": {
+          "default": null,
+          "title": "Observed Cost",
+          "type": "null"
+        },
+        "branches": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Branches",
+          "type": "integer"
+        },
+        "retries": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "no_progress": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "No Progress",
+          "type": "integer"
+        },
+        "cancelled": {
+          "default": false,
+          "title": "Cancelled",
+          "type": "boolean"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/packages__planner_control__models__Candidate"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/packages__planner_control__models__Candidate"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "attempted": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Attempted",
+          "type": "array"
+        },
+        "result_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Result Refs",
+          "type": "array"
+        },
+        "gaps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "title": "Gaps",
+          "type": "array"
+        },
+        "pending": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pending"
+            },
+            {
+              "$ref": "#/$defs/SelectionPending"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pending"
+        },
+        "events": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Event"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "memory": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Memory",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "binding",
+        "graph"
+      ],
+      "title": "Control",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "port_name": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "artifact_options": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Artifact Options",
+          "type": "array"
+        },
+        "producer_options": {
+          "items": {
+            "$ref": "#/$defs/FeasibleCandidate"
+          },
+          "maxItems": 512,
+          "title": "Producer Options",
+          "type": "array"
+        },
+        "optional_missing": {
+          "title": "Optional Missing",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "port_name",
+        "required",
+        "cardinality_min",
+        "cardinality_max",
+        "constraint",
+        "artifact_options",
+        "producer_options",
+        "optional_missing"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "planner-event/1.0.0",
+          "default": "planner-event/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "command": {
+          "$ref": "#/$defs/Command"
+        },
+        "request_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Request Checksum",
+          "type": "string"
+        },
+        "before": {
+          "$ref": "#/$defs/Phase"
+        },
+        "after": {
+          "$ref": "#/$defs/Phase"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Outcome"
+            },
+            {
+              "$ref": "#/$defs/SelectionOutcome"
+            }
+          ],
+          "title": "Outcome"
+        },
+        "at": {
+          "format": "date-time",
+          "title": "At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "command",
+        "request_checksum",
+        "before",
+        "after",
+        "graph",
+        "outcome",
+        "at"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "ExecutionPolicy": {
+      "enum": [
+        "research",
+        "clinical_deployment"
+      ],
+      "title": "ExecutionPolicy",
+      "type": "string"
+    },
+    "Failure": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "missing_input",
+            "product_demand",
+            "mapping_unresolved",
+            "unknown_producer",
+            "capability_gap",
+            "admission_rejected",
+            "execution_failed",
+            "qc_failed",
+            "medical_negative",
+            "valid_refutation",
+            "version_conflict"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "gap": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Gap"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "category",
+        "target",
+        "reason",
+        "sources"
+      ],
+      "title": "Failure",
+      "type": "object"
+    },
+    "FeasibleCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Identity",
+          "type": "string"
+        },
+        "mapping_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "candidate": {
+          "$ref": "#/$defs/packages__grounding__models__Candidate"
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/Component"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Components",
+          "type": "array"
+        }
+      },
+      "required": [
+        "identity",
+        "mapping_ref",
+        "candidate",
+        "dependencies",
+        "components"
+      ],
+      "title": "FeasibleCandidate",
+      "type": "object"
+    },
+    "Gap": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "missing_data",
+            "product_demand",
+            "mapping",
+            "unknown_producer",
+            "capability",
+            "safety",
+            "technical",
+            "unavailable_port"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "capability_code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Code"
+        },
+        "requirement_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dispatch": {
+          "const": "recorded_for_11_not_dispatched",
+          "default": "recorded_for_11_not_dispatched",
+          "title": "Dispatch",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "reason"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "port",
+        "constraint",
+        "required",
+        "cardinality_min",
+        "cardinality_max"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "LegalAction": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "planner-action/1.0.0",
+          "enum": [
+            "planner-action/1.0.0",
+            "planner-research-action/1.0.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "observe",
+            "select_candidate",
+            "request_review",
+            "fallback",
+            "stop"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Reference"
+        },
+        "branch": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Branch",
+          "type": "string"
+        },
+        "candidate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/packages__planner_control__models__Candidate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "candidate_ref": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Candidate Ref"
+        },
+        "required_inputs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Required Inputs",
+          "type": "array"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "expected_artifact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "entrypoint": {
+          "enum": [
+            "ResearchPlannerSteps.invoke",
+            "ToolAdmissionService.admit",
+            "Planner.step",
+            "ResearchReview.run"
+          ],
+          "title": "Entrypoint",
+          "type": "string"
+        },
+        "preconditions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Preconditions",
+          "type": "array"
+        },
+        "reasons": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/Component"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "failure_count": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Failure Count",
+          "type": "integer"
+        },
+        "failure_history": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Failure History",
+          "type": "array"
+        },
+        "failure_history_scope": {
+          "const": "current_run",
+          "default": "current_run",
+          "title": "Failure History Scope",
+          "type": "string"
+        },
+        "validation_level": {
+          "default": "unknown",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Validation Level",
+          "type": "string"
+        },
+        "review_required": {
+          "default": false,
+          "title": "Review Required",
+          "type": "boolean"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "target",
+        "branch",
+        "candidate",
+        "candidate_ref",
+        "required_inputs",
+        "entrypoint",
+        "preconditions",
+        "reasons",
+        "components",
+        "expires_at"
+      ],
+      "title": "LegalAction",
+      "type": "object"
+    },
+    "LegalActionSet": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "legal-action-set/1.0.0",
+          "default": "legal-action-set/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "binding": {
+          "$ref": "#/$defs/Binding"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "state_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "State Checksum",
+          "type": "string"
+        },
+        "budget": {
+          "$ref": "#/$defs/ActionBudget"
+        },
+        "policy": {
+          "$ref": "#/$defs/RankingPolicy"
+        },
+        "safety_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Safety Checksum",
+          "type": "string"
+        },
+        "availability_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Availability Checksum",
+          "type": "string"
+        },
+        "source_checksums": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Source Checksums",
+          "type": "array"
+        },
+        "plan_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Plan Refs",
+          "type": "array"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/LegalAction"
+          },
+          "title": "Actions",
+          "type": "array"
+        },
+        "rejections": {
+          "items": {
+            "$ref": "#/$defs/ActionRejection"
+          },
+          "title": "Rejections",
+          "type": "array"
+        },
+        "enumeration": {
+          "default": "complete",
+          "enum": [
+            "complete",
+            "search_truncated"
+          ],
+          "title": "Enumeration",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "binding",
+        "graph",
+        "state_checksum",
+        "budget",
+        "policy",
+        "safety_checksum",
+        "availability_checksum",
+        "source_checksums",
+        "plan_refs",
+        "actions",
+        "rejections",
+        "expires_at",
+        "checksum"
+      ],
+      "title": "LegalActionSet",
+      "type": "object"
+    },
+    "Outcome": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "default": "ok",
+          "enum": [
+            "ok",
+            "gap",
+            "unavailable",
+            "rejected",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "default": "confirmed",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Refs",
+          "type": "array"
+        },
+        "candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/packages__planner_control__models__Candidate"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "gaps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "title": "Gaps",
+          "type": "array"
+        },
+        "started": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Started",
+          "type": "integer"
+        },
+        "confirmed": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Confirmed",
+          "type": "integer"
+        },
+        "progress": {
+          "default": true,
+          "title": "Progress",
+          "type": "boolean"
+        }
+      },
+      "title": "Outcome",
+      "type": "object"
+    },
+    "PathGraphSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "path-graph-validation/1.0.0",
+          "default": "path-graph-validation/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "domain": {
+          "enum": [
+            "research",
+            "formal_synthetic"
+          ],
+          "title": "Domain",
+          "type": "string"
+        },
+        "purpose": {
+          "enum": [
+            "research_offline",
+            "synthetic_mechanism"
+          ],
+          "title": "Purpose",
+          "type": "string"
+        },
+        "case_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "graph": {
+          "additionalProperties": true,
+          "title": "Graph",
+          "type": "object"
+        },
+        "binding": {
+          "additionalProperties": true,
+          "title": "Binding",
+          "type": "object"
+        },
+        "paths": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Paths",
+          "type": "array"
+        },
+        "goals": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Goals",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "unresolved": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Unresolved",
+          "type": "array"
+        },
+        "relations": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Relations",
+          "type": "array"
+        },
+        "duplicate_groups": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Duplicate Groups",
+          "type": "array"
+        },
+        "coverage": {
+          "additionalProperties": true,
+          "title": "Coverage",
+          "type": "object"
+        },
+        "risk": {
+          "additionalProperties": true,
+          "title": "Risk",
+          "type": "object"
+        },
+        "review_facts": {
+          "additionalProperties": true,
+          "title": "Review Facts",
+          "type": "object"
+        },
+        "original_report": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Report"
+        },
+        "original_report_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Report Checksum"
+        },
+        "legal_candidates": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Legal Candidates",
+          "type": "array"
+        },
+        "stop_candidate": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop Candidate"
+        },
+        "clinical_acceptance": {
+          "const": false,
+          "default": false,
+          "title": "Clinical Acceptance",
+          "type": "boolean"
+        },
+        "live_status": {
+          "const": "live_domain_acceptance_not_enabled",
+          "default": "live_domain_acceptance_not_enabled",
+          "title": "Live Status",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "domain",
+        "purpose",
+        "case_code",
+        "run_id",
+        "graph",
+        "binding",
+        "paths",
+        "goals",
+        "evidence",
+        "unresolved",
+        "coverage",
+        "risk",
+        "review_facts",
+        "checksum"
+      ],
+      "title": "PathGraphSummary",
+      "type": "object"
+    },
+    "Pending": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "$ref": "#/$defs/Command"
+        },
+        "request_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Request Checksum",
+          "type": "string"
+        },
+        "execution_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Execution Key",
+          "type": "string"
+        },
+        "launch_claimed": {
+          "default": false,
+          "title": "Launch Claimed",
+          "type": "boolean"
+        },
+        "reserved": {
+          "default": false,
+          "title": "Reserved",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "command",
+        "request_checksum",
+        "execution_key"
+      ],
+      "title": "Pending",
+      "type": "object"
+    },
+    "Phase": {
+      "enum": [
+        "initialize",
+        "retrieve",
+        "instantiate",
+        "identify",
+        "select",
+        "prepare",
+        "execute",
+        "verify",
+        "review",
+        "fallback",
+        "stopped"
+      ],
+      "title": "Phase",
+      "type": "string"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "Profile": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "planner-baseline/1.0.0",
+          "default": "planner-baseline/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "max_steps": {
+          "default": 48,
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Max Steps",
+          "type": "integer"
+        },
+        "max_actions": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Actions",
+          "type": "integer"
+        },
+        "max_branches": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Branches",
+          "type": "integer"
+        },
+        "max_retries": {
+          "default": 2,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "max_no_progress": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max No Progress",
+          "type": "integer"
+        },
+        "seconds": {
+          "default": 300,
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Seconds",
+          "type": "integer"
+        },
+        "expert_required": {
+          "default": false,
+          "title": "Expert Required",
+          "type": "boolean"
+        }
+      },
+      "title": "Profile",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "RankingPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "planner-ranking/1.0.0",
+          "default": "planner-ranking/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "order": {
+          "default": [
+            "directness",
+            "cost",
+            "latency",
+            "failure_risk"
+          ],
+          "items": {
+            "enum": [
+              "information_gain",
+              "directness",
+              "cost",
+              "latency",
+              "failure_risk"
+            ],
+            "type": "string"
+          },
+          "title": "Order",
+          "type": "array"
+        },
+        "information_gain_enabled": {
+          "default": false,
+          "title": "Information Gain Enabled",
+          "type": "boolean"
+        },
+        "missing_order": {
+          "const": "last",
+          "default": "last",
+          "title": "Missing Order",
+          "type": "string"
+        },
+        "tie_break": {
+          "const": "semantic_action",
+          "default": "semantic_action",
+          "title": "Tie Break",
+          "type": "string"
+        },
+        "failure_history_first": {
+          "const": true,
+          "default": true,
+          "title": "Failure History First",
+          "type": "boolean"
+        },
+        "max_agent_attempts": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Agent Attempts",
+          "type": "integer"
+        },
+        "suggestion_seconds": {
+          "default": 30,
+          "maximum": 120,
+          "minimum": 1,
+          "title": "Suggestion Seconds",
+          "type": "integer"
+        },
+        "fallback": {
+          "default": "semantic_baseline",
+          "enum": [
+            "semantic_baseline",
+            "legacy_id_baseline"
+          ],
+          "title": "Fallback",
+          "type": "string"
+        }
+      },
+      "title": "RankingPolicy",
+      "type": "object"
+    },
+    "RecoveryIncident": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "recovery-incident/1.0.0",
+          "default": "recovery-incident/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "control": {
+          "$ref": "#/$defs/Control"
+        },
+        "command": {
+          "$ref": "#/$defs/Command"
+        },
+        "failure": {
+          "$ref": "#/$defs/Failure"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "action_set_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Action Set Checksum"
+        },
+        "stop_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stop Reason"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PathGraphSummary"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "requirements": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ToolRequirement"
+          },
+          "title": "Requirements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "control",
+        "command",
+        "failure",
+        "policy_checksum",
+        "action_set_checksum",
+        "stop_reason"
+      ],
+      "title": "RecoveryIncident",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "SelectionOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "default": "ok",
+          "enum": [
+            "ok",
+            "gap",
+            "unavailable",
+            "rejected",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "default": "confirmed",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Refs",
+          "type": "array"
+        },
+        "candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/packages__planner_control__models__Candidate"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "gaps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "title": "Gaps",
+          "type": "array"
+        },
+        "started": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Started",
+          "type": "integer"
+        },
+        "confirmed": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Confirmed",
+          "type": "integer"
+        },
+        "progress": {
+          "default": true,
+          "title": "Progress",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "planner-selection-outcome/1.0.0",
+          "default": "planner-selection-outcome/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "decision": {
+          "$ref": "#/$defs/ActionDecision"
+        }
+      },
+      "required": [
+        "decision"
+      ],
+      "title": "SelectionOutcome",
+      "type": "object"
+    },
+    "SelectionPending": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "$ref": "#/$defs/Command"
+        },
+        "request_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Request Checksum",
+          "type": "string"
+        },
+        "execution_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Execution Key",
+          "type": "string"
+        },
+        "launch_claimed": {
+          "default": false,
+          "title": "Launch Claimed",
+          "type": "boolean"
+        },
+        "reserved": {
+          "default": false,
+          "title": "Reserved",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": "planner-selection-pending/1.0.0",
+          "default": "planner-selection-pending/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "decision": {
+          "$ref": "#/$defs/ActionDecision"
+        }
+      },
+      "required": [
+        "command",
+        "request_checksum",
+        "execution_key",
+        "decision"
+      ],
+      "title": "SelectionPending",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    },
+    "ToolRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "tool-requirement-intent/1.0.0",
+          "default": "tool-requirement-intent/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "origin_run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Origin Run Id",
+          "type": "string"
+        },
+        "binding_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Binding Checksum",
+          "type": "string"
+        },
+        "catalog": {
+          "$ref": "#/$defs/Reference"
+        },
+        "gap": {
+          "$ref": "#/$defs/Gap"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "available_inputs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Available Inputs",
+          "type": "array"
+        },
+        "attempted_branches": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Attempted Branches",
+          "type": "array"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "extension": {
+          "const": "recorded_for_11_not_dispatched",
+          "default": "recorded_for_11_not_dispatched",
+          "title": "Extension",
+          "type": "string"
+        },
+        "replay": {
+          "const": "new_run_with_new_locks_and_admission_required",
+          "default": "new_run_with_new_locks_and_admission_required",
+          "title": "Replay",
+          "type": "string"
+        }
+      },
+      "required": [
+        "origin_run_id",
+        "binding_checksum",
+        "catalog",
+        "gap",
+        "sources",
+        "available_inputs",
+        "attempted_branches"
+      ],
+      "title": "ToolRequirement",
+      "type": "object"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    },
+    "TraceRanking": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "trace-ranking/1.0.0",
+          "default": "trace-ranking/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "set_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Set Checksum",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "ranked_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "minItems": 1,
+          "title": "Ranked Ids",
+          "type": "array"
+        },
+        "reason": {
+          "maxLength": 240,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f]+$",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "set_checksum",
+        "policy_checksum",
+        "ranked_ids",
+        "reason"
+      ],
+      "title": "TraceRanking",
+      "type": "object"
+    },
+    "packages__grounding__models__Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "capability_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "workflow_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "output": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/Input"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "validation_required": {
+          "$ref": "#/$defs/ToolValidationStatus"
+        },
+        "intended_use": {
+          "$ref": "#/$defs/IntendedUse"
+        },
+        "execution_policy": {
+          "$ref": "#/$defs/ExecutionPolicy"
+        },
+        "estimate_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "capability_ref",
+        "tool_ref",
+        "implementation_ref",
+        "workflow_ref",
+        "output_port",
+        "output",
+        "inputs",
+        "validation_required",
+        "intended_use",
+        "execution_policy",
+        "estimate_ref"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "packages__planner_control__models__Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "branch": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Branch",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "observe",
+            "tool",
+            "new_review",
+            "new_branch"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "input_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Input Refs",
+          "type": "array"
+        },
+        "and_ready": {
+          "title": "And Ready",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "branch",
+        "operation",
+        "and_ready"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "recovery-stop-report/1.0.0",
+      "default": "recovery-stop-report/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "incident": {
+      "$ref": "#/$defs/RecoveryIncident"
+    },
+    "control_observed": {
+      "$ref": "#/$defs/Control"
+    },
+    "expert_result": {
+      "additionalProperties": true,
+      "title": "Expert Result",
+      "type": "object"
+    },
+    "provider_requests": {
+      "additionalProperties": true,
+      "title": "Provider Requests",
+      "type": "object"
+    },
+    "stop_reason": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Stop Reason",
+      "type": "string"
+    },
+    "unobserved_nodes": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Unobserved Nodes",
+      "type": "array"
+    },
+    "retained_evidence": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Retained Evidence",
+      "type": "array"
+    },
+    "attempted_alternatives": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Attempted Alternatives",
+      "type": "array"
+    },
+    "unresolved": {
+      "items": {
+        "$ref": "#/$defs/Gap"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    },
+    "conclusion_status": {
+      "const": "bounded_research_stop",
+      "default": "bounded_research_stop",
+      "title": "Conclusion Status",
+      "type": "string"
+    },
+    "scope_limitations": {
+      "const": "declared_research_requirements_only_no_clinical_conclusion",
+      "default": "declared_research_requirements_only_no_clinical_conclusion",
+      "title": "Scope Limitations",
+      "type": "string"
+    },
+    "final_control": {
+      "const": "read_original_Planner_report_after_confirmation",
+      "default": "read_original_Planner_report_after_confirmation",
+      "title": "Final Control",
+      "type": "string"
+    },
+    "clinical_effect": {
+      "default": null,
+      "title": "Clinical Effect",
+      "type": "null"
+    }
+  },
+  "required": [
+    "incident",
+    "control_observed",
+    "expert_result",
+    "provider_requests",
+    "stop_reason",
+    "unobserved_nodes",
+    "retained_evidence",
+    "attempted_alternatives",
+    "unresolved"
+  ],
+  "title": "RecoveryStopReport",
+  "type": "object"
+}

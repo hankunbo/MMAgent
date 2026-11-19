@@ -1,0 +1,59 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "active": {
+      "default": true,
+      "title": "Active",
+      "type": "boolean"
+    },
+    "allow_private_with_approval": {
+      "default": false,
+      "title": "Allow Private With Approval",
+      "type": "boolean"
+    },
+    "allowed_classes": {
+      "default": [
+        "public",
+        "deidentified"
+      ],
+      "items": {
+        "enum": [
+          "public",
+          "deidentified"
+        ],
+        "type": "string"
+      },
+      "title": "Allowed Classes",
+      "type": "array"
+    },
+    "max_wire_bytes": {
+      "maximum": 16777216,
+      "minimum": 1,
+      "title": "Max Wire Bytes",
+      "type": "integer"
+    },
+    "policy_id": {
+      "pattern": "^POLICY:[A-Z0-9_]+$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "research",
+      "default": "research",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "platform-egress-policy/1.0.0",
+      "default": "platform-egress-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "policy_id",
+    "max_wire_bytes"
+  ],
+  "title": "Policy",
+  "type": "object"
+}

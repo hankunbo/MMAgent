@@ -1,0 +1,74 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "const": "engineering_only",
+      "default": "engineering_only",
+      "title": "Authority",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "APPROVED",
+        "REJECTED",
+        "WITHDRAWN"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "dependency_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Dependency Checksum",
+      "type": "string"
+    },
+    "owner": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Owner",
+      "type": "string"
+    },
+    "reviewed_at": {
+      "format": "date-time",
+      "title": "Reviewed At",
+      "type": "string"
+    },
+    "reviewer": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Reviewer",
+      "type": "string"
+    },
+    "subject_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Subject Checksum",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "version": {
+      "const": "engineering-stop-review/1.0.0",
+      "default": "engineering-stop-review/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "subject_checksum",
+    "dependency_checksum",
+    "reviewer",
+    "owner",
+    "decision",
+    "reviewed_at",
+    "synthetic"
+  ],
+  "title": "EngineeringReview",
+  "type": "object"
+}

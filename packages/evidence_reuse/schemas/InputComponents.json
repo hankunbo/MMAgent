@@ -1,0 +1,243 @@
+{
+  "$defs": {
+    "Component": {
+      "additionalProperties": false,
+      "properties": {
+        "concept": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Concept",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 180,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "scalar",
+            "missing_modality"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "laterality": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "shape": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Shape",
+          "type": "array"
+        },
+        "source_checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "source_field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Field"
+        },
+        "source_locator": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Source Locator",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "obtained",
+            "missing"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timepoint": {
+          "default": "unknown",
+          "title": "Timepoint",
+          "type": "string"
+        },
+        "transforms": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Transforms",
+          "type": "array"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "unit_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Basis"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "concept",
+        "status",
+        "source_checksum",
+        "source_locator"
+      ],
+      "title": "Component",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "adapter_version": {
+      "title": "Adapter Version",
+      "type": "string"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/Component"
+      },
+      "maxItems": 128,
+      "title": "Components",
+      "type": "array"
+    },
+    "dataset": {
+      "title": "Dataset",
+      "type": "string"
+    },
+    "hidden_fields_used": {
+      "const": false,
+      "default": false,
+      "title": "Hidden Fields Used",
+      "type": "boolean"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "patient_group": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Patient Group"
+    },
+    "patient_independence": {
+      "const": "unproven",
+      "default": "unproven",
+      "title": "Patient Independence",
+      "type": "string"
+    },
+    "runtime_ready": {
+      "title": "Runtime Ready",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "case-input-components/1.0.0",
+      "default": "case-input-components/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "title": "Scope",
+      "type": "string"
+    },
+    "split": {
+      "enum": [
+        "training",
+        "development_preparation"
+      ],
+      "title": "Split",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dataset",
+    "adapter_version",
+    "scope",
+    "input_checksum",
+    "split",
+    "patient_group",
+    "components",
+    "runtime_ready"
+  ],
+  "title": "InputComponents",
+  "type": "object"
+}

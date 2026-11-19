@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anatomical_targets": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Anatomical Targets",
+      "type": "array"
+    },
+    "dimensions_max": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Dimensions Max",
+      "type": "array"
+    },
+    "dimensions_min": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Dimensions Min",
+      "type": "array"
+    },
+    "media_types": {
+      "default": [
+        "application/json"
+      ],
+      "items": {
+        "const": "application/json",
+        "type": "string"
+      },
+      "title": "Media Types",
+      "type": "array"
+    },
+    "port": {
+      "$ref": "#/$defs/PortRef"
+    },
+    "schema_version": {
+      "const": "json-output-rule/1.0.0",
+      "default": "json-output-rule/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "port",
+    "dimensions_min",
+    "dimensions_max",
+    "anatomical_targets"
+  ],
+  "title": "JSONOutputRule",
+  "type": "object"
+}

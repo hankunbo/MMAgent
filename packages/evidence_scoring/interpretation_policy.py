@@ -1,0 +1,323 @@
+"""Source-specific adjudication of this frozen case, not universal disease rules."""
+
+VERSION = "argument-interpretation/4.0.0"
+
+# Manual direct viewing of the unchanged 512 x 664 SLO, 2026-09-20.
+# These are restricted coarse observations, NOT negative tests of fine pathology.
+VISUAL = [
+    {
+        "id": "visual:rnfl_gross_pattern",
+        "parent": "criterion:RNFL_DEFECT",
+        "title": "可辨范围的粗大RNFL楔形外观",
+        "region": [95, 135, 410, 550],
+        "observed": "盘周可见放射状明暗纹理；在可辨上方及左上区域，"
+        "未辨认出边界清楚、从盘缘向外延伸的宽大暗楔。"
+        "横向条带穿过多个区域，右下亮区不作为RNFL正常证据。",
+        "unresolved": "只覆盖可辨粗大纹理，不评价细微或弥漫变薄；"
+        "条带/阴影区域及真实RNFL厚度仍未确定。",
+        "ratings": [0.20, 0.60, 0.20],
+        "effect": -0.04,
+        "lower": -0.12,
+        "upper": 0.20,
+        "family": "rnfl",
+        "reference": "AAO ONH/RNFL检查：局灶或弥漫RNFL变薄属于观察主题，"
+        "检查方式与影像质量影响可解释范围；原图缺少厚度测量。",
+    },
+    {
+        "id": "visual:vessel_gross_course",
+        "parent": "association:DISC_VESSEL_COURSE",
+        "title": "可辨盘内血管段的粗大走行",
+        "region": [210, 235, 335, 410],
+        "observed": "可辨主干从盘区向上、向下连续延伸并分支；"
+        "在这些可追踪片段未识别出清楚的孤立悬空环盘血管外观。"
+        "重叠暗线不按另一条独立裸露血管计算。",
+        "unresolved": "灰度二维像缺少深度信息；眼别及中央凹方向未可靠确认，"
+        "因此鼻侧移位、细微血管裸露均未判定。",
+        "ratings": [0.25, 0.45, 0.15],
+        "effect": -0.03,
+        "lower": -0.10,
+        "upper": 0.25,
+        "family": "cup-rim",
+        "reference": "AAO PDF第24—25页列举环盘血管裸露和鼻侧移位，优选放大立体观察。"
+        "此项仅是可辨片段的低适用性研究观察，不确认这些征象全图不存在。",
+    },
+]
+
+# state, observation/comparison, reference interpretation, unresolved reason, next step.
+# Every existing item is explicitly addressed; no generic missing-reference fallback.
+DECISIONS = {
+    "association:ARTERIOLAR_CALIBER": (
+        "method_mismatch",
+        "6.1068像素是全血管面积/骨架长度，不是动脉CRAE。",
+        "Blue Mountains研究比较校准CRAE与10年新发OAG；2023年匹配研究未检出相同组间差异。",
+        "缺标准ROI、动脉选择与物理尺度，不能将6.1068像素套入微米CRAE或其标准差。",
+        "先按同定义得到CRAE及尺度，再核对参照；需要算法补项，不需重新分割。",
+    ),
+    "association:AV_TORTUOSITY": (
+        "method_mismatch",
+        "1.0797是混合血管段弧弦比中位数；不是分别的动/静脉参数。",
+        "Singapore Malay摘要报告较低动、静脉迂曲度关联；"
+        "未提供可直接套用本例的分位切点。另有未检出差异的研究。",
+        "分组、ROI、曲率/弧弦定义及汇总未对应；86岁还超出该队列40—80岁范围。",
+        "复用已有动/静脉mask分别计算匹配参数，再取得同方法参照；不从接近1就推断疾病。",
+    ),
+    "association:VENULAR_BRANCH_ANGLE": (
+        "reference_missing",
+        "两处分叉为16.595°、83.133°，中位49.864°；一小一大，仅两个有效点。",
+        "Singapore Malay研究报告较窄静脉角与青光眼相关；摘要给OR而非本例可用的角度分界。",
+        "缺同ROI、血管选择和年龄范围的比较分布；不能以小于90°或任意正常角度当作青光眼阈值。",
+        "取得原研究角度分布与选择规程，或同方法独立对照；保留两点，不用均值掩盖差异。",
+    ),
+    "association:VASCULAR_SKELETON_DENSITY": (
+        "method_mismatch",
+        "0.116687是血管面积/整图面积，不是骨架长度密度。",
+        "UK Biobank全文Methods定义VSD为单像素骨架总长度/图像面积，动静脉分别测量。",
+        "分子定义错误且未分动静脉；不能把面积占比改个名称代替VSD。",
+        "使用已有动静脉mask补骨架长度密度；这是算法/方法补齐，非新增模型需求。",
+    ),
+    "association:VASCULAR_FRACTAL": (
+        "method_mismatch",
+        "1.526987是现有全图混合血管的特定盒计数结果。",
+        "UK Biobank分析动/静脉FD与随访发生风险；2023年研究未见组间显著差异。",
+        "骨架/掩膜、动静脉、尺度区间和成像域未对齐；研究终点是新发风险，不是直接单例诊断。",
+        "核对同定义FD与独立参照，不套其他实现的绝对FD范围。",
+    ),
+    "association:DISC_SHAPE_CONTEXT": (
+        "context_only",
+        "短/长轴0.7210，长/短轴1.3870；二维轮廓偏椭圆。1.387≥1.3仅与Lee研究的照片形态分组作探索对照。",
+        "Lee近视POAG队列倾斜组进展较少；Sawada近视OAG双眼研究较大倾斜与较快进展有关，不能合并成单向患病证据。",
+        "未知屈光度/眼轴，二维椭圆不证明三维倾斜或近视；两个来源的进展终点不等于当前是否患病。",
+        "作为杯盘解释背景保留，不独立加患病分；补屈光/眼轴后再评价适用性。",
+    ),
+    "association:DISC_VESSEL_COURSE": (
+        "ungradable",
+        "已直接查看盘区主干；粗大可追踪片段另有独立、同源去重的低权重评阅。",
+        "AAO列举鼻侧移位与环盘血管裸露。",
+        "本例鼻颞方向未确定，二维图缺深度，不能完整判定原条件。",
+        "使用粗大走行子项；原鼻侧移位条件需可靠方向与可辨细节。",
+    ),
+    "association:PERIPAPILLARY_APPEARANCE": (
+        "context_only",
+        "原图约x=285—375、y=285—515可见盘区右下方亮带，宽度不均；该坐标不标作解剖颞侧。",
+        "AAO的相关征象是beta区盘周萎缩；并非任意灰度亮带。",
+        "图上反射亮带不能区分beta/gamma区、曝光差异或近视相关改变，不能据此赋予青光眼正向分。",
+        "亮带已记录为解释背景；需要能分辨组织特征的影像/检查，不重复提交同一不分型观察。",
+    ),
+    "association:INTEREYE_COMPARISON": (
+        "input_missing",
+        "当前仅一张单眼图，未取得可靠配对另一眼。",
+        "AAO提及杯盘不对称。",
+        "没有第二眼就无法得到差值；不能使用另一患者或另一数据集图片。",
+        "补同患者另一眼与可靠眼别。",
+    ),
+    "association:STRUCTURE_FUNCTION_MATCH": (
+        "input_missing",
+        "结构测量已存在，但无同眼视野结果。",
+        "AAO要求结构与功能结合。",
+        "无视野位置和可靠性，不能断言一致或不一致。",
+        "补同眼视野后作位置匹配。",
+    ),
+    "criterion:DISC_HEMORRHAGE": (
+        "ungradable",
+        "已复看盘缘；灰度暗线与血管/成像阴影混杂，未能确认独立出血候选。",
+        "原EGS/AAO要求结合裂片/火焰样形态、位置及邻近结构。",
+        "这不是可评估全盘范围的阴性检查；缺颜色和可分辨形态，不给排除性分数。",
+        "补能区分出血的图像或检查记录；不新增伪阴性。",
+    ),
+    "criterion:RIM_NOTCH": (
+        "ungradable",
+        "原图和叠加图粗大连续性已记录，细微局灶切迹仍受血管和条带影响。",
+        "盘沿局灶缺损与粗大环连续不是同一检查。",
+        "掩膜完整不能证实真实细微盘沿完整。",
+        "保留粗大连续性方向；本项需可辨局部细节。",
+    ),
+    "criterion:RNFL_DEFECT": (
+        "ungradable",
+        "已复看盘周纹理；可辨范围的粗大楔形外观另列低权重评阅。",
+        "AAO描述局灶/弥漫RNFL变薄并说明不同检查方式的信息不同。",
+        "全图细微缺损及真实厚度不能由可辨局部粗纹理确认。",
+        "使用范围受限的粗大子项；细微或厚度仍需对应检查。",
+    ),
+    "criterion:FAMILY": (
+        "input_missing",
+        "没有家族史字段。",
+        "风险背景须有本人明确记录。",
+        "未提供不是阴性家族史。",
+        "补家族史。",
+    ),
+    "criterion:FIELD": (
+        "input_missing",
+        "无视野点位及测试结果。",
+        "视功能需要实际检查。",
+        "不能从图像补造视野。",
+        "补视野检查。",
+    ),
+    "criterion:IOP": (
+        "input_missing",
+        "无眼压及测量时间/方法。",
+        "压力背景独立于SLO图像测量。",
+        "没有可比较的眼压数值。",
+        "补眼压记录。",
+    ),
+    "criterion:SAME_EYE_CHANGE": (
+        "input_missing",
+        "单时点图像。",
+        "进展需同眼时间序列。",
+        "无可计算变化量。",
+        "补同眼不同时间且方法可比的数据。",
+    ),
+    "descriptive:ANGLE": (
+        "input_missing",
+        "无房角检查。",
+        "房角用于亚型背景。",
+        "本例SLO不提供房角结构。",
+        "补房角检查。",
+    ),
+    "descriptive:CORNEA": (
+        "input_missing",
+        "无中央角膜厚度。",
+        "厚度是眼压解释背景。",
+        "SLO不是角膜厚度测量。",
+        "补角膜厚度记录。",
+    ),
+    "descriptive:OCT_REFERENCE": (
+        "input_missing",
+        "无OCT或分区厚度报告。",
+        "RNFL/GCC厚度需分区及方法对应。",
+        "二维纹理不能生成真实微米厚度。",
+        "补同眼OCT或结构化报告。",
+    ),
+    "descriptive:FIELD_RELIABILITY": (
+        "input_missing",
+        "无视野测试。",
+        "可靠性属于视野测试本身。",
+        "无注视丢失/假阳性等测试记录。",
+        "随视野结果补可靠性资料。",
+    ),
+    "descriptive:DISC_SIZE_CONTEXT": (
+        "input_missing",
+        "有9426像素盘面积，无物理尺度。",
+        "盘大小影响杯盘解释。",
+        "像素数不能直接转成毫米盘径。",
+        "补标尺、设备放大信息或实际盘径。",
+    ),
+    "descriptive:FOVEA": (
+        "ungradable",
+        "模型响应点已保存，位置未获可靠确认。",
+        "中央凹用于方向及空间参照。",
+        "不能用未确认点设定鼻颞方向。",
+        "核验定位或补可靠坐标，不作疾病票数。",
+    ),
+    "visual:fovea": (
+        "ungradable",
+        "原图无可稳定确认的中央凹中心。",
+        "定位参照不是青光眼征象。",
+        "不提供虚构像素点。",
+        "保留定位缺项。",
+    ),
+    "descriptive:CUP_AREA_CONTEXT": (
+        "duplicate_or_intermediate",
+        "面积杯盘比0.2791。",
+        "同图杯盘综合判读已有引用。",
+        "没有独立方向参照，不与VCDR重复计票。",
+        "保留原值供杯盘判读。",
+    ),
+    "descriptive:CUP_PIXELS": (
+        "duplicate_or_intermediate",
+        "杯2631、盘9426、盘沿6795像素。",
+        "作为比值和形态的计算输入。",
+        "绝对像素面积随分辨率改变。",
+        "保留派生链，不独立加疾病分。",
+    ),
+    "descriptive:AV_AREAS": (
+        "duplicate_or_intermediate",
+        "已有动静脉分割面积。",
+        "区域与血管类型是测量输入。",
+        "面积不是口径或分叉角。",
+        "提供给对应算法，不独立计票。",
+    ),
+    "descriptive:DEMOGRAPHICS": (
+        "context_only",
+        "已有基础人口学字段；年龄另项计算。",
+        "字段用途须区分患者判读与评价分组。",
+        "没有为语言、婚姻等绑定本例医学规则。",
+        "保留字段，不凭类别增加疾病分。",
+    ),
+    "descriptive:IMAGE_QUALITY": (
+        "duplicate_or_intermediate",
+        "存在条带和明暗不均，粗轮廓可见。",
+        "影响下游可评估范围及O/A。",
+        "质量不是疾病。",
+        "与visual:quality共用质量事实，不重复扣权。",
+    ),
+    "visual:quality": (
+        "duplicate_or_intermediate",
+        "本轮复核同样观察到条带、阴影和有限细节。",
+        "与图像质量记录同源。",
+        "不是第二份阴性医学证据。",
+        "用于明确每项观察范围。",
+    ),
+    "descriptive:VESSEL_DENSITY": (
+        "duplicate_or_intermediate",
+        "面积密度0.116687。",
+        "血管面积描述；对应骨架密度关联项已核对定义差异。",
+        "不能重复作为VSD疾病票数。",
+        "保留原始指标。",
+    ),
+    "descriptive:VESSEL_WIDTH": (
+        "duplicate_or_intermediate",
+        "宽度6.1068像素。",
+        "对应动脉口径关联项已核对。",
+        "不是标准CRAE。",
+        "保留原测量，方法补齐见关联项。",
+    ),
+    "descriptive:VESSEL_TORTUOSITY": (
+        "duplicate_or_intermediate",
+        "弧弦比中位数1.0797。",
+        "对应动静脉迂曲度关联项。",
+        "原测量与关联解释不能当两份独立证据。",
+        "沿同一来源链消费。",
+    ),
+    "descriptive:VESSEL_FRACTAL": (
+        "duplicate_or_intermediate",
+        "混合血管FD为1.526987。",
+        "对应分形关联项。",
+        "不等同匹配方法的动/静脉FD。",
+        "不重复计票。",
+    ),
+    "visual:hemorrhage": (
+        "duplicate_or_intermediate",
+        "复看结果见盘出血条件项。",
+        "同一盘缘观察。",
+        "未确认出血不变成正常。",
+        "引用criterion:DISC_HEMORRHAGE。",
+    ),
+    "visual:rim": (
+        "duplicate_or_intermediate",
+        "粗大盘沿连续性与细微切迹已经拆分。",
+        "同图盘沿观察。",
+        "不能把旧观察文字作为额外证据。",
+        "引用粗大连续性及切迹两项。",
+    ),
+    "visual:rnfl": (
+        "duplicate_or_intermediate",
+        "可辨粗大纹理与全图细微RNFL问题分开。",
+        "同一RNFL观察。",
+        "不能重复计算原描述与新复核。",
+        "引用粗大楔形子项与原RNFL条件。",
+    ),
+    "visual:vessel_course": (
+        "duplicate_or_intermediate",
+        "可辨主干片段已复核。",
+        "同一盘内血管观察。",
+        "不重复计算旧描述与新粗大走行子项。",
+        "引用原条件及新子项。",
+    ),
+    "visual:peripapillary": (
+        "duplicate_or_intermediate",
+        "右下盘旁亮带已定位并记录。",
+        "同一盘周外观。",
+        "亮带不等同beta区。",
+        "引用association:PERIPAPILLARY_APPEARANCE。",
+    ),
+}

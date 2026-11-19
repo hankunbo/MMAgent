@@ -1,0 +1,360 @@
+{
+  "$defs": {
+    "Block": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 500000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/Position"
+        },
+        "table": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TableGrid"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "text",
+        "position"
+      ],
+      "title": "Block",
+      "type": "object"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "section_path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Section Path",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "paragraph",
+            "heading",
+            "list",
+            "table",
+            "caption"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "ordinal": {
+          "minimum": 1,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "span_start": {
+          "minimum": 0,
+          "title": "Span Start",
+          "type": "integer"
+        },
+        "span_end": {
+          "minimum": 1,
+          "title": "Span End",
+          "type": "integer"
+        },
+        "table_status": {
+          "default": "not_applicable",
+          "enum": [
+            "structured",
+            "unavailable",
+            "not_applicable"
+          ],
+          "title": "Table Status",
+          "type": "string"
+        },
+        "table_capability": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TableCapability"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "section_path",
+        "kind",
+        "ordinal",
+        "span_start",
+        "span_end"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "TableCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "table-grid/1.0.0",
+          "default": "table-grid/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "structured",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "rows": {
+          "anyOf": [
+            {
+              "maximum": 64,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rows"
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "maximum": 32,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Columns"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "numeric_evidence": {
+          "title": "Numeric Evidence",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "numeric_evidence"
+      ],
+      "title": "TableCapability",
+      "type": "object"
+    },
+    "TableCell": {
+      "additionalProperties": false,
+      "properties": {
+        "row": {
+          "exclusiveMaximum": 64,
+          "minimum": 0,
+          "title": "Row",
+          "type": "integer"
+        },
+        "column": {
+          "exclusiveMaximum": 32,
+          "minimum": 0,
+          "title": "Column",
+          "type": "integer"
+        },
+        "text": {
+          "maxLength": 4096,
+          "title": "Text",
+          "type": "string"
+        },
+        "header": {
+          "title": "Header",
+          "type": "boolean"
+        },
+        "headers": {
+          "default": [],
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "type": "array"
+          },
+          "maxItems": 96,
+          "title": "Headers",
+          "type": "array"
+        },
+        "span_start": {
+          "minimum": 0,
+          "title": "Span Start",
+          "type": "integer"
+        },
+        "span_end": {
+          "minimum": 0,
+          "title": "Span End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "row",
+        "column",
+        "text",
+        "header",
+        "span_start",
+        "span_end"
+      ],
+      "title": "TableCell",
+      "type": "object"
+    },
+    "TableGrid": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "table-grid/1.0.0",
+          "default": "table-grid/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "rows": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Rows",
+          "type": "integer"
+        },
+        "columns": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Columns",
+          "type": "integer"
+        },
+        "cells": {
+          "items": {
+            "$ref": "#/$defs/TableCell"
+          },
+          "maxItems": 512,
+          "title": "Cells",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rows",
+        "columns",
+        "cells"
+      ],
+      "title": "TableGrid",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "parser": {
+      "title": "Parser",
+      "type": "string"
+    },
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "policy_checksum": {
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "language": {
+      "maxLength": 32,
+      "title": "Language",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 512,
+      "title": "Title",
+      "type": "string"
+    },
+    "blocks": {
+      "items": {
+        "$ref": "#/$defs/Block"
+      },
+      "title": "Blocks",
+      "type": "array"
+    },
+    "fidelity_policy": {
+      "anyOf": [
+        {
+          "enum": [
+            "text-fidelity/2.0.0",
+            "text-fidelity/2.1.0"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fidelity Policy"
+    }
+  },
+  "required": [
+    "parser",
+    "parser_version",
+    "policy_checksum",
+    "language",
+    "title",
+    "blocks"
+  ],
+  "title": "ParsedDocument",
+  "type": "object"
+}

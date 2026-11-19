@@ -1,0 +1,335 @@
+{
+  "$defs": {
+    "Command": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "load",
+            "retrieve",
+            "instantiate",
+            "identify",
+            "select",
+            "prepare",
+            "execute",
+            "recover",
+            "verify",
+            "review",
+            "fallback",
+            "stop",
+            "cancel"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "expected_revision": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Expected Revision",
+          "type": "integer"
+        },
+        "input_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Input Refs",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "expected_revision",
+        "action"
+      ],
+      "title": "Command",
+      "type": "object"
+    },
+    "DispatchRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "context_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Context Checksum",
+          "type": "string"
+        },
+        "expected_revision": {
+          "minimum": 0,
+          "title": "Expected Revision",
+          "type": "integer"
+        },
+        "idempotency_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "case_code",
+        "context_checksum",
+        "idempotency_key",
+        "expected_revision"
+      ],
+      "title": "DispatchRequest",
+      "type": "object"
+    },
+    "Lease": {
+      "additionalProperties": false,
+      "properties": {
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "token": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Token",
+          "type": "string"
+        },
+        "worker": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Worker",
+          "type": "string"
+        }
+      },
+      "required": [
+        "worker",
+        "token",
+        "expires_at"
+      ],
+      "title": "Lease",
+      "type": "object"
+    },
+    "Profile": {
+      "additionalProperties": false,
+      "properties": {
+        "lease_seconds": {
+          "default": 30,
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Lease Seconds",
+          "type": "integer"
+        },
+        "max_claims": {
+          "default": 64,
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Max Claims",
+          "type": "integer"
+        },
+        "max_concurrency": {
+          "const": 1,
+          "default": 1,
+          "title": "Max Concurrency",
+          "type": "integer"
+        },
+        "max_failures": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Max Failures",
+          "type": "integer"
+        },
+        "resource_pool": {
+          "const": "synthetic_case",
+          "default": "synthetic_case",
+          "title": "Resource Pool",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "research-dispatch-profile/1.0.0",
+          "default": "research-dispatch-profile/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "synthetic_only": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic Only",
+          "type": "boolean"
+        }
+      },
+      "title": "Profile",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Binding Checksum",
+      "type": "string"
+    },
+    "cancel_requested": {
+      "default": false,
+      "title": "Cancel Requested",
+      "type": "boolean"
+    },
+    "claims": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Claims",
+      "type": "integer"
+    },
+    "clinical_completion": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Completion",
+      "type": "boolean"
+    },
+    "command": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Command"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "control_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Control Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "failures": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Failures",
+      "type": "integer"
+    },
+    "kind": {
+      "const": "CASE_RUN",
+      "default": "CASE_RUN",
+      "title": "Kind",
+      "type": "string"
+    },
+    "lease": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Lease"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "profile": {
+      "$ref": "#/$defs/Profile"
+    },
+    "reason": {
+      "default": "queued",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Reason",
+      "type": "string"
+    },
+    "request": {
+      "$ref": "#/$defs/DispatchRequest"
+    },
+    "revision": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "research-dispatch/1.0.0",
+      "default": "research-dispatch/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "queued",
+        "leased",
+        "confirming",
+        "completed",
+        "cancelled",
+        "dead_letter"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "task_type": {
+      "const": "RESEARCH_DISPATCH",
+      "default": "RESEARCH_DISPATCH",
+      "title": "Task Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "request",
+    "profile",
+    "binding_checksum",
+    "deadline",
+    "state",
+    "control_checksum"
+  ],
+  "title": "Receipt",
+  "type": "object"
+}

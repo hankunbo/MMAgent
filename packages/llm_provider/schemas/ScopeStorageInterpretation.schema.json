@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "candidate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Candidate Checksum",
+      "type": "string"
+    },
+    "changed_fields": {
+      "default": [
+        "schema_version"
+      ],
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "const": "schema_version",
+          "type": "string"
+        }
+      ],
+      "title": "Changed Fields",
+      "type": "array"
+    },
+    "findings_regions_bindings_unchanged": {
+      "const": true,
+      "default": true,
+      "title": "Findings Regions Bindings Unchanged",
+      "type": "boolean"
+    },
+    "original_candidate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Original Candidate Checksum",
+      "type": "string"
+    },
+    "original_error": {
+      "const": "input_scope_original_observation_bound",
+      "default": "input_scope_original_observation_bound",
+      "title": "Original Error",
+      "type": "string"
+    },
+    "raw_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "input-scope-storage-interpretation/1.0.0",
+      "default": "input-scope-storage-interpretation/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "raw_checksum",
+    "original_candidate_checksum",
+    "candidate_checksum"
+  ],
+  "title": "ScopeStorageInterpretation",
+  "type": "object"
+}

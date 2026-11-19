@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; connect-src 'none'">
+<title>__TITLE__</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6f8;color:#203747;font:15px/1.8 system-ui,sans-serif}header{padding:24px 30px;background:#163f50;color:white}h1{margin:0;font-size:26px}.toolbar{padding:12px 24px;background:white;display:flex;gap:12px;flex-wrap:wrap}button,input,select{font:inherit;padding:6px 10px;border:1px solid #bdd0d8;border-radius:5px}button{cursor:pointer;background:white;color:#175a74}main{display:grid;grid-template-columns:36% 64%}nav,article{max-height:82vh;overflow:auto;padding:20px}article{background:white}ul{list-style:none;border-left:1px solid #d2dfe5;padding-left:17px}nav>ul{border:0;padding-left:0}li{margin:6px 0}summary{cursor:pointer}.node{border:0;text-align:left;background:transparent;padding:2px}.active{background:#dceef3}.badge{font-size:12px;border-radius:5px;background:#e9f1f3;padding:2px 5px;margin-left:6px;color:#486674}.card{border:1px solid #dbe5e9;border-radius:8px;padding:14px;margin:12px 0}h2{margin-top:0}h3{font-size:18px;color:#18546b;border-bottom:1px solid #deeaee;padding-bottom:6px}.muted{color:#697d88;font-size:13px}a{color:#176986}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #e1eaed;padding:7px}img,svg{max-width:100%;max-height:450px;object-fit:contain}.pictures{display:grid;grid-template-columns:1fr 1fr;gap:12px}blockquote{border-left:3px solid #aac6d2;padding-left:12px;margin:12px 0;white-space:pre-wrap}footer{padding:15px 25px;color:#647780}@media(max-width:850px){main{display:block}nav{max-height:38vh}article{max-height:none}.pictures{grid-template-columns:1fr}}
+.criterion-sources{margin-top:16px;padding-top:10px;border-top:1px solid #dbe5e9}.source-row{padding:8px 0}.source-row a{display:block;line-height:1.6}.source-row p{margin:4px 0}.criterion-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid #dbe5e9}.criterion-path{margin:12px 0}.model-choice{border-left:4px solid #237b7d}
+.structure-navigation{display:flex;flex-wrap:wrap;gap:10px;padding:0 24px 12px;background:white}.structure-navigation[hidden]{display:none}.role-badge{background:#edf0fa}.dependency-card{border-left:4px solid #b5c7d4}.navigation-note{margin:0 0 12px;font-size:13px;color:#486674}.structure-group{margin:12px 0}.structure-group button{margin-right:8px}
+/* Reusable case-reader layout: data and score versions remain unchanged. */
+:root{--ink:#183648;--soft:#587080;--line:#dce6eb;--accent:#176b73}
+body{line-height:1.65}header{padding:20px 28px}header>div:last-child{font-size:13px;opacity:.8;margin-top:5px}
+.toolbar{align-items:center}.toolbar input{flex:1;min-width:180px;max-width:380px}
+button:hover{background:#edf5f7}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #d88a29;outline-offset:3px}
+main{grid-template-columns:minmax(260px,29%) minmax(0,1fr)}main>nav{border-right:1px solid var(--line);font-size:14px}main>article{padding:24px 32px;min-width:0}
+article p{margin:8px 0}article h4{margin:0 0 10px;font-size:16px}article h3{margin:26px 0 14px;padding-top:8px;scroll-margin-top:12px}
+.node{line-height:1.5}.node .badge{display:inline-block}.active{border-radius:5px;box-shadow:inset 3px 0 var(--accent)}
+.section-index{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 22px}.section-index a{background:#eef5f6;border-radius:6px;text-decoration:none;padding:5px 9px;font-size:13px}
+.eyebrow{letter-spacing:.06em;color:var(--soft);font-size:12px;margin:0 0 6px}.breadcrumbs{font-size:13px;color:var(--soft);margin-bottom:12px;overflow-wrap:anywhere}
+.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.metric-tile{padding:14px;background:#f4f8fa;border:1px solid var(--line);border-radius:8px}.metric-tile strong{display:block;font-size:25px;line-height:1.4;color:var(--ink);font-variant-numeric:tabular-nums}.metric-tile small{color:var(--soft);display:block}
+.metric-tile.primary{background:#e7f2f1;border-color:#8cb9b4}.fact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px}.fact-grid>div{border-bottom:1px solid var(--line);padding:7px 0}.fact-grid dt{font-size:12px;color:var(--soft)}.fact-grid dd{margin:3px 0;overflow-wrap:anywhere}
+.notice{padding:12px 16px;border-left:4px solid #c99330;background:#fff9eb;border-radius:5px;margin:12px 0}.subtle{color:var(--soft);font-size:13px}
+.table-wrap{overflow:auto;margin:12px 0;border:1px solid var(--line);border-radius:7px}table{font-size:14px;margin:0}thead{background:#f0f5f7}th{font-weight:600;color:var(--soft)}th,td{vertical-align:top;overflow-wrap:anywhere}td.numeric{font-variant-numeric:tabular-nums;white-space:nowrap}
+.reading-card{border:1px solid var(--line);border-radius:8px;padding:16px;margin:12px 0}.reading-card>h4 .badge{font-weight:400}.reading-line{display:grid;grid-template-columns:88px minmax(0,1fr);gap:8px;margin:7px 0}.reading-line>strong{font-size:13px;color:var(--soft)}
+.score-strip{display:flex;flex-wrap:wrap;gap:6px 16px;padding:10px 12px;margin-top:12px;border-radius:6px;background:#f1f6f8;font-size:13px;font-variant-numeric:tabular-nums}.score-strip b{color:var(--ink)}
+.fold{padding:12px 14px;border:1px solid var(--line);border-radius:8px;margin:12px 0}.fold>summary{font-weight:600;color:#23586c}.fold[open]>summary{margin-bottom:12px}.fold .fold{background:#fafcfd}.fold pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:350px;overflow:auto}
+.branch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.branch-card{border:1px solid var(--line);border-radius:8px;padding:14px}.branch-card button{font-weight:600}.branch-card p{font-size:13px;color:var(--soft)}
+.overview-image{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px}.overview-image img{max-height:230px}.pictures img{border-radius:6px}.source-citation{margin:8px 0}.source-citation>a{font-weight:500}
+.empty{padding:10px 0;color:var(--soft)}.card{overflow-wrap:anywhere}.appendix-note{font-size:13px;color:var(--soft)}
+@media(max-width:1100px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}main>article{padding:20px}.reading-line{grid-template-columns:76px minmax(0,1fr)}}
+@media(max-width:850px){main{display:block}main>nav{max-height:32vh;border-bottom:1px solid var(--line)}main>article{max-height:none}.branch-grid,.fact-grid{grid-template-columns:1fr}.overview-image{grid-template-columns:1fr}.overview-image img{max-height:200px}.toolbar{padding:12px}.structure-navigation{padding-left:12px;padding-right:12px}header{padding:18px}.reading-line{display:block}.reading-line>strong{display:block}}
+@media print{header{background:white;color:black}.toolbar,.structure-navigation,main>nav,.section-index,footer{display:none}main{display:block}main>article{max-height:none;overflow:visible;padding:0}.fold:not([open]){display:none}.metric-tile,.reading-card{break-inside:avoid}a{color:inherit}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body>
+<header><h1>__TITLE__</h1><div id="summary"></div><div>来源事实 → 提炼理由 → 取证需求 → 工具结果 → 判读 → 计算依赖与判读背景</div></header>
+<div class="toolbar"><input id="search" placeholder="搜索节点或取证内容" aria-label="搜索节点"><select id="filter" aria-label="状态筛选"><option value="">全部状态</option></select><button id="overview">全图总览</button><button id="criteria">判读条件与逐级回传</button><button id="expand">展开全部</button><button id="collapse">折叠全部</button></div>
+<div id="structure-navigation" class="structure-navigation" aria-label="证据与结果分类" hidden></div>
+<main><nav id="tree" aria-label="证据树"></nav><article id="detail" aria-live="polite"></article></main>
+<footer>原文链接可打开查阅；精确引用保存在数据库和配套数据文件中。本页展示导出时的结果，不会运行模型。</footer>
+<script id="snapshot" type="application/json">__SNAPSHOT__</script>
+<script id="explanations" type="application/json">__EXPLANATIONS__</script>
+<script id="presentation" type="application/json">__PRESENTATION__</script>
+<script>
+'use strict';
+const D=JSON.parse(document.getElementById('snapshot').textContent),E=JSON.parse(document.getElementById('explanations').textContent),C=D.case_evidence,S=D.evidence_structure;
+const P=JSON.parse(document.getElementById('presentation').textContent);
+const tree=document.getElementById('tree'),detail=document.getElementById('detail'),byKey=new Map(D.nodes.map(n=>[n.key,n]));let active=null,viewGroup='main';
+const groupLabels={main:'医学判读主树',dependency:'计算与解释依赖',deferred:'待补检查',auxiliary:'辅助与探索结果'};
+const roleLabels={clinical_requirement:'医学判读需求',computation_dependency:'计算依赖',interpretation_context:'判读背景',deferred_check:'待补检查',exploratory_result:'辅助与探索结果'};
+const relationLabels={organizes_source_backed_criteria:'归纳有来源的判读条件',measurement_input:'测量输入',interpretation_modifier:'判读背景',validity_check:'结果有效性检查'};
+if(D.source_associations){
+ groupLabels.main='医学判读与文献关联';roleLabels.research_association='文献关联取证';
+ Object.assign(relationLabels,{organizes_source_association:'文献支持的取证主题',association_measurement_input:'复用输入或测量',population_association:'人群统计关联',morphological_association:'形态关联',cross_modal_consistency:'结构功能对应',interpretation_context:'解释背景'});
+}
+function el(tag,text,cls){const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(cls)x.className=cls;return x}
+function heading(text){const h=el('h3',text);if(text==='4 · 本例工具与观察结果')h.id='measurement-section';detail.append(h);if(text==='3 · 本节点的取证需求')modelChoice(active)}
+function number(x){return x==null?'未测得':Number(x).toFixed(4).replace(/0+$/,'').replace(/\.$/,'')}
+function diseaseCriteriaOnly(){return D.research_criteria?.schema==='case-research-criteria/1.3.0'}
+function displayStatus(s){return ['已有观察·判读不确定','已有观察'].includes(s)?'已有结果':s}
+function observationCounts(){const counts={};for(const [s,n] of Object.entries(D.observation_summary||{})){const label=displayStatus(s);counts[label]=(counts[label]||0)+n}return counts}
+function criterionObservationCounts(){const counts={},labels={met:'满足条件',not_met:'未满足条件',not_observed:'未观察到所定义现象',unavailable:'当前输入无法取证'};const unique=new Map(D.research_criteria.results.map(r=>[r.criterion_id,r]));for(const r of unique.values()){const label=labels[r.comparison]||r.comparison;counts[label]=(counts[label]||0)+1}return counts}
+function observationOverview(){heading('当前输入下的取证安排');if(S){const counts=criterionObservationCounts(),total=Object.values(counts).reduce((a,b)=>a+b,0);detail.append(el('p','共'+total+'条判读条件，按条件统计一次。'));for(const [label,count] of Object.entries(counts))detail.append(el('p',label+'：'+count+'条判读条件'))}else{for(const [s,count] of Object.entries(observationCounts()))detail.append(el('p',s+'：'+count+'个节点'))}}
+function descriptiveResults(key){
+ const R=D.research_criteria;if(!diseaseCriteriaOnly())return;
+ const ids=R.descriptive_node_summaries?.[key]?.criterion_ids||[];
+ for(const id of ids){
+  if(D.case_completion&&id==='FOVEA')continue;
+  const rule=(R.descriptive_criteria||R.policy.descriptive_criteria||R.policy.criteria).find(x=>x.id===id);
+  const r=R.descriptive_results.find(x=>x.criterion_id===id);if(!rule||!r)continue;
+  if(S?.node_roles[key]?.group==='main'&&!mainDescendants(key).has(rule.leaf))continue;
+  const card=el('section',undefined,'card descriptive-card');
+  card.append(el('h4',rule.title),el('p','本例结果：'+r.display_result),el('p','结果说明：'+r.assessment));
+  const more=el('details');more.append(el('summary','计算方法与来源'));
+  if(r.applicability_note)more.append(el('p',r.applicability_note));
+  for(const s of rule.sources||[]){const row=el('div');link(row,s.title+' ↗',s.url);more.append(row)}
+  card.append(more);detail.append(card);
+ }
+}
+function criteria(key){
+ const R=D.research_criteria;if(!R)return;
+ const ids=R.node_summaries[key]?.criterion_ids||[];
+ if(!ids.length){if(diseaseCriteriaOnly()&&!S)detail.append(el('p','本节点结果用于测量或背景记录，无独立疾病判读条件。'));return}
+ if(!['case-research-criteria/1.2.0','case-research-criteria/1.3.0'].includes(R.schema))detail.append(el('p','条件沿路径下传，结果按原路径返回；同源测量只记一次。'));
+ for(const id of ids){
+  const rule=R.policy.criteria.find(x=>x.id===id),r=R.results.find(x=>x.criterion_id===id);
+  const card=el('section',undefined,'card criterion-card');
+  if(r.display_result!==undefined){
+   card.append(el('h4',rule.title),el('p','检查参照：'+rule.condition),el('p','本例结果：'+r.display_result),el('p','判读：'+r.assessment));
+   if(r.review_ref)card.append(el('p','观察者：本轮助手（实际看图，代替后续VLM）','muted'));
+   const more=el('details');more.append(el('summary','方法、来源与取证路径'));
+   if(r.applicability_note)more.append(el('p',r.applicability_note));
+   more.append(el('p',r.path.map(k=>byKey.get(k)?.title||k).join(' → ')));
+   for(const s of rule.sources){const row=el('div');link(row,s.title+' ↗',s.url);more.append(row)}
+   if(!rule.sources.length)more.append(el('p','检查依据见本页来源事实；计算方法及输入见工具结果。'));
+   card.append(more);
+   if(key!==rule.leaf){const b=el('button','查看结果：'+(byKey.get(rule.leaf)?.title||rule.leaf)+' →');b.onclick=()=>show(rule.leaf);card.append(b)}
+   detail.append(card);continue;
+  }
+  card.append(el('h4',rule.title),el('p','判读条件：'+rule.condition));
+  if(rule.expected_pattern)card.append(el('p','要寻找的表现：'+rule.expected_pattern));
+  if(r.value!==null)card.append(el('p','本例数值：'+number(r.value)+(rule.unit==='1'?'（无量纲）':'')));
+  if(r.distance_to_reference!=null)card.append(el('p','与参考值的差：'+number(r.distance_to_reference)));
+  if(r.equivalent_diameter_ratio!=null)card.append(el('p','面积占比：'+number(r.value*100)+'%；等面积直径比：'+number(r.equivalent_diameter_ratio)));
+  const labels={met:'达到偏大特征参照',not_met:'未达到偏大特征参照',unavailable:'当前不能判定',reference_only:'保留背景测量',above_geometric_reference:'达到粗略几何参照（非医学切点）',below_geometric_reference:'低于粗略几何参照（非医学切点）'};
+  card.append(el('p','本例对照：'+labels[r.comparison]+(r.reason?'；'+r.reason:'')));
+  if(r.observation)card.append(el('p','实际观察：'+r.observation));
+  if(r.interpretation_rule)card.append(el('p','如何用于取证：'+r.interpretation_rule));
+  card.append(el('p','方法说明：'+r.applicability_note,'muted'));
+  const path=el('details',undefined,'criterion-path');path.append(el('summary','查看条件下传 / 结果回传路径'),el('p',r.path.map(k=>byKey.get(k)?.title||k).join(' → ')),el('p',[...r.path].reverse().map(k=>byKey.get(k)?.title||k).join(' → ')));card.append(path);
+  const sourcesBox=el('div',undefined,'criterion-sources');sourcesBox.append(el('strong','文献来源'));
+  for(const source of rule.sources){const sourceRow=el('div',undefined,'source-row');link(sourceRow,source.title+' ↗',source.url);sourceRow.append(el('p',source.fact,'muted'));sourcesBox.append(sourceRow)}
+  card.append(sourcesBox);
+  const actions=el('div',undefined,'criterion-actions');
+  if(key===rule.leaf){actions.append(el('span','你当前就在该测量节点','muted'))}
+  else {const b=el('button','前往测量：'+(byKey.get(rule.leaf)?.title||rule.leaf)+' →');b.onclick=()=>show(rule.leaf);actions.append(b)}
+  card.append(actions);detail.append(card);
+ }
+}
+function completionDetails(key){
+ const R=D.case_completion;if(!R)return;
+ const tasks=key==='CUP_RIM_MEASURE'?['rim']:(['DISC_GEOMETRY','DISC_MASK','ALTERNATIVES'].includes(key)?['ellipse']:[]);
+ for(const task of tasks){
+  const item=R.geometry[task],m=item.record.measurement,box=el('section',undefined,'card');
+  box.append(el('h4',task==='rim'?'盘沿方向宽度与分布':'视盘椭圆度与方向'),el('p','算法：'+item.tool_code+' · '+item.version));detail.append(box);
+  if(task==='rim'){
+   metrics([{name:'有效方向/全部方向',value:m.valid_rays+'/360'},
+    {name:'最窄盘沿宽度',value:m.minimum_width.rim_width_px,unit:'px'},
+    {name:'最小盘沿/同轴盘径',value:m.minimum_normalized_width.width_over_same_axis_disc_diameter,unit:'1'}]);
+   const names={up:'图像上方',down:'图像下方',left:'图像左方',right:'图像右方'};
+   for(const [k,s] of Object.entries(m.image_sectors))metrics([
+    {name:names[k]+'盘沿宽度中位数',value:s.median_width_px,unit:'px'},
+    {name:names[k]+'有效方向',value:s.valid_rays+'/'+s.expected_rays}]);
+   detail.append(el('p','图像方向测量已完成；鼻颞解剖方向未定位，所以本次不计算ISNT。'));
+  }else{
+   metrics([{name:'等效椭圆长轴',value:m.major_axis_px,unit:'px'},{name:'等效椭圆短轴',value:m.minor_axis_px,unit:'px'},
+    {name:'短轴/长轴',value:m.minor_over_major,unit:'1'},{name:'长轴/短轴',value:m.major_over_minor,unit:'1'},
+    {name:'图像坐标长轴方向',value:m.major_axis_angle_degrees,unit:'°'}]);
+   detail.append(el('p','记录二维形状；不是三维倾斜角。相关研究的人群、测量定义与关联方向不同，暂不设统一疾病权重。'));
+  }
+  const refs=el('details');refs.append(el('summary','公式与研究来源'));
+  for(const [name,formula] of Object.entries(item.formula))refs.append(el('p',name+'：'+formula));
+  for(const source of item.sources){const row=el('p');link(row,source.relation+' ↗',source.url);refs.append(row)}detail.append(refs);
+ }
+ for(const o of R.visual_observations.filter(x=>x.nodes.includes(key))){
+  const card=el('section',undefined,'card visual-review');card.append(el('h4',o.title+' · 已有结果'),
+   el('p',o.observation),el('p',o.use),el('p','方法：本轮助手实际看图，代替拟接入的VLM。','muted'));
+  const refs=el('details');refs.append(el('summary','观察依据与来源'));for(const url of o.sources){const row=el('p');link(row,'来源网页 ↗',url);refs.append(row)}card.append(refs);detail.append(card);
+ }
+ if(['FOVEA_LOCATION','FOVEA_MAP','TASK_FOVEA'].includes(key)){
+  const old=el('details');old.append(el('summary','查看历史模型候选（本次不采用）'),
+   el('p','原模型坐标：'+(R.fovea.model_candidate_xy?.join(', ')||'未提供')+'；本轮视觉定位：未能定位。'));
+  picture(old,'fovea_position');detail.append(old);
+ }
+}
+function associationDetails(key){
+ const A=D.source_associations;if(!A)return;
+ const rows=A.association_edges.filter(e=>key==='ROOT'||e.from===key||mainDescendants(key).has(e.from));
+ for(const r of rows){
+  const card=el('section',undefined,'card association-card');
+  const newReading=vascularItem(r.from);
+  const reading=newReading?{reference:newReading.reference,observed:newReading.observed,assessment:newReading.interpretation+' 待补：'+newReading.remaining}:P.nodes[r.from].association;
+  card.append(el('h4',byKey.get(r.from).title),el('p','检查参照：'+reading.reference),
+   el('p','本例结果：'+reading.observed),el('p','判读：'+reading.assessment));
+  if(r.counter_source_ids.length)card.append(el('p','同时保留未检出显著差异的研究，供后续证据强度评估。'));
+  const more=el('details');more.append(el('summary','查看文献与测量路径'));structureSources(more,r.sources);
+  for(const d of A.dependency_edges.filter(e=>e.to===r.from))targetButton(more,d.from,'输入/结果：');
+  card.append(more);if(key!==r.from)targetButton(card,r.from,'查看关联：');detail.append(card);
+ }
+}
+function associationOverview(){
+ const A=D.source_associations;if(!A)return;
+ heading('本次新增的文献关联分支');
+ detail.append(el('p','新增'+A.counts.added_nodes+'个节点、'+A.counts.medical_associations+'项医学关联、'+A.counts.input_links+'条输入/结果引用。原10项判读条件保留，关联不重复计作独立患者证据。'));
+ for(const n of A.nodes){const row=el('p');targetButton(row,n.key);row.append(el('span',' · '+status(n)));detail.append(row)}
+ toolFlowDetails('ROOT');
+}
+function toolFlowDetails(key){
+ for(const f of D.source_associations?.tool_flows||[]){
+  if(!f.path.includes(key)&&!f.required_inputs.some(i=>i.node===key))continue;
+  const card=el('section',undefined,'card tool-evidence-flow');
+  card.append(el('h4','已贯通的取证链：静脉分叉角'),el('p',f.path.map(k=>byKey.get(k).title).join(' → ')));
+  const table=el('table'),head=el('tr');['环节','使用的工具或结果'].forEach(s=>head.append(el('th',s)));table.append(head);
+  for(const i of f.required_inputs){const tr=el('tr'),name=el('td');targetButton(name,i.node);tr.append(name,el('td',i.producer.code+' · '+i.producer.version));table.append(tr)}
+  const tr=el('tr');tr.append(el('td','算法（同时需要以上两个输入）'),el('td',f.tool.code+' · '+f.tool.version));table.append(tr);card.append(table);
+  card.append(el('p',f.result_summary),el('p','各级引用同一测量产物，不重复计算或累加支持分数。','muted'));
+  if(key!==f.target_node)targetButton(card,f.target_node,'查看角度与标注：');
+  const definition=el('details');definition.append(el('summary','计算定义与尺度'));
+  definition.append(el('p','两子支方向单位向量u、v：夹角 = arccos(u·v)，换算为度。'),el('p','按等效视盘直径归一化；在距分叉0.10—0.25盘径段拟合子支方向，排除交叉、父干不明及尺度不稳定点。'));
+  card.append(definition);detail.append(card);
+ }
+}
+function completionOverview(){
+ const R=D.case_completion;
+ heading('本轮完成与仍缺的资料');
+ detail.append(el('p','已完成 '+R.visual_observations.length+'项图像复核、'+(D.branch_geometry?3:2)+'项几何算法整合。模型、算法与视觉观察分别保存来源。'));
+ detail.append(el('p','中央凹改走视觉复核：本次未能定位，不采用原边缘坐标。观察完成不等于所有结构均可识别。'));
+ const actions=el('div',undefined,'criterion-actions');
+ for(const key of ['CUP_RIM_MEASURE','DISC_GEOMETRY','FOVEA_LOCATION','ALTERNATIVES'])targetButton(actions,key);detail.append(actions);
+ const missing=el('details',undefined,'card');missing.append(el('summary','当前输入无法取证的资料'));
+ for(const item of R.unavailable_inputs){const row=el('p');targetButton(row,item.node);row.append(el('span','：'+item.reason));missing.append(row)}
+ for(const item of R.other_missing)missing.append(el('p',item));detail.append(missing);
+ const tableBox=el('details',undefined,'card');tableBox.append(el('summary','逐节点完整清单（'+D.nodes.length+'项）'));
+ for(const n of D.nodes){const row=el('p');targetButton(row,n.key);row.append(el('span',' · '+status(n)+' · '+(D.branch_geometry?.node===n.key?D.branch_geometry.summary:(S?.node_roles[n.key]?.result_summary||n.patient_evidence?.summary||''))));tableBox.append(row)}detail.append(tableBox);
+ detail.append(el('p','数值分栏：模型分类分数、同图几何测量、条件是否达到。尚未将这些相关结果合成为校准患病概率。','muted'));
+}
+function modelChoice(key){
+ const m=D.model_selection;if(!m||!['ROOT','STRUCTURE','CUPDISC','CUP_RIM_MEASURE','DISC_MASK','DISC_GEOMETRY','DISC_SIZE'].includes(key))return;
+ const card=el('section',undefined,'card model-choice');card.append(el('h4','本例模型选择：'+m.primary.name+'（主用）'),el('p',m.scope));
+ card.append(el('p',m.primary.name+'视盘面积：'+m.primary.disc_area_px+' px；'+m.alternative.name+'：'+m.alternative.disc_area_px+' px（对照）'));
+ const reasons=el('details');reasons.append(el('summary','模型选择依据'));
+ for(const s of m.observations)reasons.append(el('p',s));
+ for(const s of m.reasons)reasons.append(el('p',s));
+ card.append(reasons);
+ card.append(el('p','选择者：本轮助手；将来可由VLM提交同样的选择理由和来源。','muted'));detail.append(card);
+}
+function status(n){if(vascularItem(n.key)||D.branch_geometry?.node===n.key)return '已有结果';return displayStatus(S?.node_roles[n.key]?.result_status||n.patient_evidence?.status||'取证需求')}
+function vascularItem(key){return D.vascular_followup?.comparisons.find(x=>x.node===key)}
+function vascularResults(key){
+ const f=D.vascular_followup,c=vascularItem(key);detail.append(el('p',c.observed));
+ detail.append(el('p','真实调用：'+f.execution.tool+' / '+f.execution.version+'；CPU直接退出 '+f.execution.direct_exit_code+'。'));
+ const rows=[];
+ for(const [name,m] of Object.entries(f.record.classes)){
+  const label=name==='artery'?'动脉':'静脉';
+  if(key==='VASCULAR_SKELETON_DENSITY')rows.push({name:label+'骨架密度（全图）',value:m.whole_image.skeleton_density,unit:'px⁻¹'},{name:label+'骨架像素数/全图像素数',value:m.whole_image.skeleton_pixels+'/'+m.whole_image.roi_pixels});
+  if(key==='VASCULAR_FRACTAL')rows.push({name:label+'骨架盒维数',value:m.skeleton_fractal.value,unit:'1'},{name:label+'拟合R²',value:m.skeleton_fractal.r_squared,unit:'1'});
+  if(key==='AV_TORTUOSITY')rows.push({name:label+'均值',value:m.tortuosity.mean,unit:'弧长/弦长'},{name:label+'中位数',value:m.tortuosity.median,unit:'弧长/弦长'},{name:label+'有效段数',value:m.tortuosity.count,unit:'段'});
+  if(key==='ARTERIOLAR_CALIBER')rows.push({name:label+'环带宽度代理',value:m.annulus.width_proxy_pixels,unit:'px'},{name:label+'宽度/等效盘径',value:m.annulus.width_proxy_disc_ratio,unit:'1'});
+ }
+ metrics(rows);
+ detail.append(el('p','输入血管重叠像素 '+f.record.overlap_pixels+'，两类均剔除；环带在图内覆盖 '+(100*f.record.disc.annulus_fraction_in_image).toFixed(2)+'%。'));
+ const more=el('details');more.append(el('summary','计算公式、尺度及完整测量记录'));for(const [k,v] of Object.entries(f.record.policy))more.append(el('p',k+'：'+v));more.append(el('pre',JSON.stringify(f.record.classes,null,2)));detail.append(more);
+}
+function branchDetails(){
+ const B=D.branch_geometry,R=B.record;
+ detail.append(el('p',B.summary),el('p','算法：'+B.tool.code+' · '+B.tool.version),
+  el('p','静脉掩膜 → 骨架与交汇识别 → 视盘根定位父干 → 两子支方向 → 夹角及尺度复核。'));
+ metrics([{name:'有效分叉数量',value:R.count,unit:'个'},{name:'静脉分支角中位数',value:R.median_degrees,unit:'°',missing_reason:'本图无合格分叉'}]);
+ const reasons={crossing_candidate:'交叉候选',complex_four_arm_junction:'复杂四臂交汇',multiple_branches:'多分支交汇',loop_ambiguous:'回路',no_disc_connected_root:'未连到盘周根',ambiguous_disc_root:'盘周根不唯一',short_or_folded_arm:'分支过短或折返',parent_not_unique:'父干不唯一',scale_topology_or_angle_unstable:'尺度复核未通过'};
+ const box=el('details');box.append(el('summary','全部交汇点与尺度复核'));
+ for(const j of R.junctions){box.append(el('p',j.junction_id+' ('+j.vertex_xy.map(x=>x.toFixed(1)).join(', ')+')：'+(j.status==='measured'?j.angle_degrees.toFixed(2)+'°':reasons[j.reason])));for(const s of j.scale_checks||[])box.append(el('p','参考栅格×'+s.scale+'：'+(s.angle_degrees==null?'未匹配到唯一分叉':s.angle_degrees.toFixed(2)+'°')+'；'+(s.passed?'通过':'排除')))}detail.append(box);
+ if(!C?.images?.input)return;
+ const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),im=document.createElementNS(ns,'image'),[h,w]=C.input.dimensions;
+ svg.setAttribute('viewBox','0 0 '+w+' '+h);im.setAttribute('href',C.images.input);im.setAttribute('width',w);im.setAttribute('height',h);svg.append(im);
+ for(const j of R.junctions){const dot=document.createElementNS(ns,'circle');dot.setAttribute('cx',j.vertex_xy[0]);dot.setAttribute('cy',j.vertex_xy[1]);dot.setAttribute('r','3');dot.setAttribute('fill',j.status==='measured'?'#70ff48':'#ffad33');svg.append(dot);if(j.status!=='measured')continue;
+ for(const [points,color] of [[j.parent_samples_xy,'#35e4ff'],...j.daughter_samples_xy.map(x=>[x,'#ffff20'])]){const line=document.createElementNS(ns,'line');for(const [k,v] of Object.entries({x1:points[0][0],y1:points[0][1],x2:points[1][0],y2:points[1][1],stroke:color,'stroke-width':2}))line.setAttribute(k,v);svg.append(line)}}
+ detail.append(el('p','绿点：纳入；橙点：排除；青线：父干；黄线：两子支。'),svg);
+}
+function link(p,label,url){try{const u=new URL(url);if(u.protocol!=='https:')return;const a=el('a',label);a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';p.append(a)}catch{}}
+function metrics(rows){if(!rows?.length)return;const table=el('table'),head=el('tr');['观察/指标','结果','单位'].forEach(s=>head.append(el('th',s)));table.append(head);for(const r of rows){const tr=el('tr');tr.append(el('td',r.name),el('td',r.value==null?(r.missing_reason||'未测得'):(Array.isArray(r.value)?r.value.join(', '):String(r.value))),el('td',r.unit||''));table.append(tr)}detail.append(table)}
+function picture(parent,key){if(!C)return;const data=C.images?.[key==='fovea_position'?'input':key];if(!data?.startsWith('data:image/png;base64,'))return;const card=el('div');card.append(el('p',({input:'本例原图',vessel_mask:'血管分割',artery_mask:'动脉分割',vein_mask:'静脉分割',disc_mask:'SLOctolyzer视盘',segman_overlay:'SegMAN-B叠加图',segman_cup:'SegMAN-B视杯',segman_rim:'SegMAN-B盘沿',segman_disc:'SegMAN-B视盘',fovea_position:'中央凹定位'})[key]||key));const xy=C.results?.fovea?.observation?.model?.fovea_xy;if(key==='fovea_position'&&xy){const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),im=document.createElementNS(ns,'image'),dot=document.createElementNS(ns,'circle'),[h,w]=C.input.dimensions;svg.setAttribute('viewBox','0 0 '+w+' '+h);im.setAttribute('href',data);im.setAttribute('width',w);im.setAttribute('height',h);dot.setAttribute('cx',xy[0]);dot.setAttribute('cy',xy[1]);dot.setAttribute('r','10');dot.setAttribute('stroke','#ffcc33');dot.setAttribute('stroke-width','3');dot.setAttribute('fill','none');svg.append(im,dot);card.append(svg)}else{const image=el('img');image.src=data;image.alt=key;card.append(image)}parent.append(card)}
+function sources(n,e){for(const fact of e.source_facts)detail.append(el('p',fact));for(const source of e.sources){const card=el('details',undefined,'card');card.append(el('summary',source.title));const text=source.fact||source.summary||source.text;if(text)card.append(el('blockquote',text));link(card,'阅读来源网页',source.url);detail.append(card)}if(!e.sources.length){const names=(n.tools||[]).map(t=>t.code||t.tool_code||t.tool_ref?.code).filter(Boolean);if(names.length)detail.append(el('p','工具来源：'+[...new Set(names)].join('、')))}}
+function acquisition(p){const a=p.acquisition;if(!a)return;detail.append(el('p','所需输入：'+a.required_input),el('p','当前安排：'+displayStatus(a.label)+'。'+a.reason));if(a.fields){for(const [key,v] of Object.entries(a.fields)){const value=typeof v==='string'?displayStatus(v):(v.case_value==null?displayStatus(v.label):String(v.case_value));detail.append(el('p',key+'：'+value))}}if(a.model_candidate){detail.append(el('p','候选模型：'+a.model_candidate.name+'；公开权重已找到，实际部署状态以本例记录为准。'));link(detail,'查看模型项目',a.model_candidate.github)}}
+function targetButton(parent,key,prefix=''){const button=el('button',prefix+(byKey.get(key)?.title||key));button.onclick=()=>show(key);parent.append(button)}
+function structureSources(parent,items){for(const s of items||[]){const box=el('details',undefined,'source-row');box.append(el('summary',s.title));const text=s.fact||s.summary||s.text;if(text)box.append(el('p',text));link(box,'查看来源网页 ↗',s.url);parent.append(box)}}
+function mainDescendants(key){const found=new Set([key]);for(const current of found)for(const edge of S.main_edges)if(edge.from===current)found.add(edge.to);return found}
+function showDependencies(key){
+ heading('6 · 计算依赖与判读背景');
+ if(!S)return;
+ const targets=mainDescendants(key),edges=S.dependency_edges.filter(e=>targets.has(e.to)||e.from===key);
+ if(!edges.length){detail.append(el('p','输入和方法见第3栏；相关检查位置见下方。'));return}
+ for(const edge of edges){const card=el('details',undefined,'card dependency-card');card.append(el('summary',(byKey.get(edge.from)?.title||edge.from)+' · '+relationLabels[edge.relation]),el('p',edge.purpose));
+  const actions=el('div',undefined,'criterion-actions');targetButton(actions,edge.from,'查看依赖：');targetButton(actions,edge.to,'服务检查：');card.append(actions);structureSources(card,edge.sources);detail.append(card)}
+}
+function showStructuredRelations(key,clinical){
+ const edges=[...S.main_edges,...(clinical?[]:S.dependency_edges)].filter(e=>e.from===key||e.to===key);if(!edges.length)return;
+ heading(clinical?'判读主树中的位置':'服务关系');
+ for(const edge of edges){const other=edge.from===key?edge.to:edge.from,card=el('div',undefined,'card');targetButton(card,other);card.append(el('p',relationLabels[edge.relation]||edge.relation));if(edge.purpose)card.append(el('p',edge.purpose));detail.append(card)}
+}
+function showResults(key,n,e,p){
+ if(vascularItem(key)){vascularResults(key);return}
+ toolFlowDetails(key);
+ if(D.branch_geometry?.node===key){branchDetails();return}
+ detail.append(el('p',S?.node_roles[key]?.result_summary||e.result_summary));
+ const retiredFovea=D.case_completion&&['FOVEA_LOCATION','FOVEA_MAP','TASK_FOVEA'].includes(key);
+ if(!retiredFovea&&(!S||S.node_roles[key].group!=='main'||!S.main_edges.some(edge=>edge.from===key)))metrics(p.results);
+ descriptiveResults(key);
+ completionDetails(key);
+ if(p.tool)detail.append(el('p','调用工具：'+(p.tool.code||p.tool.tool_code||'已绑定工具')+'；版本：'+(p.tool.version||'见保存记录')));
+ if(p.observation_source)detail.append(el('p','观察来源：助手图像检查。'));
+ const imgs=el('div',undefined,'pictures');(p.images||[]).forEach(k=>picture(imgs,k));detail.append(imgs);
+ if(p.artifact_codes?.length){for(const code of p.artifact_codes){const a=[C?.input,...(C?.artifacts||[])].find(a=>a?.asset_code===code);if(a)detail.append(el('p','结果保存：'+(a.database_persisted===false?'本地预览产物':'病例产物记录')+' · '+a.artifact_type_code,'muted'))}}
+}
+function inputRequirements(key){
+ if(vascularItem(key)){detail.append(el('p','数据模态：本例SLO及同图二值掩膜。'),el('p','模型：已有SLOctolyzer动静脉分型＋SegMAN视盘；本轮不重新推理。'),el('p','算法：'+D.vascular_followup.execution.tool+' · '+D.vascular_followup.execution.version+'（CPU）。'));return}
+ const p=P.nodes[key];
+ detail.append(el('p','数据模态：'+p.modality),el('p','所需数据：'+p.data_required),el('p','取证方法：'+p.method));
+ if(p.saved_tools.length){const box=el('details');box.append(el('summary','已绑定的模型与算法'));
+  for(const t of p.saved_tools)box.append(el('p',t.code+' · '+t.version));detail.append(box)}
+}
+function supportingAssessment(key){
+ if(vascularItem(key))return;
+ const reading=P.nodes[key].supporting;if(!reading)return;
+ const card=el('section',undefined,'card supporting-assessment');
+ card.append(el('p','检查参照：'+reading.reference),el('p','本例结果：'+reading.observed),el('p','判读：'+reading.assessment));detail.append(card);
+}
+function judgmentTraceDetails(key){
+ const d=D.judgment_details;if(!d)return;
+ const labels={bound:'已绑定',partial:'部分已记录',missing:'待补记录',not_applicable:'不适用'};
+ const panel=el('details',undefined,'card judgment-traces');
+ panel.append(el('summary','判读链与后续评分依据（逐项查看）'));
+ const ids=new Set(d.ledger.node_index[key]||[]);
+ for(const a of d.ledger.assessments.filter(a=>ids.has(a.id))){
+  const card=el('details',undefined,'judgment-trace');card.append(el('summary',a.title+' · '+a.kind));
+  for(const [name,f] of Object.entries(a.facets)){
+   const row=el('details',undefined,'trace-facet');row.append(el('summary',d.facet_labels[name]+' · '+labels[f.status]),el('p',f.explanation));
+   for(const m of f.missing)row.append(el('p','待补：'+m));
+   for(const ref of f.facts){
+    const fact=el('details');fact.append(el('summary',ref.document==='profiles'?'查看工具/评测记录':'查看已保存依据'));
+    const root=ref.document==='profiles'?d.profiles:D;
+    const value=ref.pointer.slice(1).split('/').reduce((v,k)=>v[k.replace(/~1/g,'/').replace(/~0/g,'~')],root);
+    // The complete machine record remains in the export/DB. Keep this view bounded.
+    const text=JSON.stringify(value,null,2);fact.append(el('pre',text.length>12000?text.slice(0,12000)+'\n…完整字段可用节点/工具查询命令读取':text));row.append(fact);
+   }
+   card.append(row);
+  }
+  card.append(el('p','同图相关组：'+a.same_image_group.slice(0,22)+'…；'+(D.research_scoring?'本次研究评分见上方；此处保留历史判读原记录。':'本项尚未设置信心权重。'),'muted'));panel.append(card);
+ }
+ detail.append(panel);
+}
+const recordStates={assessed:'已判读',method_mismatch:'测量方法与疾病参照不匹配',reference_missing:'已有结果，缺匹配参照',context_only:'背景信息',observation_ungradable:'已有观察，细节未辨清',input_missing:'当前输入无法取证',intermediate:'计算中间结果',not_reviewed:'尚未评阅'};
+function standardRecords(key,part){
+ const r=D.evidence_records;if(!r)return;
+ const ids=new Set(r.node_index[key]||[]),observations=new Map(r.observations.map(o=>[o.id,o]));
+ for(const j of r.interpretations.filter(j=>ids.has(j.id))){
+  const o=observations.get(j.observation_id),box=el('details',undefined,'card standard-record');
+  box.append(el('summary',o.title+' · '+(part==='observation'?(o.acquisition==='obtained'?'已有结果':'当前输入无法取证'):recordStates[j.status])));
+  if(part==='observation'){
+   box.append(el('p','本例观察：'+o.summary));
+   for(const v of o.values)box.append(el('p',v.name+'：'+(v.value==null?v.missing_reason:Array.isArray(v.value)?v.value.join(', '):String(v.value))+(v.unit?' '+v.unit:'')));
+   if(o.missing_reason)box.append(el('p','缺少：'+o.missing_reason));
+  }else{
+   box.append(el('p','检查参照：'+j.reference_interpretation),el('p','本例结果：'+o.summary),el('p','判读：'+j.comparison));
+   for(const [field,label] of [['observation_reliability','可靠性'],['relation_strength','疾病关系强度'],['applicability','本例适用性']]){
+    const v=j[field];box.append(el('p',label+'：'+(v.value==null?'未评分':(v.value*100).toFixed(2)+'/100')+'；'+v.reason));
+   }
+   box.append(el('p','连续判读 e：'+(j.judgment.value==null?'未判读':j.judgment.value.toFixed(4))));
+   box.append(el('p','待补：'+j.unresolved),el('p','下一步：'+j.next_action));
+   if(j.score_action==='new_observation_not_rescored')box.append(el('p','新测量已保存；原评分没有移植到新测量上。','muted'));
+  }
+  detail.append(box);
+ }
+}
+function recordsOverview(){
+ const r=D.evidence_records;if(!r)return;const c=r.inventory;
+ heading('观察取得与医学判读 · 标准记录');
+ detail.append(el('p',c.total+'组观察—判读记录，覆盖'+Object.keys(r.node_index).length+'个节点的索引；组织节点可无独立测量。'),el('p','已有观察/测量：'+c.observation_obtained+'；尚未取得：'+c.observation_not_obtained+'；已作方向判读：'+c.direction_assessed+'；已有数值测量但未作方向判读：'+c.measurement_without_direction+'。'),el('p',D.current_scoring?'下方 v5 从这些标准记录重建评分、覆盖和依赖；原 v4 仍作为历史保存。':'下方总分保留原 v4 评阅。本次统一存储格式，没有重新评分；记录数量不是独立证据数量。','muted'));
+}
+function show(key){
+ active=key;if(S)viewGroup=S.node_roles[key].group;render();const n=byKey.get(key),e=E.nodes[key],p=n.patient_evidence||{};
+ detail.replaceChildren();detail.append(el('h2',n.title),el('span',status(n),'badge'));
+ const supporting=!!P.nodes[key].supporting;
+ if(supporting)detail.append(el('span',roleLabels[S.node_roles[key].role]||S.node_roles[key].role,'badge role-badge'));
+ heading('1 · 来源事实');sources(n,e);
+ for(const id of vascularItem(key)?.source_ids||[]){const source=D.vascular_followup.sources[id];link(detail,'本轮方法核对：'+source.title,source.url)}
+ heading('2 · 我们的提炼理由');detail.append(el('p',P.nodes[key].rationale));
+ heading('3 · 本节点的取证需求');inputRequirements(key);
+ heading('4 · 本例工具与观察结果');showResults(key,n,e,p);standardRecords(key,'observation');
+ heading('5 · 目前如何判读');
+ if(!supporting)criteria(key);
+ supportingAssessment(key);
+ associationDetails(key);
+ standardRecords(key,'interpretation');
+ researchScores(key);
+ judgmentTraceDetails(key);
+ if(!diseaseCriteriaOnly()){detail.append(el('p',e.interpretation));if(e.next_action)detail.append(el('p','后续动作：'+e.next_action))}
+ showDependencies(key);
+ if(S){showStructuredRelations(key,!supporting);return}
+ heading('相关节点与关系');
+ for(const edge of D.relationships.filter(r=>r.parent===key||r.child===key)){
+  const other=edge.parent===key?edge.child:edge.parent,card=el('div',undefined,'card'),button=el('button',byKey.get(other)?.title||other);button.onclick=()=>show(other);
+  const kind=edge.id?.startsWith('organizes:')?'取证主题的上下级组织':edge.id?.startsWith('technical:')?'工具、输入和产物的依赖':'医学相关性或解释背景';
+  card.append(button,el('p',kind));if(edge.statement)card.append(el('p',edge.statement));detail.append(card);
+ }
+}
+function render(){
+ tree.replaceChildren();const q=document.getElementById('search').value.toLowerCase(),f=document.getElementById('filter').value;
+ const pool=S?D.nodes.filter(n=>S.node_roles[n.key].group===viewGroup):D.nodes;
+ const parents=S?new Map(S.main_edges.map(e=>[e.to,e.from])):new Map(D.nodes.map(n=>[n.key,n.parent]));
+ const visible=new Set(pool.filter(n=>{const e=S?.node_roles[n.key]||E.nodes[n.key];return (!f||status(n)===f)&&(!q||(n.title+' '+e.rationale+' '+e.demand).toLowerCase().includes(q))}).map(n=>n.key));
+ if(!S||viewGroup==='main')for(const key of [...visible]){let p=parents.get(key);while(p){visible.add(p);p=parents.get(p)}}
+ function branch(n){const li=el('li'),b=el('button',n.title,'node'+(active===n.key?' active':''));b.setAttribute('data-node-key',n.key);b.append(el('span',status(n),'badge'));b.onclick=()=>show(n.key);
+  const children=(!S||viewGroup==='main')?pool.filter(c=>parents.get(c.key)===n.key&&visible.has(c.key)):[];
+  if(children.length){const d=el('details'),s=el('summary'),ul=el('ul');let cursor=active,onPath=false;while(cursor){if(cursor===n.key){onPath=true;break}cursor=parents.get(cursor)}d.open=!D.current_scoring||!parents.get(n.key)||!!q||onPath;s.append(b);children.forEach(c=>ul.append(branch(c)));d.append(s,ul);li.append(d)}else li.append(b);return li}
+ if(S)tree.append(el('p',groupLabels[viewGroup]+' · '+S.counts[viewGroup]+'项','navigation-note'));
+ const ul=el('ul');pool.filter(n=>(S&&viewGroup!=='main'||!parents.get(n.key))&&visible.has(n.key)).forEach(n=>ul.append(branch(n)));tree.append(ul);
+ if(!visible.size)tree.append(el('p','本分类中没有匹配项。','muted'));
+}
+function groupOverview(group){
+ viewGroup=group;active=null;render();detail.replaceChildren();detail.append(el('h2',groupLabels[group]));
+ const notes={main:'主树按有明确来源的判读条件组织。输入、掩膜和计算方法显示在它们服务的检查项下。',dependency:'这些内容用于计算指标、检查结果有效性，或解释医学判读。点击条目查看它服务的检查。',deferred:'保留已发现的检查方向；补齐具体判读条件或所需输入后，再进入相应的取证流程。',auxiliary:'保留模型与算法已经产生的结果，供探索和后续规则设计使用。'};
+ detail.append(el('p',notes[group]));for(const n of D.nodes.filter(n=>S.node_roles[n.key].group===group)){const role=S.node_roles[n.key],card=el('section',undefined,'card');targetButton(card,n.key);card.append(el('p',role.rationale));detail.append(card)}
+}
+function scoreNumber(value){return value==null?'未评分':(value*100).toFixed(2)+' / 100'}
+function coverageText(value){return value.denominator?value.numerator+'/'+value.denominator+'（'+(value.value*100).toFixed(1)+'%）':'不适用（分母为0）'}
+function confidenceText(c){return c.value==null?'暂无可用综合判断':scoreNumber(c.value)}
+const adequacyScopes={comprehensive_research:'综合研究评估',slo_image_research:'SLO影像研究（含基础人口学）'};
+function adequacySummary(value,box){
+ if(!value.adequacy)return;
+ const order=D.vascular_followup?['slo_image_research','comprehensive_research']:Object.keys(value.adequacy);
+ for(const scope of order){const a=value.adequacy[scope];
+  const card=el('div',undefined,'card');card.append(el('h4',adequacyScopes[scope]),
+   el('p','证据充分性 Q：'+scoreNumber(a.value)+'；加权覆盖 '+a.weighted_acquired.toFixed(2)+' / '+a.total_importance.toFixed(2)),
+   el('p','充分性调整分：'+scoreNumber(a.adjusted)+'；重要证据缺失度：'+scoreNumber(a.missing)));
+  if(a.adjusted!=null)card.append(el('p','已评阅参数调整范围：'+scoreNumber(a.adjusted_lower)+' — '+scoreNumber(a.adjusted_upper)));
+  box.append(card);
+ }
+ box.append(el('p','调整分 = 50 + Q × (疾病倾向分 − 50)。Q只处理输入覆盖，不再次扣O/A；缺失不当作疾病阴性。范围不包含尚未取得检查结果的未知影响。','muted'));
+}
+function participationDetails(key,s,node){
+ const p=s.node_participation?.[key];if(!p)return;
+ const names={organization:'组织汇总',disease_evidence:'疾病方向证据',evidence_quality:'观察／技术质量',evidence_sufficiency:'证据充分性',mixed:'多通道评阅'};
+ const card=el('div',undefined,'card');card.append(el('h4','本节点计算角色：'+names[p.role]),el('p',p.reason));
+ if(p.technical_coverage.denominator)card.append(el('p','技术资源到位：'+coverageText(p.technical_coverage)+'；不是模型准确率，也不等于定位或分割正确。'));
+ for(const q of p.quality_reviews)card.append(el('p','质量工作评阅：'+scoreNumber(q.value)+'；'+q.reason));
+ detail.append(card);
+ const groups=s.groups.filter(g=>p.group_ids.includes(g.id));
+ if(groups.length){
+  const panel=el('details',undefined,'card');panel.append(el('summary','证据组、输入覆盖与缺失影响'));
+  for(const g of groups){
+   const c=el('div',undefined,'card');c.append(el('h4',g.title),el('p','实际输入覆盖：'+coverageText(g.coverage)),el('p',g.reason));
+   for(const [scope,w] of Object.entries(g.importance))c.append(el('p',adequacyScopes[scope]+'重要性：'+w+(w===0?'（不纳入此范围分母）':'')));
+   for(const slot of g.slots)c.append(el('p',(slot.acquired?'已取得：':'待取得：')+slot.reason));
+   for(const m of node.missing_impacts.filter(x=>x.group_id===g.id)){
+    c.append(el('p',adequacyScopes[m.scope]+'：对充分性缺口贡献 '+scoreNumber(m.missing_contribution)),
+     el('p','假设仅补齐覆盖、保持疾病方向不变：Q → '+scoreNumber(m.coverage_after_completion)+'；调整分 → '+scoreNumber(m.adjusted_after_completion)),
+     el('p',m.reason));
+   }
+   c.append(el('p','下一动作：'+g.next_action));panel.append(c);
+  }
+  detail.append(panel);
+ }
+}
+function continuousOverview(value,box){
+ const c=value.confidence;if(!c)return;
+ const directions={support_side:'偏支持',refutation_side:'偏反驳',balanced:'正反平衡',unavailable:'未评分'};
+ const stable={support_side:'参数变化后仍偏支持',refutation_side:'参数变化后仍偏反驳',direction_sensitive:'合理参数变化可改变方向',unavailable:'暂无可用判读'};
+ const roles={diagnostic:'医学形态',risk:'风险背景',model:'模型意见',association:'文献关联',visual:'视觉观察'};
+ box.append(el('h4',(value.adequacy?'疾病倾向分 D：':'综合证据置信分：')+confidenceText(c)),el('p','综合方向：'+directions[c.direction]+'；稳定性：'+stable[c.stability]));
+ if(c.value!=null)box.append(el('p','参数敏感范围：'+scoreNumber(c.lower)+' — '+scoreNumber(c.upper)+'（非统计置信区间）'),el('p','参与总分：'+c.basis.map(x=>roles[x]).join('、')));
+ else box.append(el('p',c.missing_reason));
+ const b=value.combined;
+ box.append(el('p','综合支持度：'+scoreNumber(b.support)+'；综合反驳度：'+scoreNumber(b.refutation)+'；冲突度：'+scoreNumber(b.conflict)),el('p','研究证据分，不是校准后的患病概率。','muted'));
+}
+function scoreSummary(value){
+ const box=el('div',undefined,'card score-summary');
+ continuousOverview(value,box);
+ adequacySummary(value,box);
+ const d=value.diagnostic,r=value.risk;
+ box.append(el('p','医学线索支持度：'+scoreNumber(d.support)+'；反驳度：'+scoreNumber(d.refutation)+'；冲突度：'+scoreNumber(d.conflict)),
+  el('p','风险背景支持度：'+scoreNumber(r.support)+'（与医学线索分开）'),
+  el('p','条件数值比较覆盖：'+coverageText(value.criterion_coverage)+'；观察记录可用：'+coverageText(value.observation_coverage)));
+ if(value.judgment_coverage)box.append(el('p','连续判读覆盖：'+coverageText(value.judgment_coverage)+'；模型支持：'+scoreNumber(value.model.support)+'；模型反驳：'+scoreNumber(value.model.refutation)));
+ if(!d.active_groups)box.append(el('p','当前没有进入医学支持/反驳通道的论据；0分不是阴性结论。','muted'));
+ detail.append(box);
+}
+function currentOverview(){
+ const s=D.current_scoring,c=s.conclusion;
+ heading('病例结论 · 新版评分与稳健性');
+ detail.append(el('p',c.conclusion));scoreSummary(s.root.summary);
+ for(const [scope,v] of Object.entries(s.root.coverage))detail.append(el('p',adequacyScopes[scope]+'：取证覆盖 M '+scoreNumber(v.acquisition)+'；判读覆盖 J '+scoreNumber(v.interpretation)+'；固定权重分母 '+v.denominator));
+ detail.append(el('p','覆盖反映已完成的证据要求，不是疾病分数；M 增加不会自动提高综合置信。'));
+ for(const [label,v] of [['全部证据',c.all_evidence],['移除年龄',c.without_age],['移除全部风险背景',c.without_background],['仅图像证据',c.image_evidence],['仅风险背景',c.background_only]])detail.append(el('p',label+'：'+confidenceText(v.confidence)));
+ detail.append(el('p','年龄是否改变方向：'+(c.age_changes_direction?'是':'否')+'；年龄影响 '+(c.age_delta==null?'不可计算':(c.age_delta*100).toFixed(2)+'分')+'。疾病概率：尚未校准；50分不是临床诊断阈值。'));
+ const k=s.key_analysis;heading('关键证据集与移除分析');
+ detail.append(el('p','方向判读 '+k.candidates+'项；枚举 '+k.evaluated_subsets+'个子集。保真容差 '+(k.score_tolerance*100).toFixed(2)+'分，判读覆盖至少保留 '+(k.minimum_interpretation_retention*100).toFixed(0)+'%，且保留各已有论据角色。'));
+ const names=new Map(s.reviews.map(r=>[r.id,r.title]));
+ for(const x of k.smallest_fidelity_sets)detail.append(el('p','最小保真集：'+x.assessment_ids.map(i=>names.get(i)||i).join('、')+'；分数 '+scoreNumber(x.value)));
+ for(const x of k.smallest_direction_flip_removals)detail.append(el('p','导致中点两侧翻转的最小移除集：'+x.map(i=>names.get(i)||i).join('、')));
+ detail.append(el('p','这是当前评分的压缩与敏感性分析，不是证明这些检查足以诊断。'));
+ heading('已有工具替换试验');const t=s.tool_replacement;
+ detail.append(el('p','固定 SegMAN 杯掩膜，将 SegMAN 视盘换为 SLOctolyzer 视盘。状态：'+({inputs_unavailable:'缺少可验证的输入',qc_rejected:'组合未通过几何检查',measured_requires_new_interpretation:'测量完成，替换结果需独立判读'}[t.status])));
+ if(t.original&&t.alternative)for(const [key,label] of [['vertical_cup_disc_ratio','垂直杯盘比'],['minimum_radial_ratio','最薄径向盘沿比']])detail.append(el('p',label+'：'+t.original[key].toFixed(4)+' → '+t.alternative[key].toFixed(4)+'（差 '+t.deltas[key].toFixed(4)+'）'));
+ detail.append(el('p',t.next_action),el('p','旧依赖判读失效 '+t.invalidated_assessments.length+'项。仅保留其他合法证据的分数：'+confidenceText(t.remaining_evidence_summary.confidence)+'；不是新工具替换后的最终分。'));
+ if(t.error)detail.append(el('p','具体原因：'+t.error));
+ const missing=el('details',undefined,'card');missing.append(el('summary','缺失情景：补齐后可增加什么'));
+ for(const x of s.missing_scenarios){const g=s.groups.find(g=>g.id===x.group_id);missing.append(el('p',g.title+'：SLO取证覆盖上限 '+scoreNumber(x.acquisition_if_completed.slo_image_research)+'；判读覆盖上限 '+scoreNumber(x.interpretation_if_reviewed.slo_image_research)+'。未知检查结果没有预填疾病方向。'));}
+ detail.append(missing);
+ const method=el('details',undefined,'card');method.append(el('summary','评分方法与版本'));for(const note of s.method_notes)method.append(el('p',note));detail.append(method);
+}
+function currentScores(key){
+ const s=D.current_scoring,node=s.nodes[key];if(!node)return;
+ detail.append(el('h4','本节点当前评分 · v5'));scoreSummary(node);
+ for(const r of s.reviews.filter(r=>node.assessment_ids.includes(r.id))){
+  const b=el('details',undefined,'card');b.append(el('summary',r.title),el('p','可靠性 '+scoreNumber(r.observation.value)+'；关系 '+scoreNumber(r.relation.value)+'；适用性 '+scoreNumber(r.applicability.value)),el('p','连续判读 e：'+(r.judgment.value==null?'未赋疾病方向':r.judgment.value.toFixed(4))+'；支持 '+scoreNumber(r.support)+'；反驳 '+scoreNumber(r.refutation)),el('p',r.reason),el('p','当前依赖：'+r.dependency_paths.map(p=>p.join(' ＋ ')).join(' 或 ')));detail.append(b);
+ }
+ const lost=el('details',undefined,'card');lost.append(el('summary','移除此节点的证据或输入'));
+ for(const r of s.removals.filter(r=>r.affected_assessments.some(i=>node.assessment_ids.includes(i))))lost.append(el('p',r.id+'：影响 '+r.affected_assessments.length+'项；剩余综合分 '+confidenceText(r.after.summary.confidence)+'；SLO取证覆盖 '+scoreNumber(r.after.coverage.slo_image_research.acquisition)));
+ detail.append(lost);if(key==='ROOT')currentOverview();
+}
+function researchScores(key){
+ if(D.current_scoring){currentScores(key);return;}
+ const s=D.research_scoring;if(!s)return;const node=s.nodes[key];if(!node)return;
+ detail.append(el('h4','本节点研究评分 · 助手模拟LLM评阅'));scoreSummary(node);
+ participationDetails(key,s,node);
+ if(s.schema_version==='case-research-scoring/2.0.0')detail.append(el('p','上方保留原测量与阈值对照；下方连续判读综合本例背景，阈值不作为患病开关。组内贡献会去重，不能将逐项数值直接相加。','muted'));
+ const panel=el('details',undefined,'card research-scores');panel.append(el('summary','逐项评分、依据与依赖（'+node.assessment_ids.length+'项）'));
+ const directions={support:'支持',refute:'反驳',neutral:'不产生疾病方向',unavailable:'待补输入/判读依据'};
+ const roles={diagnostic:'医学线索',risk:'风险背景',measurement:'技术测量',model:'模型输出',visual:'视觉观察',association:'文献关联'};
+ for(const a of s.reviews.filter(r=>node.assessment_ids.includes(r.id))){
+  const updated=vascularItem(a.node);
+  if(updated){const card=el('div',undefined,'card');card.append(el('h4',a.title+' · 本轮测量已更新'),el('p','本例结果：'+updated.observed),el('p','判读：'+updated.interpretation),el('p','待补：'+updated.remaining),el('p','新的数值尚未赋予疾病方向；原v4评分保持原值，未将技术完成率当疾病置信度。'));panel.append(card);continue}
+  const card=el('div',undefined,'card');card.append(el('h4',a.title+' · '+roles[a.role]),
+   el('p','观察可靠性：'+scoreNumber(a.observation.value)+'；关系强度：'+scoreNumber(a.relation.value)+'；本例适用性：'+scoreNumber(a.applicability.value)),
+   el('p','判读权重：'+scoreNumber(a.weight)+'；方向：'+directions[a.direction]+'；实际支持贡献：'+scoreNumber(a.support)+'；实际反驳贡献：'+scoreNumber(a.refutation)),el('p',a.reason));
+  if(a.judgment){
+   const j=a.judgment;
+   card.append(el('p',j.value==null?'连续判读：未赋分；'+j.missing_reason:'本例连续判读：'+(j.value>0?'+':'')+j.value.toFixed(4)+'（-1反驳 → 0中性 → +1支持）；工作范围：'+j.lower.toFixed(4)+' — '+j.upper.toFixed(4)));
+  }
+  const evaluation=s.evaluations?.find(e=>e.assessment_id===a.id);
+  if(evaluation){
+   const targets={disease_direction:'青光眼研究命题',evidence_quality:'观察／测量可信性',evidence_sufficiency:'当前证据充分性'};
+   card.append(el('p','本项评分目标：'+targets[evaluation.target]),el('p','观察事实：'+evaluation.observed),
+    el('p','仍待确定：'+evaluation.unresolved),
+    el('p','去重后独有支持增量：'+scoreNumber(evaluation.effective_support)+'；独有反驳增量：'+scoreNumber(evaluation.effective_refutation)),
+    el('p','移除本项的根节点边际影响：'+(evaluation.marginal_direction_delta==null?'无可用疾病倾向分':(evaluation.marginal_direction_delta*100).toFixed(4)+'分')),
+    el('p','下一动作：'+evaluation.next_action));
+   if(evaluation.quality_review)card.append(el('p','质量工作评分：'+scoreNumber(evaluation.quality_review.value)+'；'+evaluation.quality_review.reason));
+  }
+  const adjudication=s.adjudications?.find(e=>e.assessment_id===a.id);
+  if(adjudication){
+   const states={direction_reviewed:'已完成方向评阅',method_mismatch:'测量方法需对齐',reference_missing:'缺少同方法比较参照',context_only:'作为解释背景',ungradable:'本项细节未辨认清楚',input_missing:'当前输入无法取证',duplicate_or_intermediate:'计算输入或同源记录',not_reviewed:'本病例尚未评阅'};
+   card.append(el('h4','本轮逐项判读核对 · '+states[adjudication.state]),
+    el('p','检查参照：'+adjudication.reference_interpretation),el('p','本例比较：'+adjudication.comparison),
+    el('p','判读及待补项：'+adjudication.unresolved));
+   for(const id of adjudication.source_ids){const source=s.readings.find(x=>x.id===id);if(!source)continue;
+    const p=el('p'),a=el('a',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);card.append(p);
+   }
+   const imageReview=s.image_reviews?.find(x=>x.assessment_id===a.id);
+   if(imageReview)card.append(el('p','本轮由助手直接看图复核（模拟VLM）；原图像素范围 '+imageReview.region_xyxy.join(', ')+'，不是解剖方向。','muted'));
+  }
+  for(const [label,rating] of [['观察',a.observation],['关系',a.relation],['适用性',a.applicability]])if(rating.missing_reason)card.append(el('p',label+'未评分原因：'+rating.missing_reason,'muted'));
+  card.append(el('p','输入路径：'+(a.dependency_paths.map(p=>p.join(' ＋ ')).join(' 或 ')||'当前无可用路径')+'；同源组：'+(a.dependence_block?a.correlation_group.split(':').at(-1):a.correlation_group.split(':')[0]),'muted'));panel.append(card);
+ }
+ if(!node.assessment_ids.length)panel.append(el('p','此节点是组织或计算依赖，不作为独立医学论据重复加分。'));
+ detail.append(panel);
+ const counter=el('details',undefined,'card score-counterfactuals');counter.append(el('summary','移除证据后的影响'));
+ for(const r of s.removals.filter(r=>key==='ROOT'||r.changed_nodes.includes(key))){
+  const box=el('div',undefined,'card');box.append(el('h4',r.title),el('p','受影响判读：'+r.affected_assessments.length+'项；汇总变化节点：'+r.changed_nodes.length+'个'),
+   el('p','根节点医学支持变化：'+(r.diagnostic_support_delta*100).toFixed(2)+'分；风险背景变化：'+(r.risk_support_delta*100).toFixed(2)+'分'),
+   el('p','移除后条件数值比较覆盖：'+coverageText(r.after.criterion_coverage)),el('p',r.explanation));
+  if(r.after.confidence)box.append(el('p','移除后综合分：'+confidenceText(r.after.confidence)+'；总分变化：'+(r.confidence_delta==null?'移除后无可用总分':(r.confidence_delta*100).toFixed(2)+'分')));
+  if(r.after.adequacy)for(const [scope,a] of Object.entries(r.after.adequacy))box.append(el('p',adequacyScopes[scope]+'移除后Q：'+scoreNumber(a.value)+'；调整分：'+scoreNumber(a.adjusted)+'；调整分变化：'+(r.adjusted_delta[scope]==null?'不适用':(r.adjusted_delta[scope]*100).toFixed(4)+'分')));
+  counter.append(box);
+ }
+ detail.append(counter);
+}
+function scoreOverview(){
+ if(D.current_scoring){currentOverview();return;}
+ const s=D.research_scoring;if(!s)return;
+ if(D.vascular_followup){detail.append(el('h3','本轮：SLO血管分型测量补齐'),el('p','主要任务范围：SLO影像＋基础人口学。OCT、视野及眼压属于可选临床补充，不阻塞当前研究；未假设这些检查结果。'),el('p','四类CPU测量已完成并保存；下方疾病方向及充分性继续精确使用v4公式与固定分母，不自动把方法不同的数值换算成疾病票。'));}
+ heading(s.schema_version==='case-research-scoring/4.0.0'?'逐项判读补全、来源比较与综合分':s.schema_version==='case-research-scoring/3.0.0'?'全节点评阅、证据充分性与调整分':s.schema_version==='case-research-scoring/2.0.0'?'连续判读、病例综合分与证据移除':'第一版评分与证据移除分析');scoreSummary(s.nodes.ROOT);
+ detail.append(el('p','本版：'+s.reviews.length+'项判读记录、'+Object.keys(s.nodes).length+'个节点汇总、'+s.removals.length+'个移除对照。工作评分0—100，非患病概率。'));
+ const b=el('button','查看根节点逐项评分与对照');b.onclick=()=>show('ROOT');detail.append(b);
+ if(s.adjudications){const counts={};for(const a of s.adjudications){const revised=vascularItem(a.assessment_id.replace('association:',''));const state=revised?(revised.state==='proxy_measured'?'method_mismatch':'reference_missing'):a.state;counts[state]=(counts[state]||0)+1}
+  detail.append(el('p','逐项核对：'+s.adjudications.filter(a=>a.review_completed).length+'/'+s.adjudications.length+'；有方向评阅：'+(counts.direction_reviewed||0)+'；方法需对齐：'+(counts.method_mismatch||0)+'；参照待补：'+(counts.reference_missing||0)+'；无法取证：'+(counts.input_missing||0)+'；细节未辨清：'+(counts.ungradable||0)+'。核对完成不等于缺失的检查已经取得。'));
+ }
+ if(['case-research-scoring/2.0.0','case-research-scoring/3.0.0','case-research-scoring/4.0.0'].includes(s.schema_version)){
+  const impacts=s.removals.filter(x=>x.id.startsWith('review:')&&x.confidence_delta!=null&&Math.abs(x.confidence_delta)>1e-10).sort((a,b)=>Math.abs(b.confidence_delta)-Math.abs(a.confidence_delta)).slice(0,5);
+  const list=el('div',undefined,'card');list.append(el('h4','对总分影响最大的判读'));
+  for(const x of impacts)list.append(el('p',x.title+' → 综合分变化 '+(x.confidence_delta*100).toFixed(2)+'分'));
+  if(!impacts.length)list.append(el('p','当前没有改变总分的单项移除。'));
+  detail.append(list);
+ }
+const notes=el('details',undefined,'card');notes.append(el('summary','评分方法与用途'));
+ for(const note of s.method_notes)notes.append(el('p',note));
+ if(s.sensitivity)notes.append(el('p','风险背景参数敏感性区间：'+s.sensitivity.risk_support.map(scoreNumber).join(' — ')+'；各已知维度±0.10，不是统计置信区间。'));
+ detail.append(notes);
+}
+ function overview(){
+ active=null;viewGroup='main';render();detail.replaceChildren();
+ detail.append(el('h2',C?'病例总览 · '+C.sample:'证据需求总览'),el('p',S?'从有来源的判读条件建立医学主树；计算输入、判读背景及探索结果分别展示。':'每个节点按来源事实、提炼理由、取证需求、实际结果和判读五步展开。'));
+ if(C?.supplement_persistence==='local_files_pending_database')detail.append(el('p','本页包含尚未同步数据库的本地补充结果。'));
+ if(D.case_completion)completionOverview();
+ recordsOverview();
+ scoreOverview();
+ if(S){heading('证据与结果结构');for(const [group,label] of Object.entries(groupLabels)){const box=el('div',undefined,'structure-group'),b=el('button',label+'：'+S.counts[group]+'项');b.onclick=()=>groupOverview(group);box.append(b);detail.append(box)}}
+ associationOverview();
+ heading('四个取证方向');for(const key of ['STRUCTURE','FUNCTION','PRESSURE','CONTEXT']){const n=byKey.get(key);if(!n||S&&!S.main_node_keys.includes(key))continue;const b=el('button',n.title);b.onclick=()=>show(key);detail.append(b,el('p',E.nodes[key].rationale))}
+ if(C){
+  heading('已有图像和分割结果');const pics=el('div',undefined,'pictures');['input','vessel_mask','artery_mask','vein_mask','disc_mask','segman_overlay','segman_cup','segman_rim','segman_disc'].forEach(k=>picture(pics,k));detail.append(pics);
+  observationOverview();
+  heading('分类及杯盘测量');for(const key of ['MODEL_ASSESSMENT','CUP_RIM_MEASURE']){const n=byKey.get(key);if(n){detail.append(el('h4',n.title));metrics(n.patient_evidence?.results)}}
+ }
+ detail.append(el('p','点击左侧节点查看来源、结果及解释。'));
+}
+__LAYOUT__
+for(const s of new Set(D.nodes.map(status))){const o=el('option',s);o.value=s;document.getElementById('filter').append(o)}
+document.getElementById('search').oninput=render;document.getElementById('filter').onchange=render;document.getElementById('overview').onclick=overview;document.getElementById('expand').onclick=()=>tree.querySelectorAll('details').forEach(d=>d.open=true);document.getElementById('collapse').onclick=()=>tree.querySelectorAll('details').forEach(d=>d.open=false);
+if(S){const navigation=document.getElementById('structure-navigation');navigation.hidden=false;for(const [group,label] of Object.entries(groupLabels)){const button=el('button',label);button.onclick=()=>groupOverview(group);navigation.append(button)}}
+document.getElementById('summary').textContent=(S?'医学主树 '+S.counts.main+'项 · 计算与解释依赖 '+S.counts.dependency+'项 · 待补检查 '+S.counts.deferred+'项 · 辅助结果 '+S.counts.auxiliary+'项':D.nodes.length+'个节点 · '+D.relationships.length+'条关系')+' · 导出时间 '+(D.exported_at||'未标记');overview();
+document.getElementById('criteria').onclick=()=>show('ROOT');
+</script></body></html>

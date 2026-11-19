@@ -1,0 +1,82 @@
+{
+  "$defs": {
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "knowledge-research-scope/1.0.0",
+      "default": "knowledge-research-scope/1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "limited_research_evidence_planning",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "definition_ref": {
+      "$ref": "#/$defs/VersionedReference"
+    },
+    "context_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Context Checksum",
+      "type": "string"
+    },
+    "allowed_outputs": {
+      "items": {
+        "enum": [
+          "evidence_requirements",
+          "insufficiency",
+          "limitations"
+        ],
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Allowed Outputs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "purpose",
+    "definition_ref",
+    "context_checksum",
+    "allowed_outputs"
+  ],
+  "title": "ResearchScope",
+  "type": "object"
+}

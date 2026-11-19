@@ -1,0 +1,102 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "domain": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Domain",
+      "type": "string"
+    },
+    "failure_types": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Failure Types",
+      "type": "array"
+    },
+    "goal": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Goal",
+      "type": "string"
+    },
+    "graph_conditions": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Graph Conditions",
+      "type": "array"
+    },
+    "inputs": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "modalities": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Modalities",
+      "type": "array"
+    },
+    "patient_conditions": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Patient Conditions",
+      "type": "object"
+    },
+    "rule_versions": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Rule Versions",
+      "type": "object"
+    },
+    "template": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Template",
+      "type": "string"
+    },
+    "tool_versions": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Tool Versions",
+      "type": "object"
+    },
+    "validation": {
+      "const": "synthetic_engineering",
+      "default": "synthetic_engineering",
+      "title": "Validation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "goal",
+    "template",
+    "graph_conditions",
+    "modalities",
+    "inputs",
+    "patient_conditions",
+    "tool_versions",
+    "rule_versions",
+    "failure_types",
+    "domain"
+  ],
+  "title": "Conditions",
+  "type": "object"
+}

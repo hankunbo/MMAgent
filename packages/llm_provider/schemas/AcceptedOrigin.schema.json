@@ -1,0 +1,86 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "acceptance_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Acceptance Checksum",
+      "type": "string"
+    },
+    "acceptance_key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Acceptance Key",
+      "type": "string"
+    },
+    "control_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Control Checksum",
+      "type": "string"
+    },
+    "item_requests": {
+      "maxProperties": 64,
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        }
+      },
+      "title": "Item Requests",
+      "type": "object"
+    },
+    "journal_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Journal Checksum",
+      "type": "string"
+    },
+    "permission_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Permission Checksum"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "state_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "State Checksum",
+      "type": "string"
+    },
+    "submission_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Submission Checksum",
+      "type": "string"
+    },
+    "unused_request_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Unused Request Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "acceptance_key",
+    "acceptance_checksum",
+    "submission_checksum",
+    "state_checksum",
+    "control_checksum",
+    "journal_checksum",
+    "permission_checksum",
+    "item_requests",
+    "unused_request_ids"
+  ],
+  "title": "AcceptedOrigin",
+  "type": "object"
+}

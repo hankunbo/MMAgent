@@ -1,0 +1,392 @@
+{
+  "$defs": {
+    "Conditions": {
+      "additionalProperties": false,
+      "properties": {
+        "domain": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Domain",
+          "type": "string"
+        },
+        "failure_types": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Failure Types",
+          "type": "array"
+        },
+        "goal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Goal",
+          "type": "string"
+        },
+        "graph_conditions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Graph Conditions",
+          "type": "array"
+        },
+        "inputs": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "modalities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Modalities",
+          "type": "array"
+        },
+        "patient_conditions": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Patient Conditions",
+          "type": "object"
+        },
+        "rule_versions": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Rule Versions",
+          "type": "object"
+        },
+        "template": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Template",
+          "type": "string"
+        },
+        "tool_versions": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Tool Versions",
+          "type": "object"
+        },
+        "validation": {
+          "const": "synthetic_engineering",
+          "default": "synthetic_engineering",
+          "title": "Validation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "goal",
+        "template",
+        "graph_conditions",
+        "modalities",
+        "inputs",
+        "patient_conditions",
+        "tool_versions",
+        "rule_versions",
+        "failure_types",
+        "domain"
+      ],
+      "title": "Conditions",
+      "type": "object"
+    },
+    "TaskCompletion": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/TaskDefinition"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "lifecycle_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Lifecycle Checksum",
+          "type": "string"
+        },
+        "medical_success": {
+          "const": false,
+          "default": false,
+          "title": "Medical Success",
+          "type": "boolean"
+        },
+        "output_checksums": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Output Checksums",
+          "type": "array"
+        },
+        "owner": {
+          "const": "ResearchSingleCaseService.read_task_completion",
+          "default": "ResearchSingleCaseService.read_task_completion",
+          "title": "Owner",
+          "type": "string"
+        },
+        "report_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Report Checksum",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "research-task-completion/1.0.0",
+          "default": "research-task-completion/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Score Checksum",
+          "type": "string"
+        },
+        "valid_from": {
+          "format": "date-time",
+          "title": "Valid From",
+          "type": "string"
+        },
+        "workflow_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Workflow Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "definition",
+        "lifecycle_checksum",
+        "report_checksum",
+        "workflow_checksum",
+        "score_checksum",
+        "output_checksums",
+        "valid_from",
+        "expires_at"
+      ],
+      "title": "TaskCompletion",
+      "type": "object"
+    },
+    "TaskDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "context_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Context Checksum",
+          "type": "string"
+        },
+        "execution_policy": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Execution Policy",
+          "type": "string"
+        },
+        "goal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Goal",
+          "type": "string"
+        },
+        "plan_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Plan Checksum",
+          "type": "string"
+        },
+        "profile": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Profile",
+          "type": "string"
+        },
+        "request_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Request Checksum",
+          "type": "string"
+        },
+        "requirements": {
+          "additionalProperties": true,
+          "title": "Requirements",
+          "type": "object"
+        },
+        "run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "research-task-definition/1.0.0",
+          "default": "research-task-definition/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        },
+        "score_policy": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Score Policy",
+          "type": "string"
+        },
+        "task": {
+          "const": "single_tool_verified_outputs_and_saved_scores",
+          "default": "single_tool_verified_outputs_and_saved_scores",
+          "title": "Task",
+          "type": "string"
+        },
+        "use": {
+          "const": "synthetic_offline_planning_prior",
+          "default": "synthetic_offline_planning_prior",
+          "title": "Use",
+          "type": "string"
+        },
+        "validity_seconds": {
+          "maximum": 86400,
+          "minimum": 1,
+          "title": "Validity Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "checksum",
+        "goal",
+        "profile",
+        "run_id",
+        "case_code",
+        "context_checksum",
+        "request_checksum",
+        "scope_checksum",
+        "plan_checksum",
+        "config_checksum",
+        "execution_policy",
+        "score_policy",
+        "requirements",
+        "validity_seconds"
+      ],
+      "title": "TaskDefinition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "basis": {
+      "const": "synthetic_fixture_mapping",
+      "default": "synthetic_fixture_mapping",
+      "title": "Basis",
+      "type": "string"
+    },
+    "conditions": {
+      "$ref": "#/$defs/Conditions"
+    },
+    "content_version": {
+      "enum": [
+        "research-memory/1.0.0",
+        "research-memory/1.1.0",
+        "research-memory/1.2.0"
+      ],
+      "title": "Content Version",
+      "type": "string"
+    },
+    "group": {
+      "const": "success",
+      "default": "success",
+      "title": "Group",
+      "type": "string"
+    },
+    "preferred_branches": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Preferred Branches",
+      "type": "array"
+    },
+    "proofs": {
+      "items": {
+        "$ref": "#/$defs/TaskCompletion"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Proofs",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "memory-use-binding/1.1.0",
+      "default": "memory-use-binding/1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "success_semantics": {
+      "const": "research-task-completion/1.0.0",
+      "default": "research-task-completion/1.0.0",
+      "title": "Success Semantics",
+      "type": "string"
+    },
+    "target": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Target",
+      "type": "string"
+    },
+    "target_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Target Checksum",
+      "type": "string"
+    },
+    "task_profile": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Task Profile",
+      "type": "string"
+    },
+    "terms": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Terms",
+      "type": "array"
+    }
+  },
+  "required": [
+    "target",
+    "target_checksum",
+    "content_version",
+    "conditions",
+    "preferred_branches",
+    "task_profile",
+    "proofs"
+  ],
+  "title": "TaskBinding",
+  "type": "object"
+}

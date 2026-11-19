@@ -1,0 +1,36 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Artifact Type Code",
+      "type": "string"
+    },
+    "asset_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Asset Code",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "media_type": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Media Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "asset_code",
+    "checksum",
+    "artifact_type_code",
+    "media_type"
+  ],
+  "title": "TaskInput",
+  "type": "object"
+}

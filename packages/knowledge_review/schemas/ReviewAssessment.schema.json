@@ -1,0 +1,85 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "offline-review/1.0.0",
+      "default": "offline-review/1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "disposition": {
+      "enum": [
+        "accept",
+        "conditional_coexist",
+        "reject",
+        "needs_evidence",
+        "supersede"
+      ],
+      "title": "Disposition",
+      "type": "string"
+    },
+    "rationale": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "source_classes": {
+      "items": {
+        "enum": [
+          "guideline",
+          "consensus",
+          "systematic_review",
+          "original_research",
+          "professional_education",
+          "ordinary_web"
+        ],
+        "type": "string"
+      },
+      "maxItems": 6,
+      "minItems": 1,
+      "title": "Source Classes",
+      "type": "array"
+    },
+    "authority_note": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Authority Note",
+      "type": "string"
+    },
+    "currency_note": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Currency Note",
+      "type": "string"
+    },
+    "semantic_note": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Semantic Note",
+      "type": "string"
+    },
+    "checked_dimensions": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Checked Dimensions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "disposition",
+    "rationale",
+    "source_classes",
+    "authority_note",
+    "currency_note",
+    "semantic_note",
+    "checked_dimensions"
+  ],
+  "title": "ReviewAssessment",
+  "type": "object"
+}

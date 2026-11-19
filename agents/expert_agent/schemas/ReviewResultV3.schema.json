@@ -1,0 +1,302 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "RequestSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "api_requests_observed": {
+          "minimum": 0,
+          "title": "Api Requests Observed",
+          "type": "integer"
+        },
+        "api_requests_unknown": {
+          "minimum": 0,
+          "title": "Api Requests Unknown",
+          "type": "integer"
+        },
+        "clinical_effect": {
+          "default": null,
+          "title": "Clinical Effect",
+          "type": "null"
+        },
+        "completed": {
+          "minimum": 0,
+          "title": "Completed",
+          "type": "integer"
+        },
+        "pending_unknown": {
+          "minimum": 0,
+          "title": "Pending Unknown",
+          "type": "integer"
+        },
+        "reservations": {
+          "minimum": 0,
+          "title": "Reservations",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "agent-request-summary/1.0.0",
+          "default": "agent-request-summary/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "simulated_attempts": {
+          "minimum": 0,
+          "title": "Simulated Attempts",
+          "type": "integer"
+        },
+        "usage_unknown": {
+          "minimum": 0,
+          "title": "Usage Unknown",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run_id",
+        "reservations",
+        "completed",
+        "pending_unknown",
+        "api_requests_observed",
+        "api_requests_unknown",
+        "simulated_attempts",
+        "usage_unknown"
+      ],
+      "title": "RequestSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "acceptance_key": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Acceptance Key"
+    },
+    "cancelled": {
+      "title": "Cancelled",
+      "type": "boolean"
+    },
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "continuation": {
+      "enum": [
+        "continue",
+        "stop"
+      ],
+      "title": "Continuation",
+      "type": "string"
+    },
+    "decision_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Checksum"
+    },
+    "domain_status": {
+      "enum": [
+        "accepted",
+        "not_accepted"
+      ],
+      "title": "Domain Status",
+      "type": "string"
+    },
+    "event": {
+      "$ref": "#/$defs/Reference"
+    },
+    "execution": {
+      "const": "bounded_live_research",
+      "default": "bounded_live_research",
+      "title": "Execution",
+      "type": "string"
+    },
+    "graph": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "new_medical_review": {
+      "title": "New Medical Review",
+      "type": "boolean"
+    },
+    "original_tool_reservations": {
+      "minimum": 0,
+      "title": "Original Tool Reservations",
+      "type": "integer"
+    },
+    "original_tool_starts": {
+      "minimum": 0,
+      "title": "Original Tool Starts",
+      "type": "integer"
+    },
+    "permission_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Permission Checksum",
+      "type": "string"
+    },
+    "reason": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Reason",
+      "type": "string"
+    },
+    "recorded_agent_invocations": {
+      "minimum": 0,
+      "title": "Recorded Agent Invocations",
+      "type": "integer"
+    },
+    "report_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Report Checksum"
+    },
+    "requests": {
+      "$ref": "#/$defs/RequestSummary"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-review-result/3.0.0",
+      "default": "research-review-result/3.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_action_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Selected Action Id"
+    },
+    "status": {
+      "enum": [
+        "accepted",
+        "accept",
+        "reject",
+        "alternative",
+        "safe_stop",
+        "baseline"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "successor_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Successor Checksum"
+    },
+    "successor_status": {
+      "enum": [
+        "installed",
+        "not_installed",
+        "unconfirmed"
+      ],
+      "title": "Successor Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event",
+    "run_id",
+    "status",
+    "reason",
+    "selected_action_id",
+    "graph",
+    "requests",
+    "recorded_agent_invocations",
+    "original_tool_reservations",
+    "original_tool_starts",
+    "new_medical_review",
+    "domain_status",
+    "successor_status",
+    "continuation",
+    "cancelled",
+    "permission_checksum"
+  ],
+  "title": "ReviewResultV3",
+  "type": "object"
+}

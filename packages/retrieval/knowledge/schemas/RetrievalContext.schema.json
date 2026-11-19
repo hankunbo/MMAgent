@@ -1,0 +1,207 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "age_years": {
+      "anyOf": [
+        {
+          "maximum": 150,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Age Years"
+    },
+    "anatomy": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Anatomy",
+      "type": "array"
+    },
+    "conditions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Conditions",
+      "type": "array"
+    },
+    "date_from": {
+      "anyOf": [
+        {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date From"
+    },
+    "date_to": {
+      "anyOf": [
+        {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date To"
+    },
+    "devices": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Devices",
+      "type": "array"
+    },
+    "disease_packs": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Disease Packs",
+      "type": "array"
+    },
+    "disease_stages": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Disease Stages",
+      "type": "array"
+    },
+    "exams": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Exams",
+      "type": "array"
+    },
+    "languages": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Languages",
+      "type": "array"
+    },
+    "lateralities": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Lateralities",
+      "type": "array"
+    },
+    "modalities": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Modalities",
+      "type": "array"
+    },
+    "population": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Population",
+      "type": "array"
+    },
+    "required_artifacts": {
+      "default": [],
+      "items": {
+        "enum": [
+          "template",
+          "validation_rule",
+          "stop_rule"
+        ],
+        "type": "string"
+      },
+      "maxItems": 3,
+      "title": "Required Artifacts",
+      "type": "array"
+    },
+    "sexes": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Sexes",
+      "type": "array"
+    },
+    "source_types": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Source Types",
+      "type": "array"
+    },
+    "targets": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Targets",
+      "type": "array"
+    },
+    "times": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Times",
+      "type": "array"
+    },
+    "version": {
+      "const": "retrieval-context/1.0.0",
+      "default": "retrieval-context/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "RetrievalContext",
+  "type": "object"
+}

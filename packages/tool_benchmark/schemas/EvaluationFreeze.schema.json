@@ -1,0 +1,111 @@
+{
+  "additionalProperties": false,
+  "description": "Required offline bindings before any future formal evaluator can be considered.\n\nThis artifact is a content lock, never permission to execute or publish a catalog.",
+  "properties": {
+    "catalog_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Catalog Checksum",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "conversion_code_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Conversion Code Checksum",
+      "type": "string"
+    },
+    "evaluation_samples": {
+      "items": {
+        "pattern": "^[A-Za-z0-9_-]{1,64}$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Evaluation Samples",
+      "type": "array"
+    },
+    "execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Execution Authorized",
+      "type": "boolean"
+    },
+    "implementation_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Implementation Checksum",
+      "type": "string"
+    },
+    "manifest_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Manifest Checksum",
+      "type": "string"
+    },
+    "metrics_code_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Metrics Code Checksum",
+      "type": "string"
+    },
+    "model_source_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Model Source Checksum",
+      "type": "string"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "postprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Postprocessing Checksum",
+      "type": "string"
+    },
+    "preprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Preprocessing Checksum",
+      "type": "string"
+    },
+    "runtime_closure_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Runtime Closure Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "benchmark-evaluation-freeze/1.0.0",
+      "default": "benchmark-evaluation-freeze/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "statistics_code_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Statistics Code Checksum",
+      "type": "string"
+    },
+    "weights_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Weights Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "manifest_checksum",
+    "policy_checksum",
+    "metrics_code_checksum",
+    "statistics_code_checksum",
+    "conversion_code_checksum",
+    "catalog_checksum",
+    "implementation_checksum",
+    "model_source_checksum",
+    "weights_checksum",
+    "preprocessing_checksum",
+    "postprocessing_checksum",
+    "runtime_closure_checksum",
+    "evaluation_samples"
+  ],
+  "title": "EvaluationFreeze",
+  "type": "object"
+}

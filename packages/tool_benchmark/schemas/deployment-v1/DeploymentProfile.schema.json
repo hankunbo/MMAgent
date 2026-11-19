@@ -1,0 +1,501 @@
+{
+  "$defs": {
+    "ArtifactConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "qc_required": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Qc Required",
+          "type": "array"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "qc_required",
+        "scope_terms"
+      ],
+      "title": "ArtifactConstraint",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "JSONOutputRule": {
+      "additionalProperties": false,
+      "properties": {
+        "anatomical_targets": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Anatomical Targets",
+          "type": "array"
+        },
+        "dimensions_max": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Dimensions Max",
+          "type": "array"
+        },
+        "dimensions_min": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Dimensions Min",
+          "type": "array"
+        },
+        "media_types": {
+          "default": [
+            "application/json"
+          ],
+          "items": {
+            "const": "application/json",
+            "type": "string"
+          },
+          "title": "Media Types",
+          "type": "array"
+        },
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "schema_version": {
+          "const": "json-output-rule/1.0.0",
+          "default": "json-output-rule/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "port",
+        "dimensions_min",
+        "dimensions_max",
+        "anatomical_targets"
+      ],
+      "title": "JSONOutputRule",
+      "type": "object"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "OutputTargetBinding": {
+      "additionalProperties": false,
+      "description": "Deployment owner's explicit anatomy subset of one exact output constraint.\n\nOther scope terms remain applicability conditions. No inferred clinical aliases.\nThe enclosing profile binds this declaration to manifest/catalog/implementation.",
+      "properties": {
+        "anatomical_targets": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Anatomical Targets",
+          "type": "array"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "checksum",
+        "source_ref",
+        "port",
+        "constraint",
+        "anatomical_targets"
+      ],
+      "title": "OutputTargetBinding",
+      "type": "object"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "PortRule": {
+      "additionalProperties": false,
+      "description": "Technical target codes, not a synonym map or untyped task scope terms.",
+      "properties": {
+        "anatomical_targets": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Anatomical Targets",
+          "type": "array"
+        },
+        "dimensions_max": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Dimensions Max",
+          "type": "array"
+        },
+        "dimensions_min": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Dimensions Min",
+          "type": "array"
+        },
+        "media_types": {
+          "items": {
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "application/x-npy"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Media Types",
+          "type": "array"
+        },
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        }
+      },
+      "required": [
+        "port",
+        "media_types",
+        "dimensions_min",
+        "dimensions_max",
+        "anatomical_targets"
+      ],
+      "title": "PortRule",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "RuntimeSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "dependencies": {
+          "maxProperties": 128,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[0-9][A-Za-z0-9.!+_-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Dependencies",
+          "type": "object"
+        },
+        "gpu": {
+          "enum": [
+            "required",
+            "not_required"
+          ],
+          "title": "Gpu",
+          "type": "string"
+        },
+        "interpreter_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Interpreter Checksum",
+          "type": "string"
+        },
+        "interpreter_uri": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Interpreter Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "interpreter_uri",
+        "interpreter_checksum",
+        "dependencies",
+        "gpu"
+      ],
+      "title": "RuntimeSpec",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Owned versioned technical declarations bound to the 06A manifest.",
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "input_rules": {
+      "items": {
+        "$ref": "#/$defs/PortRule"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Input Rules",
+      "type": "array"
+    },
+    "manifest_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Manifest Checksum",
+      "type": "string"
+    },
+    "output_rules": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/PortRule"
+          },
+          {
+            "$ref": "#/$defs/JSONOutputRule"
+          }
+        ]
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Output Rules",
+      "type": "array"
+    },
+    "output_target_bindings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/OutputTargetBinding"
+      },
+      "maxItems": 64,
+      "title": "Output Target Bindings",
+      "type": "array"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "postprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Postprocessing Checksum",
+      "type": "string"
+    },
+    "preprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Preprocessing Checksum",
+      "type": "string"
+    },
+    "runtime": {
+      "$ref": "#/$defs/RuntimeSpec"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "checksum",
+    "manifest_checksum",
+    "config_checksum",
+    "policy_checksum",
+    "input_rules",
+    "output_rules",
+    "preprocessing_checksum",
+    "postprocessing_checksum",
+    "runtime"
+  ],
+  "title": "DeploymentProfile",
+  "type": "object"
+}

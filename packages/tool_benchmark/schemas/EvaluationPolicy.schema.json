@@ -1,0 +1,125 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "baseline_only": {
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "confidence_interval": {
+      "const": "not_implemented",
+      "default": "not_implemented",
+      "title": "Confidence Interval",
+      "type": "string"
+    },
+    "max_failure_rate": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Failure Rate"
+    },
+    "max_input_bytes": {
+      "default": 4194304,
+      "maximum": 4194304,
+      "minimum": 1,
+      "title": "Max Input Bytes",
+      "type": "integer"
+    },
+    "max_output_bytes": {
+      "default": 4194304,
+      "maximum": 4194304,
+      "minimum": 1,
+      "title": "Max Output Bytes",
+      "type": "integer"
+    },
+    "max_samples": {
+      "default": 4,
+      "maximum": 32,
+      "minimum": 1,
+      "title": "Max Samples",
+      "type": "integer"
+    },
+    "max_seconds_per_sample": {
+      "default": 300,
+      "maximum": 3600,
+      "minimum": 1,
+      "title": "Max Seconds Per Sample",
+      "type": "integer"
+    },
+    "min_dice": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Dice"
+    },
+    "min_samples": {
+      "anyOf": [
+        {
+          "maximum": 100000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Samples"
+    },
+    "required_gates": {
+      "default": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "items": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer"
+      },
+      "title": "Required Gates",
+      "type": "array"
+    },
+    "statistics": {
+      "const": "patient_macro_mean/1.0.0",
+      "default": "patient_macro_mean/1.0.0",
+      "title": "Statistics",
+      "type": "string"
+    },
+    "version": {
+      "const": "benchmark-policy/1.0.0",
+      "default": "benchmark-policy/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "EvaluationPolicy",
+  "type": "object"
+}

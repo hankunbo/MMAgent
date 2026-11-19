@@ -1,0 +1,33 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "endpoint_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Endpoint Checksum",
+      "type": "string"
+    },
+    "mode": {
+      "const": "environment_https_proxy",
+      "title": "Mode",
+      "type": "string"
+    },
+    "proxy_env": {
+      "const": "HTTPS_PROXY",
+      "title": "Proxy Env",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "llm-network-route/1.0.0",
+      "default": "llm-network-route/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "mode",
+    "proxy_env",
+    "endpoint_checksum"
+  ],
+  "title": "NetworkRoute",
+  "type": "object"
+}

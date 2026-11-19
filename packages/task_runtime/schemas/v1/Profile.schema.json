@@ -1,0 +1,52 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "lease_seconds": {
+      "default": 30,
+      "maximum": 300,
+      "minimum": 1,
+      "title": "Lease Seconds",
+      "type": "integer"
+    },
+    "max_claims": {
+      "default": 64,
+      "maximum": 256,
+      "minimum": 1,
+      "title": "Max Claims",
+      "type": "integer"
+    },
+    "max_concurrency": {
+      "const": 1,
+      "default": 1,
+      "title": "Max Concurrency",
+      "type": "integer"
+    },
+    "max_failures": {
+      "default": 3,
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Max Failures",
+      "type": "integer"
+    },
+    "resource_pool": {
+      "const": "synthetic_case",
+      "default": "synthetic_case",
+      "title": "Resource Pool",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-dispatch-profile/1.0.0",
+      "default": "research-dispatch-profile/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic_only": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic Only",
+      "type": "boolean"
+    }
+  },
+  "title": "Profile",
+  "type": "object"
+}

@@ -1,0 +1,283 @@
+{
+  "$defs": {
+    "KnowledgeUseRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "knowledge-use-request/1.0.0",
+          "default": "knowledge-use-request/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "purpose": {
+          "enum": [
+            "limited_research_evidence_planning",
+            "clinical"
+          ],
+          "title": "Purpose",
+          "type": "string"
+        },
+        "policy_ref": {
+          "$ref": "#/$defs/VersionedReference"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "purpose",
+        "policy_ref",
+        "scope_checksum"
+      ],
+      "title": "KnowledgeUseRequest",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "languages": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Languages",
+      "type": "array"
+    },
+    "source_types": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 16,
+      "title": "Source Types",
+      "type": "array"
+    },
+    "date_from": {
+      "anyOf": [
+        {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date From"
+    },
+    "date_to": {
+      "anyOf": [
+        {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date To"
+    },
+    "population": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Population",
+      "type": "array"
+    },
+    "conditions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Conditions",
+      "type": "array"
+    },
+    "modalities": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Modalities",
+      "type": "array"
+    },
+    "targets": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Targets",
+      "type": "array"
+    },
+    "anatomy": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Anatomy",
+      "type": "array"
+    },
+    "version": {
+      "const": "retrieval-context/1.0.0",
+      "default": "retrieval-context/1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "disease_packs": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Disease Packs",
+      "type": "array"
+    },
+    "disease_stages": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Disease Stages",
+      "type": "array"
+    },
+    "sexes": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Sexes",
+      "type": "array"
+    },
+    "exams": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Exams",
+      "type": "array"
+    },
+    "times": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Times",
+      "type": "array"
+    },
+    "lateralities": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Lateralities",
+      "type": "array"
+    },
+    "devices": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Devices",
+      "type": "array"
+    },
+    "required_artifacts": {
+      "default": [],
+      "items": {
+        "enum": [
+          "template",
+          "validation_rule",
+          "stop_rule"
+        ],
+        "type": "string"
+      },
+      "maxItems": 3,
+      "title": "Required Artifacts",
+      "type": "array"
+    },
+    "age_years": {
+      "anyOf": [
+        {
+          "maximum": 150,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Age Years"
+    },
+    "use": {
+      "$ref": "#/$defs/KnowledgeUseRequest"
+    }
+  },
+  "required": [
+    "use"
+  ],
+  "title": "ResearchRetrievalContext",
+  "type": "object"
+}

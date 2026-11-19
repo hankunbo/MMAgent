@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "modality": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Modality",
+      "type": "string"
+    },
+    "regions": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Regions",
+      "type": "array"
+    },
+    "representations": {
+      "items": {
+        "enum": [
+          "image",
+          "image_series",
+          "volume",
+          "map"
+        ],
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Representations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "modality",
+    "representations",
+    "regions"
+  ],
+  "title": "RegionQuestions",
+  "type": "object"
+}

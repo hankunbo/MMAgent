@@ -1,0 +1,73 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-gap-policy/1.0.0",
+      "default": "tool-gap-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "allowed": {
+      "default": [
+        "capability_unregistered",
+        "environment_unavailable",
+        "implementation_missing",
+        "input_incompatible",
+        "output_incompatible",
+        "validation_insufficient"
+      ],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Allowed",
+      "type": "array"
+    },
+    "purposes": {
+      "default": [
+        "debug",
+        "shadow",
+        "decisive_research"
+      ],
+      "items": {
+        "enum": [
+          "debug",
+          "shadow",
+          "decisive_research"
+        ],
+        "type": "string"
+      },
+      "title": "Purposes",
+      "type": "array"
+    },
+    "lease_seconds": {
+      "default": 60,
+      "maximum": 300,
+      "minimum": 1,
+      "title": "Lease Seconds",
+      "type": "integer"
+    },
+    "max_claims": {
+      "default": 3,
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Max Claims",
+      "type": "integer"
+    },
+    "lifetime_seconds": {
+      "default": 86400,
+      "maximum": 604800,
+      "minimum": 1,
+      "title": "Lifetime Seconds",
+      "type": "integer"
+    }
+  },
+  "title": "QueuePolicy",
+  "type": "object"
+}

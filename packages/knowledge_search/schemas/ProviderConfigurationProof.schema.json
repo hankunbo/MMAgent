@@ -1,0 +1,125 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "adapter": {
+      "enum": [
+        "pubmed",
+        "europe_pmc",
+        "crossref",
+        "guideline",
+        "web_fallback"
+      ],
+      "title": "Adapter",
+      "type": "string"
+    },
+    "allowed_hosts": {
+      "items": {
+        "maxLength": 253,
+        "pattern": "^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\\.[a-z]{2,63}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Allowed Hosts",
+      "type": "array"
+    },
+    "allowlist_version": {
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "title": "Allowlist Version",
+      "type": "string"
+    },
+    "auth_environment_name": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Auth Environment Name"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "contact_environment": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Contact Environment"
+    },
+    "deployment_workers": {
+      "const": 1,
+      "title": "Deployment Workers",
+      "type": "integer"
+    },
+    "identity_configured": {
+      "title": "Identity Configured",
+      "type": "boolean"
+    },
+    "identity_policy": {
+      "const": "contact-env/2.0.0",
+      "title": "Identity Policy",
+      "type": "string"
+    },
+    "locator_policy": {
+      "const": "doi-resolvers/1.0.0",
+      "default": "doi-resolvers/1.0.0",
+      "title": "Locator Policy",
+      "type": "string"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "policy_version": {
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "proof_version": {
+      "const": "provider-configuration/1.0.0",
+      "default": "provider-configuration/1.0.0",
+      "title": "Proof Version",
+      "type": "string"
+    },
+    "provider_code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Provider Code",
+      "type": "string"
+    },
+    "provider_version": {
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "title": "Provider Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "provider_code",
+    "provider_version",
+    "adapter",
+    "config_checksum",
+    "allowlist_version",
+    "allowed_hosts",
+    "identity_policy",
+    "contact_environment",
+    "auth_environment_name",
+    "identity_configured",
+    "policy_version",
+    "policy_checksum",
+    "deployment_workers"
+  ],
+  "title": "ProviderConfigurationProof",
+  "type": "object"
+}

@@ -1,0 +1,106 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "calibration": {
+      "const": "unverified",
+      "default": "unverified",
+      "title": "Calibration",
+      "type": "string"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "decisive_evidence": {
+      "const": false,
+      "default": false,
+      "title": "Decisive Evidence",
+      "type": "boolean"
+    },
+    "demographics_used": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Demographics Used",
+      "type": "array"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "model_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Model Checksum",
+      "type": "string"
+    },
+    "normalized_model_scores": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "title": "Normalized Model Scores",
+      "type": "array"
+    },
+    "predicted_class": {
+      "enum": [
+        "non-glaucoma",
+        "glaucoma"
+      ],
+      "title": "Predicted Class",
+      "type": "string"
+    },
+    "predicted_index": {
+      "enum": [
+        0,
+        1
+      ],
+      "title": "Predicted Index",
+      "type": "integer"
+    },
+    "raw_cosines": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "title": "Raw Cosines",
+      "type": "array"
+    },
+    "research_only": {
+      "const": true,
+      "default": true,
+      "title": "Research Only",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "fairclip-output/1.0.0",
+      "default": "fairclip-output/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "input_checksum",
+    "model_checksum",
+    "config_checksum",
+    "raw_cosines",
+    "normalized_model_scores",
+    "predicted_index",
+    "predicted_class"
+  ],
+  "title": "FairCLIPOutput",
+  "type": "object"
+}

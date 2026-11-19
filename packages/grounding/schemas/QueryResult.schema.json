@@ -1,0 +1,2326 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ArtifactConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        },
+        "qc_required": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Qc Required",
+          "type": "array"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "qc_required",
+        "scope_terms"
+      ],
+      "title": "ArtifactConstraint",
+      "type": "object"
+    },
+    "ArtifactMetadata": {
+      "additionalProperties": false,
+      "description": "Explicit ingestion projection. No URI, report, measurements or image bytes.",
+      "properties": {
+        "asset_code": {
+          "pattern": "^ASSET:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Asset Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "patient_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Patient Hash",
+          "type": "string"
+        },
+        "encounter_code": {
+          "title": "Encounter Code",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Run Id"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        },
+        "qc_status": {
+          "$ref": "#/$defs/QCStatus"
+        },
+        "acquired_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Acquired At"
+        }
+      },
+      "required": [
+        "asset_code",
+        "checksum",
+        "case_code",
+        "patient_hash",
+        "encounter_code",
+        "run_id",
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "scope_terms",
+        "qc_status",
+        "acquired_at"
+      ],
+      "title": "ArtifactMetadata",
+      "type": "object"
+    },
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "capability_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "workflow_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "output": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/Input"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "validation_required": {
+          "$ref": "#/$defs/ToolValidationStatus"
+        },
+        "intended_use": {
+          "$ref": "#/$defs/IntendedUse"
+        },
+        "execution_policy": {
+          "$ref": "#/$defs/ExecutionPolicy"
+        },
+        "estimate_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "capability_ref",
+        "tool_ref",
+        "implementation_ref",
+        "workflow_ref",
+        "output_port",
+        "output",
+        "inputs",
+        "validation_required",
+        "intended_use",
+        "execution_policy",
+        "estimate_ref"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "CapabilityGap": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "contract_type": {
+          "const": "CapabilityGap",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "gap_id": {
+          "title": "Gap Id",
+          "type": "string"
+        },
+        "origin_run_id": {
+          "title": "Origin Run Id",
+          "type": "string"
+        },
+        "target_node_code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Target Node Code",
+          "type": "string"
+        },
+        "capability_code": {
+          "title": "Capability Code",
+          "type": "string"
+        },
+        "gap_codes": {
+          "items": {
+            "$ref": "#/$defs/ToolGapCode"
+          },
+          "minItems": 1,
+          "title": "Gap Codes",
+          "type": "array"
+        },
+        "observation": {
+          "const": "UNOBSERVED_TOOL_GAP",
+          "title": "Observation",
+          "type": "string"
+        },
+        "capability": {
+          "const": "UNAVAILABLE_CAPABILITY",
+          "title": "Capability",
+          "type": "string"
+        },
+        "validity": {
+          "$ref": "#/$defs/EvidenceValidity"
+        },
+        "clinical_effect": {
+          "const": "NONE",
+          "title": "Clinical Effect",
+          "type": "string"
+        },
+        "alternative_paths": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "title": "Alternative Paths",
+          "type": "array"
+        },
+        "blocks_required_path": {
+          "title": "Blocks Required Path",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "gap_id",
+        "origin_run_id",
+        "target_node_code",
+        "capability_code",
+        "gap_codes",
+        "observation",
+        "capability",
+        "validity",
+        "clinical_effect",
+        "alternative_paths",
+        "blocks_required_path"
+      ],
+      "title": "CapabilityGap",
+      "type": "object"
+    },
+    "CaseScope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "pattern": "^CASE:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "patient_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Patient Hash",
+          "type": "string"
+        },
+        "encounter_code": {
+          "pattern": "^ENCOUNTER:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Encounter Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        }
+      },
+      "required": [
+        "case_code",
+        "patient_hash",
+        "encounter_code",
+        "laterality"
+      ],
+      "title": "CaseScope",
+      "type": "object"
+    },
+    "CatalogProducer": {
+      "additionalProperties": false,
+      "description": "Catalog output projection, not an admitted mapping or execution authorization.\n\nAll declared capabilities are retained; multiple capabilities do not establish\nan unambiguous output-to-capability relationship and are never guessed.",
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "capability_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Capability Refs",
+          "type": "array"
+        },
+        "output_port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "output": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "implementation_ref",
+        "capability_refs",
+        "output_port",
+        "output"
+      ],
+      "title": "CatalogProducer",
+      "type": "object"
+    },
+    "Component": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "information_gain",
+            "directness",
+            "cost",
+            "latency",
+            "failure_risk"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "disabled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "state",
+        "value",
+        "source_ref"
+      ],
+      "title": "Component",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "DeferredCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "mapping_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "candidate_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Candidate Code",
+          "type": "string"
+        },
+        "path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 26,
+          "minItems": 1,
+          "title": "Path",
+          "type": "array"
+        },
+        "reason": {
+          "enum": [
+            "depth_exhausted",
+            "budget_exhausted"
+          ],
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mapping_ref",
+        "candidate_code",
+        "path",
+        "reason"
+      ],
+      "title": "DeferredCandidate",
+      "type": "object"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "port_name": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "artifact_options": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Artifact Options",
+          "type": "array"
+        },
+        "producer_options": {
+          "items": {
+            "$ref": "#/$defs/FeasibleCandidate"
+          },
+          "maxItems": 512,
+          "title": "Producer Options",
+          "type": "array"
+        },
+        "optional_missing": {
+          "title": "Optional Missing",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "port_name",
+        "required",
+        "cardinality_min",
+        "cardinality_max",
+        "constraint",
+        "artifact_options",
+        "producer_options",
+        "optional_missing"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "EnvironmentFact": {
+      "additionalProperties": false,
+      "properties": {
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "availability": {
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "preconditions": {
+          "enum": [
+            "satisfied",
+            "rejected",
+            "unknown"
+          ],
+          "title": "Preconditions",
+          "type": "string"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "implementation_ref",
+        "availability",
+        "preconditions",
+        "source_ref"
+      ],
+      "title": "EnvironmentFact",
+      "type": "object"
+    },
+    "EvidenceValidity": {
+      "enum": [
+        "UNASSESSED",
+        "VALID",
+        "INVALID",
+        "INCONCLUSIVE"
+      ],
+      "title": "EvidenceValidity",
+      "type": "string"
+    },
+    "ExecutionPolicy": {
+      "enum": [
+        "research",
+        "clinical_deployment"
+      ],
+      "title": "ExecutionPolicy",
+      "type": "string"
+    },
+    "ExtensionSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_gap": {
+          "$ref": "#/$defs/CapabilityGap"
+        },
+        "target_capability_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "target_tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "target_implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "source_paths": {
+          "items": {
+            "$ref": "#/$defs/PathSource"
+          },
+          "maxItems": 512,
+          "minItems": 1,
+          "title": "Source Paths",
+          "type": "array"
+        },
+        "affected_inputs": {
+          "items": {
+            "$ref": "#/$defs/InputImpact"
+          },
+          "maxItems": 8192,
+          "title": "Affected Inputs",
+          "type": "array"
+        },
+        "finding_checksums": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Finding Checksums",
+          "type": "array"
+        },
+        "requirement_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "policy_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "task_creation_owner": {
+          "const": "application/Runtime/11",
+          "default": "application/Runtime/11",
+          "title": "Task Creation Owner",
+          "type": "string"
+        },
+        "requirement_document_port": {
+          "const": "PostgresRuntimeRepository.save_tool_requirement",
+          "default": "PostgresRuntimeRepository.save_tool_requirement",
+          "title": "Requirement Document Port",
+          "type": "string"
+        },
+        "gap_port": {
+          "const": "PostgresRuntimeRepository.save_capability_gap",
+          "default": "PostgresRuntimeRepository.save_capability_gap",
+          "title": "Gap Port",
+          "type": "string"
+        },
+        "action": {
+          "const": "suggest_only_for_future_catalog",
+          "default": "suggest_only_for_future_catalog",
+          "title": "Action",
+          "type": "string"
+        }
+      },
+      "required": [
+        "capability_gap",
+        "target_capability_ref",
+        "target_tool_ref",
+        "target_implementation_ref",
+        "constraint",
+        "source_paths",
+        "affected_inputs",
+        "finding_checksums",
+        "requirement_ref",
+        "catalog_ref",
+        "policy_ref"
+      ],
+      "title": "ExtensionSuggestion",
+      "type": "object"
+    },
+    "FeasibleCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Identity",
+          "type": "string"
+        },
+        "mapping_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "candidate": {
+          "$ref": "#/$defs/Candidate"
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/Component"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Components",
+          "type": "array"
+        }
+      },
+      "required": [
+        "identity",
+        "mapping_ref",
+        "candidate",
+        "dependencies",
+        "components"
+      ],
+      "title": "FeasibleCandidate",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "enum": [
+            "artifact_outside_catalog",
+            "unknown_scope_term",
+            "capability_outside_tool",
+            "tool_outside_catalog",
+            "workflow_outside_tool",
+            "estimate_outside_catalog",
+            "output_port_scope_mismatch",
+            "output_type_mismatch",
+            "complete_input_set_required",
+            "tool_not_active",
+            "tool_safety_revoked",
+            "tool_validation_rejected",
+            "intended_use_rejected",
+            "artifact_type_mismatch",
+            "modality_mismatch",
+            "laterality_mismatch",
+            "coordinate_mismatch",
+            "unit_mismatch",
+            "qc_rejected",
+            "scope_mismatch",
+            "time_unknown",
+            "time_mismatch",
+            "required_condition_unknown",
+            "precondition_rejected",
+            "environment_unknown",
+            "environment_unavailable",
+            "patient_data_missing",
+            "capability_unregistered",
+            "required_input_missing",
+            "unmapped_in_locked_view",
+            "unresolved_producer",
+            "cycle_detected",
+            "depth_exhausted",
+            "budget_exhausted"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "patient_data_missing",
+            "artifact_undefined",
+            "capability_unregistered",
+            "implementation_missing",
+            "validation_insufficient",
+            "input_incompatible",
+            "environment_unavailable",
+            "safety_restriction",
+            "search_incomplete",
+            "mapping_missing",
+            "unresolved_producer",
+            "input_unsatisfied"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 26,
+          "minItems": 1,
+          "title": "Path",
+          "type": "array"
+        },
+        "scope": {
+          "$ref": "#/$defs/CaseScope"
+        },
+        "constraint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactConstraint"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PathSource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "input_port": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PortRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalog_producers": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CatalogProducer"
+          },
+          "maxItems": 4096,
+          "title": "Catalog Producers",
+          "type": "array"
+        },
+        "asset_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Code"
+        }
+      },
+      "required": [
+        "reason",
+        "category",
+        "path",
+        "scope",
+        "constraint",
+        "catalog_ref",
+        "source",
+        "input_port"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "GroundingLock": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "grounding-lock/1.0.0",
+          "default": "grounding-lock/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^RUN:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "graph_code": {
+          "pattern": "^GRAPH:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "graph_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Graph Checksum",
+          "type": "string"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "mapping_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Mapping Refs",
+          "type": "array"
+        },
+        "release_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "template_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "graph_template_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "knowledge_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 512,
+          "minItems": 1,
+          "title": "Knowledge Refs",
+          "type": "array"
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "graph_code",
+        "graph_version",
+        "graph_checksum",
+        "catalog_ref",
+        "mapping_refs",
+        "release_ref",
+        "template_ref",
+        "graph_template_ref",
+        "knowledge_refs",
+        "policy",
+        "checksum"
+      ],
+      "title": "GroundingLock",
+      "type": "object"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "port",
+        "constraint",
+        "required",
+        "cardinality_min",
+        "cardinality_max"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "InputImpact": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/PathSource"
+        },
+        "input_port": {
+          "$ref": "#/$defs/PortRef"
+        }
+      },
+      "required": [
+        "source",
+        "input_port"
+      ],
+      "title": "InputImpact",
+      "type": "object"
+    },
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "PathSource": {
+      "additionalProperties": false,
+      "description": "Exact locked mapping candidate and its occurrence in the dependency search.",
+      "properties": {
+        "mapping_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "candidate": {
+          "$ref": "#/$defs/Candidate"
+        },
+        "path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 26,
+          "minItems": 1,
+          "title": "Path",
+          "type": "array"
+        },
+        "mapping_path": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 13,
+          "minItems": 1,
+          "title": "Mapping Path",
+          "type": "array"
+        }
+      },
+      "required": [
+        "mapping_ref",
+        "candidate",
+        "path",
+        "mapping_path"
+      ],
+      "title": "PathSource",
+      "type": "object"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "policy",
+          "default": "policy",
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "synthetic_only": {
+          "title": "Synthetic Only",
+          "type": "boolean"
+        },
+        "admissible_states": {
+          "items": {
+            "const": "Active",
+            "type": "string"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "title": "Admissible States",
+          "type": "array"
+        },
+        "type_compatibility": {
+          "const": "exact",
+          "title": "Type Compatibility",
+          "type": "string"
+        },
+        "accepted_validation": {
+          "items": {
+            "$ref": "#/$defs/ToolValidationStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Accepted Validation",
+          "type": "array"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        },
+        "execution_policy": {
+          "const": "research",
+          "title": "Execution Policy",
+          "type": "string"
+        },
+        "max_bytes": {
+          "maximum": 65536,
+          "minimum": 1024,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_candidates": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_inputs": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Inputs",
+          "type": "integer"
+        },
+        "max_artifacts": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Max Artifacts",
+          "type": "integer"
+        },
+        "max_mappings": {
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Max Mappings",
+          "type": "integer"
+        },
+        "allowed_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Allowed Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "code",
+        "version",
+        "checksum",
+        "baseline_only",
+        "synthetic_only",
+        "admissible_states",
+        "type_compatibility",
+        "accepted_validation",
+        "intended_use",
+        "execution_policy",
+        "max_bytes",
+        "max_candidates",
+        "max_inputs",
+        "max_artifacts",
+        "max_mappings",
+        "allowed_terms"
+      ],
+      "title": "Policy",
+      "type": "object"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "ProductDemand": {
+      "additionalProperties": false,
+      "description": "Unmet product, separately from any resolved capability extension target.",
+      "properties": {
+        "binding_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Binding Checksum",
+          "type": "string"
+        },
+        "requirement_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "policy_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "resolution": {
+          "enum": [
+            "patient_data_missing",
+            "unmapped_in_locked_view",
+            "unresolved_producer",
+            "mapped_producer_blocked",
+            "search_incomplete",
+            "input_incompatible"
+          ],
+          "title": "Resolution",
+          "type": "string"
+        },
+        "catalog_producers": {
+          "items": {
+            "$ref": "#/$defs/CatalogProducer"
+          },
+          "maxItems": 4096,
+          "title": "Catalog Producers",
+          "type": "array"
+        },
+        "producer_paths": {
+          "items": {
+            "$ref": "#/$defs/PathSource"
+          },
+          "maxItems": 512,
+          "title": "Producer Paths",
+          "type": "array"
+        },
+        "affected_inputs": {
+          "items": {
+            "$ref": "#/$defs/InputImpact"
+          },
+          "maxItems": 8192,
+          "minItems": 1,
+          "title": "Affected Inputs",
+          "type": "array"
+        },
+        "finding_checksums": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 8192,
+          "minItems": 1,
+          "title": "Finding Checksums",
+          "type": "array"
+        },
+        "capability_gap_status": {
+          "const": "not_constructible_from_product_requirement",
+          "default": "not_constructible_from_product_requirement",
+          "title": "Capability Gap Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "binding_checksum",
+        "requirement_ref",
+        "catalog_ref",
+        "policy_ref",
+        "constraint",
+        "resolution",
+        "catalog_producers",
+        "producer_paths",
+        "affected_inputs",
+        "finding_checksums"
+      ],
+      "title": "ProductDemand",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "QueryConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "const": "POLICY:GROUNDING:QUERY_BASELINE",
+          "default": "POLICY:GROUNDING:QUERY_BASELINE",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "max_depth": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Depth",
+          "type": "integer"
+        },
+        "max_evaluations": {
+          "maximum": 512,
+          "minimum": 1,
+          "title": "Max Evaluations",
+          "type": "integer"
+        },
+        "max_operations": {
+          "default": 10000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Operations",
+          "type": "integer"
+        },
+        "max_findings": {
+          "default": 4096,
+          "maximum": 8192,
+          "minimum": 2,
+          "title": "Max Findings",
+          "type": "integer"
+        },
+        "top_k": {
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "information_gain_enabled": {
+          "title": "Information Gain Enabled",
+          "type": "boolean"
+        },
+        "order": {
+          "items": {
+            "enum": [
+              "information_gain",
+              "directness",
+              "cost",
+              "latency",
+              "failure_risk"
+            ],
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Order",
+          "type": "array"
+        },
+        "missing_order": {
+          "const": "last",
+          "default": "last",
+          "title": "Missing Order",
+          "type": "string"
+        },
+        "tie_break": {
+          "const": "mapping_ref,candidate_code,dependency_checksum",
+          "default": "mapping_ref,candidate_code,dependency_checksum",
+          "title": "Tie Break",
+          "type": "string"
+        },
+        "score_scope": {
+          "const": "individual_tool_estimates_not_chain_totals",
+          "default": "individual_tool_estimates_not_chain_totals",
+          "title": "Score Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "checksum",
+        "max_depth",
+        "max_evaluations",
+        "top_k",
+        "information_gain_enabled",
+        "order"
+      ],
+      "title": "QueryConfig",
+      "type": "object"
+    },
+    "QueryRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "grounding-query/1.0.0",
+          "default": "grounding-query/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "lock": {
+          "$ref": "#/$defs/GroundingLock"
+        },
+        "requirement_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "target_node_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Target Node Code",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/CaseScope"
+        },
+        "artifacts": {
+          "items": {
+            "$ref": "#/$defs/ArtifactMetadata"
+          },
+          "maxItems": 256,
+          "title": "Artifacts",
+          "type": "array"
+        },
+        "availability_source_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "snapshot_at": {
+          "format": "date-time",
+          "title": "Snapshot At",
+          "type": "string"
+        },
+        "window_start": {
+          "format": "date-time",
+          "title": "Window Start",
+          "type": "string"
+        },
+        "window_end": {
+          "format": "date-time",
+          "title": "Window End",
+          "type": "string"
+        },
+        "patient_data_types": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 256,
+          "title": "Patient Data Types",
+          "type": "array"
+        },
+        "satisfied_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Satisfied Terms",
+          "type": "array"
+        },
+        "environment": {
+          "items": {
+            "$ref": "#/$defs/EnvironmentFact"
+          },
+          "maxItems": 128,
+          "title": "Environment",
+          "type": "array"
+        },
+        "context": {
+          "$ref": "#/$defs/RetrievalContext"
+        },
+        "config": {
+          "$ref": "#/$defs/QueryConfig"
+        }
+      },
+      "required": [
+        "lock",
+        "requirement_ref",
+        "target_node_code",
+        "scope",
+        "artifacts",
+        "availability_source_ref",
+        "snapshot_at",
+        "window_start",
+        "window_end",
+        "patient_data_types",
+        "satisfied_terms",
+        "environment",
+        "context",
+        "config"
+      ],
+      "title": "QueryRequest",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "RejectedCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/PathSource"
+        },
+        "mapping_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "capability_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "candidate_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Candidate Code",
+          "type": "string"
+        },
+        "path": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 26,
+          "minItems": 1,
+          "title": "Path",
+          "type": "array"
+        },
+        "reasons": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "maxItems": 1024,
+          "minItems": 1,
+          "title": "Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "mapping_ref",
+        "capability_ref",
+        "candidate_code",
+        "path",
+        "reasons"
+      ],
+      "title": "RejectedCandidate",
+      "type": "object"
+    },
+    "RetrievalContext": {
+      "additionalProperties": false,
+      "properties": {
+        "languages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Languages",
+          "type": "array"
+        },
+        "source_types": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Source Types",
+          "type": "array"
+        },
+        "date_from": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date From"
+        },
+        "date_to": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date To"
+        },
+        "population": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Population",
+          "type": "array"
+        },
+        "conditions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "modalities": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "targets": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Targets",
+          "type": "array"
+        },
+        "anatomy": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Anatomy",
+          "type": "array"
+        },
+        "version": {
+          "const": "retrieval-context/1.0.0",
+          "default": "retrieval-context/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disease_packs": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Packs",
+          "type": "array"
+        },
+        "disease_stages": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Stages",
+          "type": "array"
+        },
+        "sexes": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Sexes",
+          "type": "array"
+        },
+        "exams": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Exams",
+          "type": "array"
+        },
+        "times": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Times",
+          "type": "array"
+        },
+        "lateralities": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Lateralities",
+          "type": "array"
+        },
+        "devices": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Devices",
+          "type": "array"
+        },
+        "required_artifacts": {
+          "default": [],
+          "items": {
+            "enum": [
+              "template",
+              "validation_rule",
+              "stop_rule"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Required Artifacts",
+          "type": "array"
+        },
+        "age_years": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Years"
+        }
+      },
+      "title": "RetrievalContext",
+      "type": "object"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    },
+    "ToolGapCode": {
+      "enum": [
+        "NO_GROUNDING",
+        "NO_TOOL",
+        "NO_IMPLEMENTATION",
+        "NO_ADAPTER",
+        "MISSING_DATA",
+        "INPUT_MISMATCH",
+        "OUT_OF_SCOPE",
+        "LOW_RELIABILITY",
+        "EXECUTION_RESOURCE_UNAVAILABLE",
+        "EXECUTION_FAILED"
+      ],
+      "title": "ToolGapCode",
+      "type": "string"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "grounding-query-result/2.0.0",
+      "default": "grounding-query-result/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "request": {
+      "$ref": "#/$defs/QueryRequest"
+    },
+    "binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Binding Checksum",
+      "type": "string"
+    },
+    "safety_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Safety Checksum",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "existing_artifact",
+        "candidates",
+        "gaps",
+        "truncated"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "existing_artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 256,
+      "title": "Existing Artifacts",
+      "type": "array"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/FeasibleCandidate"
+      },
+      "maxItems": 512,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "top_k": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Top K",
+      "type": "array"
+    },
+    "rejected": {
+      "items": {
+        "$ref": "#/$defs/RejectedCandidate"
+      },
+      "maxItems": 512,
+      "title": "Rejected",
+      "type": "array"
+    },
+    "deferred": {
+      "items": {
+        "$ref": "#/$defs/DeferredCandidate"
+      },
+      "maxItems": 4096,
+      "title": "Deferred",
+      "type": "array"
+    },
+    "gaps": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "maxItems": 8192,
+      "title": "Gaps",
+      "type": "array"
+    },
+    "product_demands": {
+      "items": {
+        "$ref": "#/$defs/ProductDemand"
+      },
+      "maxItems": 8192,
+      "title": "Product Demands",
+      "type": "array"
+    },
+    "suggestions": {
+      "items": {
+        "$ref": "#/$defs/ExtensionSuggestion"
+      },
+      "maxItems": 512,
+      "title": "Suggestions",
+      "type": "array"
+    },
+    "evaluations": {
+      "maximum": 512,
+      "minimum": 0,
+      "title": "Evaluations",
+      "type": "integer"
+    },
+    "operations": {
+      "maximum": 100000,
+      "minimum": 0,
+      "title": "Operations",
+      "type": "integer"
+    },
+    "enumeration": {
+      "enum": [
+        "complete",
+        "budget_exhausted",
+        "depth_exhausted",
+        "existing_artifact_short_circuit"
+      ],
+      "title": "Enumeration",
+      "type": "string"
+    },
+    "expert_review_recommended": {
+      "title": "Expert Review Recommended",
+      "type": "boolean"
+    },
+    "clinical_effect": {
+      "const": "NONE",
+      "default": "NONE",
+      "title": "Clinical Effect",
+      "type": "string"
+    },
+    "execution_compiled": {
+      "const": false,
+      "default": false,
+      "title": "Execution Compiled",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "request",
+    "binding_checksum",
+    "safety_checksum",
+    "checksum",
+    "status",
+    "existing_artifacts",
+    "candidates",
+    "top_k",
+    "rejected",
+    "deferred",
+    "gaps",
+    "product_demands",
+    "suggestions",
+    "evaluations",
+    "operations",
+    "enumeration",
+    "expert_review_recommended"
+  ],
+  "title": "QueryResult",
+  "type": "object"
+}

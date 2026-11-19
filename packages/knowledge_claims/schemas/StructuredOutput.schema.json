@@ -1,0 +1,338 @@
+{
+  "$defs": {
+    "DraftOutput": {
+      "additionalProperties": false,
+      "description": "Extractive only: no paraphrase or latent reasoning accepted in version 1.",
+      "properties": {
+        "claim_type": {
+          "enum": [
+            "exam_requirement",
+            "evidence_direction",
+            "exclusion",
+            "applicability",
+            "validation",
+            "stop"
+          ],
+          "title": "Claim Type",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "target_proposition": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Target Proposition",
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "POSITIVE",
+            "NEGATIVE",
+            "UNCERTAIN"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "uncertainty": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Uncertainty",
+          "type": "array"
+        },
+        "recommendation_strength": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Recommendation Strength",
+          "type": "array"
+        },
+        "subject": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Subject",
+          "type": "string"
+        },
+        "population": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Population",
+          "type": "array"
+        },
+        "disease_stage": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Disease Stage",
+          "type": "array"
+        },
+        "condition": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Condition",
+          "type": "array"
+        },
+        "intervention": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Intervention",
+          "type": "array"
+        },
+        "exam": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Exam",
+          "type": "array"
+        },
+        "modality": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Modality",
+          "type": "array"
+        },
+        "outcome": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Outcome",
+          "type": "array"
+        },
+        "time": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Time",
+          "type": "array"
+        },
+        "laterality": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Laterality",
+          "type": "array"
+        },
+        "device": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Device",
+          "type": "array"
+        },
+        "applicability": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "numbers": {
+          "items": {
+            "$ref": "#/$defs/NumericEvidence"
+          },
+          "maxItems": 32,
+          "title": "Numbers",
+          "type": "array"
+        },
+        "quote": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "claim_type",
+        "statement",
+        "target_proposition",
+        "polarity",
+        "uncertainty",
+        "recommendation_strength",
+        "subject",
+        "population",
+        "disease_stage",
+        "condition",
+        "intervention",
+        "exam",
+        "modality",
+        "outcome",
+        "time",
+        "laterality",
+        "device",
+        "applicability",
+        "numbers",
+        "quote",
+        "span",
+        "confidence"
+      ],
+      "title": "DraftOutput",
+      "type": "object"
+    },
+    "NumericEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "pattern": "^-?\\d+(?:\\.\\d+)?$",
+          "title": "Value",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "comparator": {
+          "anyOf": [
+            {
+              "enum": [
+                "<",
+                "<=",
+                ">",
+                ">=",
+                "=",
+                "≤",
+                "≥"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Comparator"
+        },
+        "quote": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "comparator",
+        "quote",
+        "span"
+      ],
+      "title": "NumericEvidence",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinate_system": {
+          "const": "canonical_unicode",
+          "default": "canonical_unicode",
+          "title": "Coordinate System",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "claim-output/1.0.0",
+      "default": "claim-output/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/DraftOutput"
+      },
+      "maxItems": 8,
+      "title": "Candidates",
+      "type": "array"
+    }
+  },
+  "required": [
+    "candidates"
+  ],
+  "title": "StructuredOutput",
+  "type": "object"
+}

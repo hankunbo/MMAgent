@@ -1,0 +1,353 @@
+{
+  "$defs": {
+    "ClinicalScope": {
+      "additionalProperties": false,
+      "properties": {
+        "age_max": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Max"
+        },
+        "age_min": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Min"
+        },
+        "devices": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Devices",
+          "type": "array"
+        },
+        "disease_packs": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Packs",
+          "type": "array"
+        },
+        "exams": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Exams",
+          "type": "array"
+        },
+        "lateralities": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Lateralities",
+          "type": "array"
+        },
+        "sexes": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Sexes",
+          "type": "array"
+        },
+        "targets": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Targets",
+          "type": "array"
+        },
+        "times": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Times",
+          "type": "array"
+        },
+        "version": {
+          "const": "clinical-scope/1.0.0",
+          "default": "clinical-scope/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "ClinicalScope",
+      "type": "object"
+    },
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anatomy": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Anatomy",
+      "type": "array"
+    },
+    "applicability_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "conditions": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Conditions",
+      "type": "array"
+    },
+    "exclusions": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Exclusions",
+      "type": "array"
+    },
+    "expression": {
+      "const": "ALL",
+      "default": "ALL",
+      "title": "Expression",
+      "type": "string"
+    },
+    "kind": {
+      "const": "applicability_condition",
+      "default": "applicability_condition",
+      "title": "Kind",
+      "type": "string"
+    },
+    "modalities": {
+      "default": [],
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Modalities",
+      "type": "array"
+    },
+    "population": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Population",
+      "type": "array"
+    },
+    "retrieval_scope": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ClinicalScope"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "scope": {
+      "const": "GLOBAL",
+      "default": "GLOBAL",
+      "title": "Scope",
+      "type": "string"
+    },
+    "scope_note": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Scope Note",
+      "type": "string"
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "unresolved_decisions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "GRA-002",
+          "KNO-008"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Unresolved Decisions",
+      "type": "array"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "population",
+    "scope_note"
+  ],
+  "title": "ApplicabilityCondition",
+  "type": "object"
+}

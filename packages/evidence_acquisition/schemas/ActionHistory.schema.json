@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "bind_existing_reference",
+        "search_knowledge",
+        "read_method_provenance",
+        "reuse_observation",
+        "targeted_vision",
+        "review",
+        "request_tool_approval"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "assessment_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "confirmed",
+        "failed",
+        "unknown"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "action",
+    "input_checksum",
+    "outcome"
+  ],
+  "title": "ActionHistory",
+  "type": "object"
+}

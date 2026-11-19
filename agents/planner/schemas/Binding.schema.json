@@ -1,0 +1,223 @@
+{
+  "$defs": {
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Profile": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "expert_required": {
+          "default": false,
+          "title": "Expert Required",
+          "type": "boolean"
+        },
+        "max_actions": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Actions",
+          "type": "integer"
+        },
+        "max_branches": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Branches",
+          "type": "integer"
+        },
+        "max_no_progress": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max No Progress",
+          "type": "integer"
+        },
+        "max_retries": {
+          "default": 2,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "max_steps": {
+          "default": 48,
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Max Steps",
+          "type": "integer"
+        },
+        "seconds": {
+          "default": 300,
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Seconds",
+          "type": "integer"
+        },
+        "version": {
+          "const": "planner-baseline/1.0.0",
+          "default": "planner-baseline/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "Profile",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "case_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "graph": {
+      "$ref": "#/$defs/Graph"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "locks": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Locks",
+      "type": "array"
+    },
+    "profile": {
+      "$ref": "#/$defs/Profile"
+    },
+    "run_context_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Run Context Checksum",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "visible_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Visible Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_code",
+    "run_id",
+    "run_context_checksum",
+    "input_checksum",
+    "visible_checksum",
+    "graph",
+    "locks",
+    "profile",
+    "started_at",
+    "deadline"
+  ],
+  "title": "Binding",
+  "type": "object"
+}

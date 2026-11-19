@@ -1,0 +1,54 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "clarity": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Clarity",
+      "type": "number"
+    },
+    "coverage": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Coverage",
+      "type": "number"
+    },
+    "finding": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Finding",
+      "type": "string"
+    },
+    "limitation": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Limitation",
+      "type": "string"
+    },
+    "region": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Region",
+      "type": "string"
+    },
+    "visibility": {
+      "enum": [
+        "visible",
+        "partly_visible",
+        "not_identified",
+        "uncertain"
+      ],
+      "title": "Visibility",
+      "type": "string"
+    }
+  },
+  "required": [
+    "region",
+    "visibility",
+    "coverage",
+    "clarity",
+    "finding",
+    "limitation"
+  ],
+  "title": "RegionScope",
+  "type": "object"
+}

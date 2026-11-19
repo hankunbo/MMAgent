@@ -1,0 +1,71 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "finding": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Finding",
+      "type": "string"
+    },
+    "image_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Image Checksum",
+      "type": "string"
+    },
+    "location": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "title": "Location",
+      "type": "array"
+    },
+    "preprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Preprocessing Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "visual-observation-candidate/1.0.0",
+      "default": "visual-observation-candidate/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Scope Checksum",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "observed",
+        "ungradable",
+        "unknown"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scope_checksum",
+    "image_checksum",
+    "preprocessing_checksum",
+    "location",
+    "status",
+    "finding"
+  ],
+  "title": "VisionProposal",
+  "type": "object"
+}

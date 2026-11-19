@@ -1,0 +1,55 @@
+{
+  "additionalProperties": false,
+  "description": "Bounded full descriptions; visibility and numeric invariants unchanged.",
+  "properties": {
+    "clarity": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Clarity",
+      "type": "number"
+    },
+    "coverage": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Coverage",
+      "type": "number"
+    },
+    "finding": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Finding",
+      "type": "string"
+    },
+    "limitation": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Limitation",
+      "type": "string"
+    },
+    "region": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Region",
+      "type": "string"
+    },
+    "visibility": {
+      "enum": [
+        "visible",
+        "partly_visible",
+        "not_identified",
+        "uncertain"
+      ],
+      "title": "Visibility",
+      "type": "string"
+    }
+  },
+  "required": [
+    "region",
+    "visibility",
+    "coverage",
+    "clarity",
+    "finding",
+    "limitation"
+  ],
+  "title": "RegionScopeV2",
+  "type": "object"
+}

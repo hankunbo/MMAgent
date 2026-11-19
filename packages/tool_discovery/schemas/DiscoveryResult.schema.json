@@ -1,0 +1,900 @@
+{
+  "$defs": {
+    "CandidateObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Identity",
+          "type": "string"
+        },
+        "records": {
+          "items": {
+            "$ref": "#/$defs/Provenance"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Records",
+          "type": "array"
+        },
+        "identity_evidence": {
+          "items": {
+            "$ref": "#/$defs/RegisteredIdentity"
+          },
+          "maxItems": 128,
+          "title": "Identity Evidence",
+          "type": "array"
+        },
+        "disposition": {
+          "enum": [
+            "discovered",
+            "incomplete",
+            "quarantined"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "missing": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Missing",
+          "type": "array"
+        },
+        "rejection_codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Rejection Codes",
+          "type": "array"
+        },
+        "dimensions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Dimensions",
+          "type": "object"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "source_priority": {
+          "title": "Source Priority",
+          "type": "integer"
+        },
+        "machine_gate": {
+          "default": null,
+          "title": "Machine Gate",
+          "type": "null"
+        },
+        "onboarding_job": {
+          "default": null,
+          "title": "Onboarding Job",
+          "type": "null"
+        }
+      },
+      "required": [
+        "identity",
+        "records",
+        "identity_evidence",
+        "disposition",
+        "missing",
+        "rejection_codes",
+        "dimensions",
+        "score",
+        "source_priority"
+      ],
+      "title": "CandidateObservation",
+      "type": "object"
+    },
+    "DiscoveryPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "tool-discovery-policy/1.0.0",
+          "default": "tool-discovery-policy/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "max_records": {
+          "default": 32,
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Max Records",
+          "type": "integer"
+        },
+        "max_sources": {
+          "default": 8,
+          "maximum": 16,
+          "minimum": 1,
+          "title": "Max Sources",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "default": 10,
+          "maximum": 30,
+          "minimum": 1,
+          "title": "Max Seconds",
+          "type": "integer"
+        },
+        "commit_margin_seconds": {
+          "default": 2,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Commit Margin Seconds",
+          "type": "integer"
+        },
+        "max_metadata_bytes": {
+          "default": 262144,
+          "maximum": 524288,
+          "minimum": 1024,
+          "title": "Max Metadata Bytes",
+          "type": "integer"
+        },
+        "top_k": {
+          "default": 5,
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "max_memory_mb": {
+          "default": 4096,
+          "maximum": 65536,
+          "minimum": 1,
+          "title": "Max Memory Mb",
+          "type": "integer"
+        },
+        "allow_gpu": {
+          "const": false,
+          "default": false,
+          "title": "Allow Gpu",
+          "type": "boolean"
+        },
+        "weights": {
+          "default": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.5,
+            0.0,
+            0.5
+          ],
+          "items": {
+            "type": "number"
+          },
+          "title": "Weights",
+          "type": "array"
+        }
+      },
+      "title": "DiscoveryPolicy",
+      "type": "object"
+    },
+    "DiscoveryQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "tool-discovery-query/1.0.0",
+          "default": "tool-discovery-query/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "application_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Application Checksum",
+          "type": "string"
+        },
+        "requirement": {
+          "additionalProperties": true,
+          "title": "Requirement",
+          "type": "object"
+        },
+        "purpose": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "contracts": {
+          "items": {
+            "$ref": "#/$defs/Semantics"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Contracts",
+          "type": "array"
+        },
+        "max_memory_mb": {
+          "title": "Max Memory Mb",
+          "type": "integer"
+        },
+        "gpu_allowed": {
+          "const": false,
+          "default": false,
+          "title": "Gpu Allowed",
+          "type": "boolean"
+        },
+        "missing": {
+          "default": [
+            "evaluation_dataset",
+            "threshold_policy"
+          ],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Missing",
+          "type": "array"
+        }
+      },
+      "required": [
+        "application_checksum",
+        "requirement",
+        "purpose",
+        "contracts",
+        "max_memory_mb"
+      ],
+      "title": "DiscoveryQuery",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Missing evidence is null; digests refer to fixture bytes in this phase.",
+      "properties": {
+        "schema_version": {
+          "const": "tool-candidate-provenance/1.0.0",
+          "default": "tool-candidate-provenance/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "synthetic": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "record_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Record Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "local_contract",
+            "official_package",
+            "official_model",
+            "paper_code",
+            "lead"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "source_url": {
+          "maxLength": 2048,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "identity_ref": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Ref"
+        },
+        "repository": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repository"
+        },
+        "repository_owner": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repository Owner"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        },
+        "revision_kind": {
+          "anyOf": [
+            {
+              "enum": [
+                "commit",
+                "immutable_version",
+                "branch"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Kind"
+        },
+        "claimed_official": {
+          "default": false,
+          "title": "Claimed Official",
+          "type": "boolean"
+        },
+        "paper_doi": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Doi"
+        },
+        "code_license": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code License"
+        },
+        "weights_license": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weights License"
+        },
+        "code_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code Checksum"
+        },
+        "weights_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weights Checksum"
+        },
+        "weights_required": {
+          "default": true,
+          "title": "Weights Required",
+          "type": "boolean"
+        },
+        "model_card": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Card"
+        },
+        "framework": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Framework"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "inference_entry": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Inference Entry"
+        },
+        "semantics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Semantics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "input_shape": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Input Shape",
+          "type": "array"
+        },
+        "output_shape": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Output Shape",
+          "type": "array"
+        },
+        "preprocessing": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preprocessing"
+        },
+        "postprocessing": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Postprocessing"
+        },
+        "memory_mb": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Mb"
+        },
+        "requires_gpu": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requires Gpu"
+        },
+        "uploads_patient_data": {
+          "default": false,
+          "title": "Uploads Patient Data",
+          "type": "boolean"
+        },
+        "arbitrary_remote_code": {
+          "default": false,
+          "title": "Arbitrary Remote Code",
+          "type": "boolean"
+        },
+        "training_data": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Training Data"
+        },
+        "evaluation_data": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evaluation Data"
+        },
+        "performance_claim": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Performance Claim"
+        },
+        "applicability": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Applicability"
+        },
+        "limitations": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Limitations"
+        }
+      },
+      "required": [
+        "record_id",
+        "source_kind",
+        "source_url"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RegisteredIdentity": {
+      "additionalProperties": false,
+      "description": "Installed fixture registry evidence, independent of a record's official claim.",
+      "properties": {
+        "identity_ref": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Identity Ref",
+          "type": "string"
+        },
+        "repository": {
+          "title": "Repository",
+          "type": "string"
+        },
+        "repository_owner": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Repository Owner",
+          "type": "string"
+        },
+        "model_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "revision": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Revision",
+          "type": "string"
+        },
+        "code_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Code Checksum",
+          "type": "string"
+        },
+        "weights_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Weights Checksum"
+        },
+        "source_urls": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Source Urls",
+          "type": "array"
+        },
+        "official": {
+          "title": "Official",
+          "type": "boolean"
+        },
+        "synthetic": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "identity_ref",
+        "repository",
+        "repository_owner",
+        "model_id",
+        "revision",
+        "code_checksum",
+        "weights_checksum",
+        "source_urls",
+        "official"
+      ],
+      "title": "RegisteredIdentity",
+      "type": "object"
+    },
+    "Semantics": {
+      "additionalProperties": false,
+      "properties": {
+        "capability": {
+          "additionalProperties": true,
+          "title": "Capability",
+          "type": "object"
+        },
+        "inputs": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "output": {
+          "additionalProperties": true,
+          "title": "Output",
+          "type": "object"
+        },
+        "task_type": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Task Type",
+          "type": "string"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "default": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        }
+      },
+      "required": [
+        "capability",
+        "inputs",
+        "output",
+        "task_type"
+      ],
+      "title": "Semantics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-discovery-result/1.0.0",
+      "default": "tool-discovery-result/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "plan_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Plan Checksum",
+      "type": "string"
+    },
+    "query": {
+      "$ref": "#/$defs/DiscoveryQuery"
+    },
+    "policy": {
+      "$ref": "#/$defs/DiscoveryPolicy"
+    },
+    "status": {
+      "enum": [
+        "discovered",
+        "no_candidates",
+        "incomplete",
+        "technical_failure",
+        "budget_exhausted"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/CandidateObservation"
+      },
+      "maxItems": 128,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "selected": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Selected",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "maxItems": 16,
+      "title": "Sources",
+      "type": "array"
+    },
+    "records_examined": {
+      "maximum": 128,
+      "minimum": 0,
+      "title": "Records Examined",
+      "type": "integer"
+    },
+    "elapsed_seconds": {
+      "minimum": 0,
+      "title": "Elapsed Seconds",
+      "type": "number"
+    },
+    "memory": {
+      "additionalProperties": true,
+      "title": "Memory",
+      "type": "object"
+    },
+    "completed": {
+      "const": false,
+      "default": false,
+      "title": "Completed",
+      "type": "boolean"
+    },
+    "available_next_run": {
+      "const": false,
+      "default": false,
+      "title": "Available Next Run",
+      "type": "boolean"
+    },
+    "historical_read_not_authorization": {
+      "const": true,
+      "default": true,
+      "title": "Historical Read Not Authorization",
+      "type": "boolean"
+    },
+    "live_domain_acceptance": {
+      "const": "live_domain_acceptance_not_enabled",
+      "default": "live_domain_acceptance_not_enabled",
+      "title": "Live Domain Acceptance",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "plan_checksum",
+    "query",
+    "policy",
+    "status",
+    "candidates",
+    "selected",
+    "sources",
+    "records_examined",
+    "elapsed_seconds",
+    "memory"
+  ],
+  "title": "DiscoveryResult",
+  "type": "object"
+}

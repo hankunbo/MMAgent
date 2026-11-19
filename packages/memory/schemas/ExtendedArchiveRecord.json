@@ -1,0 +1,553 @@
+{
+  "$defs": {
+    "ArchiveDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "clinical_correctness": {
+          "const": "not_established",
+          "default": "not_established",
+          "title": "Clinical Correctness",
+          "type": "string"
+        },
+        "execution_snapshot": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Execution Snapshot"
+        },
+        "failure_reason": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Reason"
+        },
+        "modality": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Modality",
+          "type": "string"
+        },
+        "modality_source": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Modality Source",
+          "type": "string"
+        },
+        "origin_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Origin Code",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "recorded",
+            "success",
+            "failure",
+            "partial"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "reuse": {
+          "const": "procedure_hint_recompute_all_patient_values",
+          "default": "procedure_hint_recompute_all_patient_values",
+          "title": "Reuse",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/WorkflowStep"
+          },
+          "maxItems": 16,
+          "title": "Steps",
+          "type": "array"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "case_snapshot",
+            "branch_workflow",
+            "execution_outcome"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "target",
+        "modality",
+        "origin_code",
+        "modality_source",
+        "steps",
+        "outcome"
+      ],
+      "title": "ArchiveDetail",
+      "type": "object"
+    },
+    "ArtifactSource": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "const": "case_artifact",
+          "default": "case_artifact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "const": "case_artifact",
+          "default": "case_artifact",
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "const": "case-artifact-reference/1.0.0",
+          "default": "case-artifact-reference/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "ArtifactSource",
+      "type": "object"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "relation": {
+          "default": "derived_from",
+          "enum": [
+            "derived_from",
+            "revision_of",
+            "episode_member"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "checksum"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "RunArchiveSource": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "const": "runtime_archive",
+          "default": "runtime_archive",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "const": "runtime_archive",
+          "default": "runtime_archive",
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "const": "case-execution-reference/1.0.0",
+          "default": "case-execution-reference/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "RunArchiveSource",
+      "type": "object"
+    },
+    "WorkflowStep": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Artifact Codes",
+          "type": "array"
+        },
+        "implementation": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Implementation",
+          "type": "string"
+        },
+        "input_roles": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Input Roles",
+          "type": "array"
+        },
+        "operation": {
+          "enum": [
+            "read_input",
+            "segment",
+            "measure",
+            "review",
+            "report",
+            "recover"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "output_roles": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Output Roles",
+          "type": "array"
+        },
+        "source_checksum": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Source Checksum",
+          "type": "string"
+        },
+        "tool": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation",
+        "tool",
+        "version",
+        "implementation",
+        "source_checksum",
+        "input_roles",
+        "output_roles",
+        "artifact_codes"
+      ],
+      "title": "WorkflowStep",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Explicit larger archive; old 1.3 records and schemas retain their limits.",
+  "properties": {
+    "applicability": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Applicability",
+      "type": "array"
+    },
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "detail": {
+      "$ref": "#/$defs/ArchiveDetail"
+    },
+    "identity": {
+      "const": "research_candidate",
+      "default": "research_candidate",
+      "title": "Identity",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "graph_snapshot",
+        "tool_experience",
+        "recovery_experience"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "nature": {
+      "enum": [
+        "source_fact",
+        "agent_opinion",
+        "technical_failure",
+        "missing_evidence",
+        "simulation",
+        "abstract_candidate"
+      ],
+      "title": "Nature",
+      "type": "string"
+    },
+    "parents": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Dependency"
+      },
+      "maxItems": 64,
+      "title": "Parents",
+      "type": "array"
+    },
+    "purpose": {
+      "const": "research_offline",
+      "default": "research_offline",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-memory/1.4.0",
+      "default": "research-memory/1.4.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ArtifactSource"
+          },
+          {
+            "$ref": "#/$defs/RunArchiveSource"
+          }
+        ]
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Sources",
+      "type": "array"
+    }
+  },
+  "required": [
+    "key",
+    "kind",
+    "case_code",
+    "run_id",
+    "applicability",
+    "sources",
+    "nature",
+    "detail"
+  ],
+  "title": "ExtendedArchiveRecord",
+  "type": "object"
+}

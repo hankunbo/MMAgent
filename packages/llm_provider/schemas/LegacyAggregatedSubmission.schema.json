@@ -1,0 +1,759 @@
+{
+  "$defs": {
+    "AcceptedOrigin": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Acceptance Checksum",
+          "type": "string"
+        },
+        "acceptance_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Acceptance Key",
+          "type": "string"
+        },
+        "control_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Control Checksum",
+          "type": "string"
+        },
+        "item_requests": {
+          "maxProperties": 64,
+          "minProperties": 1,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Item Requests",
+          "type": "object"
+        },
+        "journal_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Journal Checksum",
+          "type": "string"
+        },
+        "permission_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Permission Checksum"
+        },
+        "run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "state_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "State Checksum",
+          "type": "string"
+        },
+        "submission_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Submission Checksum",
+          "type": "string"
+        },
+        "unused_request_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Unused Request Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "run_id",
+        "acceptance_key",
+        "acceptance_checksum",
+        "submission_checksum",
+        "state_checksum",
+        "control_checksum",
+        "journal_checksum",
+        "permission_checksum",
+        "item_requests",
+        "unused_request_ids"
+      ],
+      "title": "AcceptedOrigin",
+      "type": "object"
+    },
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Judgment": {
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lower"
+        },
+        "method": {
+          "enum": [
+            "manual_source_bound_review",
+            "fixed_model_margin",
+            "not_assessed"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upper"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "lower",
+        "upper",
+        "reason",
+        "method"
+      ],
+      "title": "Judgment",
+      "type": "object"
+    },
+    "Rating": {
+      "additionalProperties": false,
+      "properties": {
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "reason"
+      ],
+      "title": "Rating",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "ReviewBatchPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Assessment Ids",
+          "type": "array"
+        },
+        "batches": {
+          "items": {
+            "$ref": "#/$defs/ReviewBatchSpec"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Batches",
+          "type": "array"
+        },
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "fixed_assessment_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Fixed Assessment Ids",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/$defs/ReviewBatchPolicy"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "round": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ],
+          "title": "Round",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "review-batch-plan/1.0.0",
+          "default": "review-batch-plan/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "template_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Template Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "scope",
+        "round",
+        "template_checksum",
+        "prompt_checksum",
+        "config_checksum",
+        "policy",
+        "assessment_ids",
+        "fixed_assessment_ids",
+        "batches"
+      ],
+      "title": "ReviewBatchPlan",
+      "type": "object"
+    },
+    "ReviewBatchPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "batch_size": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Batch Size",
+          "type": "integer"
+        },
+        "max_batches": {
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Batches",
+          "type": "integer"
+        },
+        "partition": {
+          "const": "sorted_task_ids_full_parent_material",
+          "default": "sorted_task_ids_full_parent_material",
+          "title": "Partition",
+          "type": "string"
+        },
+        "planner_actions": {
+          "const": 1,
+          "default": 1,
+          "title": "Planner Actions",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": "review-batch-policy/1.0.0",
+          "default": "review-batch-policy/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "batch_size",
+        "max_batches"
+      ],
+      "title": "ReviewBatchPolicy",
+      "type": "object"
+    },
+    "ReviewBatchSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Assessment Ids",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "assessment_ids"
+      ],
+      "title": "ReviewBatchSpec",
+      "type": "object"
+    },
+    "ReviewItem": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "$ref": "#/$defs/Rating"
+        },
+        "assessment_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "comparison": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Comparison",
+          "type": "string"
+        },
+        "judgment": {
+          "$ref": "#/$defs/Judgment"
+        },
+        "limitation_allocation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Limitation Allocation",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/Rating"
+        },
+        "observation_available": {
+          "title": "Observation Available",
+          "type": "boolean"
+        },
+        "observation_citations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Observation Citations",
+          "type": "array"
+        },
+        "reference_citations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Reference Citations",
+          "type": "array"
+        },
+        "relation": {
+          "$ref": "#/$defs/Rating"
+        },
+        "status": {
+          "enum": [
+            "assessed",
+            "reference_missing",
+            "method_mismatch",
+            "context_only",
+            "observation_ungradable",
+            "input_missing",
+            "intermediate"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unresolved": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Unresolved",
+          "type": "array"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "status",
+        "observation_available",
+        "observation_citations",
+        "reference_citations",
+        "comparison",
+        "observation",
+        "relation",
+        "applicability",
+        "judgment",
+        "limitation_allocation",
+        "unresolved"
+      ],
+      "title": "ReviewItem",
+      "type": "object"
+    },
+    "ReviewProposal": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/ReviewItem"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
+        },
+        "round": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ],
+          "title": "Round",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "research-review-candidate/1.0.0",
+          "default": "research-review-candidate/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope_checksum",
+        "round",
+        "items"
+      ],
+      "title": "ReviewProposal",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "material_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Material Checksum",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "graph",
+        "visible_checksum",
+        "input_checksum",
+        "material_checksum",
+        "policy_checksum"
+      ],
+      "title": "Scope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Explicit legacy item family; never invent the newer direction explanation.",
+  "properties": {
+    "actor": {
+      "const": "PLANNER",
+      "default": "PLANNER",
+      "title": "Actor",
+      "type": "string"
+    },
+    "aggregation_policy": {
+      "const": "accepted-local-review-aggregation/1.0.0",
+      "default": "accepted-local-review-aggregation/1.0.0",
+      "title": "Aggregation Policy",
+      "type": "string"
+    },
+    "batches": {
+      "default": [],
+      "items": {},
+      "maxItems": 0,
+      "title": "Batches",
+      "type": "array"
+    },
+    "candidate": {
+      "$ref": "#/$defs/ReviewProposal"
+    },
+    "compatibility_policy": {
+      "const": "identical_or_legacy_review_batch_three_to_one/1.0.0",
+      "default": "identical_or_legacy_review_batch_three_to_one/1.0.0",
+      "title": "Compatibility Policy",
+      "type": "string"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "correlation": {
+      "const": "SOURCE:AGENT_RESEARCH",
+      "default": "SOURCE:AGENT_RESEARCH",
+      "title": "Correlation",
+      "type": "string"
+    },
+    "new_model_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "New Model Requests",
+      "type": "integer"
+    },
+    "observation_checksums": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Observation Checksums",
+      "type": "array"
+    },
+    "origins": {
+      "items": {
+        "$ref": "#/$defs/AcceptedOrigin"
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "title": "Origins",
+      "type": "array"
+    },
+    "plan": {
+      "$ref": "#/$defs/ReviewBatchPlan"
+    },
+    "plan_semantics": {
+      "const": "validation_only_not_dispatched",
+      "default": "validation_only_not_dispatched",
+      "title": "Plan Semantics",
+      "type": "string"
+    },
+    "prompt_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Prompt Checksum",
+      "type": "string"
+    },
+    "review_semantics": {
+      "const": "unchanged_local_judgments_not_new_joint_review",
+      "default": "unchanged_local_judgments_not_new_joint_review",
+      "title": "Review Semantics",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-batched-submission/13.0.0",
+      "default": "research-batched-submission/13.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "source_checksums": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Source Checksums",
+      "type": "array"
+    },
+    "status": {
+      "const": "candidate_not_accepted",
+      "default": "candidate_not_accepted",
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scope",
+    "prompt_checksum",
+    "config_checksum",
+    "observation_checksums",
+    "source_checksums",
+    "plan",
+    "candidate",
+    "origins"
+  ],
+  "title": "LegacyAggregatedSubmission",
+  "type": "object"
+}

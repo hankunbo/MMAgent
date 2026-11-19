@@ -1,0 +1,48 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "candidate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Candidate Checksum",
+      "type": "string"
+    },
+    "policy": {
+      "const": "review-missing-method/1.0.0",
+      "default": "review-missing-method/1.0.0",
+      "title": "Policy",
+      "type": "string"
+    },
+    "raw_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Raw Checksum",
+      "type": "string"
+    },
+    "redundant_observation_method_indices": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 5,
+      "title": "Redundant Observation Method Indices",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "review-response-alignment/1.0.0",
+      "default": "review-response-alignment/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unchanged_scores_citations_and_status": {
+      "const": true,
+      "default": true,
+      "title": "Unchanged Scores Citations And Status",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "raw_checksum",
+    "candidate_checksum",
+    "redundant_observation_method_indices"
+  ],
+  "title": "ReviewResponseAlignment",
+  "type": "object"
+}

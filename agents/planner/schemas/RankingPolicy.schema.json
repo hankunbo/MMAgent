@@ -1,0 +1,85 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "failure_history_first": {
+      "const": true,
+      "default": true,
+      "title": "Failure History First",
+      "type": "boolean"
+    },
+    "fallback": {
+      "default": "semantic_baseline",
+      "enum": [
+        "semantic_baseline",
+        "legacy_id_baseline"
+      ],
+      "title": "Fallback",
+      "type": "string"
+    },
+    "information_gain_enabled": {
+      "default": false,
+      "title": "Information Gain Enabled",
+      "type": "boolean"
+    },
+    "max_agent_attempts": {
+      "default": 1,
+      "maximum": 3,
+      "minimum": 0,
+      "title": "Max Agent Attempts",
+      "type": "integer"
+    },
+    "missing_order": {
+      "const": "last",
+      "default": "last",
+      "title": "Missing Order",
+      "type": "string"
+    },
+    "order": {
+      "default": [
+        "directness",
+        "cost",
+        "latency",
+        "failure_risk"
+      ],
+      "items": {
+        "enum": [
+          "information_gain",
+          "directness",
+          "cost",
+          "latency",
+          "failure_risk"
+        ],
+        "type": "string"
+      },
+      "title": "Order",
+      "type": "array"
+    },
+    "suggestion_seconds": {
+      "default": 30,
+      "maximum": 120,
+      "minimum": 1,
+      "title": "Suggestion Seconds",
+      "type": "integer"
+    },
+    "tie_break": {
+      "const": "semantic_action",
+      "default": "semantic_action",
+      "title": "Tie Break",
+      "type": "string"
+    },
+    "version": {
+      "const": "planner-ranking/1.0.0",
+      "default": "planner-ranking/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "RankingPolicy",
+  "type": "object"
+}

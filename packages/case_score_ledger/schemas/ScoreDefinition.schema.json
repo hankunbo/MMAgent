@@ -1,0 +1,103 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+      "title": "Code",
+      "type": "string"
+    },
+    "definition": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Definition",
+      "type": "string"
+    },
+    "direction": {
+      "enum": [
+        "higher",
+        "lower",
+        "none",
+        "owner_counts"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "layer": {
+      "enum": [
+        "qc",
+        "measurement",
+        "model",
+        "proposition",
+        "graph",
+        "disease",
+        "uncertainty",
+        "technical"
+      ],
+      "title": "Layer",
+      "type": "string"
+    },
+    "maximum": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Maximum"
+    },
+    "metric": {
+      "enum": [
+        "quality",
+        "measurement",
+        "logit",
+        "segmentation_confidence",
+        "support",
+        "refutation",
+        "completeness",
+        "conflict",
+        "probability",
+        "calibration_error",
+        "uncertainty",
+        "coverage"
+      ],
+      "title": "Metric",
+      "type": "string"
+    },
+    "minimum": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Minimum"
+    },
+    "unit": {
+      "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+      "title": "Unit",
+      "type": "string"
+    },
+    "version": {
+      "const": "score-definition/1.0.0",
+      "default": "score-definition/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "layer",
+    "metric",
+    "definition",
+    "unit",
+    "direction"
+  ],
+  "title": "ScoreDefinition",
+  "type": "object"
+}

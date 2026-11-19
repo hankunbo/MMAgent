@@ -1,0 +1,1077 @@
+{
+  "$defs": {
+    "ActorType": {
+      "enum": [
+        "PLANNER",
+        "TRACE_AGENT",
+        "TOOL_AGENT",
+        "VERIFICATION_AGENT",
+        "EXPERT_AGENT",
+        "RULE_ENGINE",
+        "GRAPH_ENGINE"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ConclusionStatus": {
+      "enum": [
+        "SUPPORTED",
+        "REFUTED",
+        "UNCERTAIN_MISSING_EVIDENCE",
+        "UNCERTAIN_CONFLICTING_EVIDENCE",
+        "UNABLE_TO_EVALUATE_TECHNICAL",
+        "CAPABILITY_UNAVAILABLE",
+        "STOPPED_UNSAFE"
+      ],
+      "title": "ConclusionStatus",
+      "type": "string"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "GraphSnapshotReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "graph_code",
+        "graph_version",
+        "checksum"
+      ],
+      "title": "GraphSnapshotReference",
+      "type": "object"
+    },
+    "ImmutablePolicyReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "policy_code": {
+          "title": "Policy Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy_code",
+        "version",
+        "checksum"
+      ],
+      "title": "ImmutablePolicyReference",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "OfflineReviewStatus": {
+      "enum": [
+        "OFFLINE_REVIEW_PENDING",
+        "IN_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "WITHDRAWN"
+      ],
+      "title": "OfflineReviewStatus",
+      "type": "string"
+    },
+    "PlanAction": {
+      "enum": [
+        "INSTANTIATE_TEMPLATE",
+        "EXPAND_CLAIM",
+        "SELECT_EVIDENCE_TASK",
+        "REQUEST_DATA",
+        "SELECT_WORKFLOW",
+        "EXECUTE_WORKFLOW",
+        "VERIFY",
+        "BACKTRACK",
+        "SWITCH_PATH",
+        "EXPERT_ASSESSMENT",
+        "STOP"
+      ],
+      "title": "PlanAction",
+      "type": "string"
+    },
+    "PlannerAction": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_type": {
+          "const": "PlannerAction",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "idempotency_key": {
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "proposal_kind": {
+          "$ref": "#/$defs/ProposalKind"
+        },
+        "proposed_by": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "selected_action": {
+          "$ref": "#/$defs/PlanAction"
+        },
+        "target_code": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Code"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "run_id",
+        "graph_code",
+        "graph_version",
+        "proposed_by",
+        "proposal_kind",
+        "selected_action",
+        "reason_codes",
+        "idempotency_key"
+      ],
+      "title": "PlannerAction",
+      "type": "object"
+    },
+    "PlannerFeedback": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted": {
+          "title": "Accepted",
+          "type": "boolean"
+        },
+        "allowed_actions": {
+          "items": {
+            "$ref": "#/$defs/PlanAction"
+          },
+          "title": "Allowed Actions",
+          "type": "array"
+        },
+        "contract_type": {
+          "const": "PlannerFeedback",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "expected_graph_version": {
+          "minimum": 1,
+          "title": "Expected Graph Version",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "run_id",
+        "graph_code",
+        "step_id",
+        "accepted",
+        "reason_codes",
+        "allowed_actions",
+        "expected_graph_version"
+      ],
+      "title": "PlannerFeedback",
+      "type": "object"
+    },
+    "PlannerObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/PlanAction"
+        },
+        "capability_gap_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Capability Gap Refs",
+          "type": "array"
+        },
+        "contract_type": {
+          "const": "PlannerObservation",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "observed_codes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "title": "Observed Codes",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "step_status": {
+          "$ref": "#/$defs/StepStatus"
+        },
+        "tool_result_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool Result Ref"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "run_id",
+        "graph_code",
+        "step_id",
+        "step_status",
+        "action"
+      ],
+      "title": "PlannerObservation",
+      "type": "object"
+    },
+    "PlannerState": {
+      "additionalProperties": false,
+      "properties": {
+        "available_artifacts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Available Artifacts",
+          "type": "array"
+        },
+        "contract_type": {
+          "const": "PlannerState",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "legal_actions": {
+          "items": {
+            "$ref": "#/$defs/PlanAction"
+          },
+          "title": "Legal Actions",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "remaining_budget": {
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$": {
+              "type": "integer"
+            }
+          },
+          "title": "Remaining Budget",
+          "type": "object"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "run_status": {
+          "$ref": "#/$defs/RunStatus"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "unresolved_nodes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "title": "Unresolved Nodes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "run_id",
+        "run_status",
+        "graph_code",
+        "graph_version",
+        "unresolved_nodes",
+        "available_artifacts",
+        "legal_actions",
+        "remaining_budget"
+      ],
+      "title": "PlannerState",
+      "type": "object"
+    },
+    "ProposalKind": {
+      "enum": [
+        "PLAN_DECISION",
+        "ACTION_RECOMMENDATION",
+        "TOOL_EXECUTION_PROPOSAL",
+        "VALIDATION_RESULT",
+        "EXPERT_REVIEW",
+        "STOP_RECOMMENDATION",
+        "GRAPH_DELTA_CANDIDATE",
+        "GRAPH_DELTA_VALIDATION",
+        "GRAPH_DELTA_APPLICATION"
+      ],
+      "title": "ProposalKind",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/ActorType"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "generator_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "input_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Input Checksums",
+          "type": "array"
+        },
+        "knowledge_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Knowledge Versions",
+          "type": "array"
+        },
+        "rule_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Rule Versions",
+          "type": "array"
+        },
+        "source_codes": {
+          "items": {
+            "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Codes",
+          "type": "array"
+        },
+        "tool_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "title": "Tool Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor",
+        "created_at",
+        "generator_version",
+        "source_codes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RunStatus": {
+      "enum": [
+        "CREATED",
+        "NORMALIZING",
+        "PLANNING",
+        "EXECUTING",
+        "VERIFYING",
+        "REPLANNING",
+        "COMPLETED_SUPPORTED",
+        "COMPLETED_REFUTED",
+        "COMPLETED_UNCERTAIN",
+        "COMPLETED_INSUFFICIENT_EVIDENCE",
+        "FAILED_TECHNICAL",
+        "STOPPED_UNSAFE"
+      ],
+      "title": "RunStatus",
+      "type": "string"
+    },
+    "ScopeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Case Code"
+        },
+        "episode_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode Code"
+        },
+        "graph_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Code"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "scope_type": {
+          "$ref": "#/$defs/ScopeType"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Id"
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "ScopeReference",
+      "type": "object"
+    },
+    "ScopeType": {
+      "enum": [
+        "GLOBAL",
+        "CASE",
+        "RUN",
+        "GRAPH",
+        "STEP",
+        "TOOL_EXTENSION",
+        "MEMORY"
+      ],
+      "title": "ScopeType",
+      "type": "string"
+    },
+    "StepStatus": {
+      "enum": [
+        "CREATED",
+        "READY",
+        "RUNNING",
+        "SUCCEEDED",
+        "FAILED",
+        "TIMED_OUT",
+        "RETRY_SCHEDULED",
+        "SKIPPED",
+        "CANCELLED"
+      ],
+      "title": "StepStatus",
+      "type": "string"
+    },
+    "TrajectoryStep": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "contract_type": {
+          "const": "TrajectoryStep",
+          "title": "Contract Type",
+          "type": "string"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "episode_code": {
+          "title": "Episode Code",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Extensions",
+          "type": "object"
+        },
+        "feedback": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlannerFeedback"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "graph_code": {
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "legal_actions": {
+          "items": {
+            "$ref": "#/$defs/PlanAction"
+          },
+          "minItems": 1,
+          "title": "Legal Actions",
+          "type": "array"
+        },
+        "next_state": {
+          "$ref": "#/$defs/PlannerState"
+        },
+        "observation": {
+          "$ref": "#/$defs/PlannerObservation"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScopeReference"
+        },
+        "selected_action": {
+          "$ref": "#/$defs/PlannerAction"
+        },
+        "state": {
+          "$ref": "#/$defs/PlannerState"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "step_index": {
+          "minimum": 0,
+          "title": "Step Index",
+          "type": "integer"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "schema_version",
+        "contract_type",
+        "provenance",
+        "scope",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "case_code",
+        "run_id",
+        "graph_code",
+        "step_id",
+        "episode_code",
+        "step_index",
+        "state",
+        "legal_actions",
+        "selected_action",
+        "observation",
+        "next_state"
+      ],
+      "title": "TrajectoryStep",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "conclusion_status": {
+      "$ref": "#/$defs/ConclusionStatus"
+    },
+    "contract_type": {
+      "const": "Episode",
+      "title": "Contract Type",
+      "type": "string"
+    },
+    "coordinate_space": {
+      "$ref": "#/$defs/CoordinateSpace"
+    },
+    "eligible_for_retrieval": {
+      "title": "Eligible For Retrieval",
+      "type": "boolean"
+    },
+    "episode_code": {
+      "title": "Episode Code",
+      "type": "string"
+    },
+    "expert_assessment_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Expert Assessment Refs",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "final_graph_snapshot_ref": {
+      "$ref": "#/$defs/GraphSnapshotReference"
+    },
+    "initial_graph_snapshot_ref": {
+      "$ref": "#/$defs/GraphSnapshotReference"
+    },
+    "laterality": {
+      "$ref": "#/$defs/Laterality"
+    },
+    "policy_refs": {
+      "items": {
+        "$ref": "#/$defs/ImmutablePolicyReference"
+      },
+      "minItems": 1,
+      "title": "Policy Refs",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "review_status": {
+      "$ref": "#/$defs/OfflineReviewStatus"
+    },
+    "rule_refs": {
+      "items": {
+        "$ref": "#/$defs/VersionedReference"
+      },
+      "minItems": 1,
+      "title": "Rule Refs",
+      "type": "array"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeReference"
+    },
+    "tool_catalog_ref": {
+      "$ref": "#/$defs/VersionedReference"
+    },
+    "tool_refs": {
+      "items": {
+        "$ref": "#/$defs/VersionedReference"
+      },
+      "title": "Tool Refs",
+      "type": "array"
+    },
+    "trajectory": {
+      "items": {
+        "$ref": "#/$defs/TrajectoryStep"
+      },
+      "minItems": 1,
+      "title": "Trajectory",
+      "type": "array"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "pattern": "^(?:1|[A-Za-z%][A-Za-z0-9%*/.^_-]{0,31})$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_type",
+    "provenance",
+    "scope",
+    "laterality",
+    "coordinate_space",
+    "unit",
+    "episode_code",
+    "case_code",
+    "run_id",
+    "initial_graph_snapshot_ref",
+    "final_graph_snapshot_ref",
+    "tool_catalog_ref",
+    "policy_refs",
+    "tool_refs",
+    "rule_refs",
+    "expert_assessment_refs",
+    "conclusion_status",
+    "review_status",
+    "trajectory",
+    "eligible_for_retrieval"
+  ],
+  "title": "Episode",
+  "type": "object"
+}

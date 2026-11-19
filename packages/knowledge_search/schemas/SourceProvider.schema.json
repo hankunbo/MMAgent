@@ -1,0 +1,330 @@
+{
+  "$defs": {
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    },
+    "ProviderConfigurationProof": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "enum": [
+            "pubmed",
+            "europe_pmc",
+            "crossref",
+            "guideline",
+            "web_fallback"
+          ],
+          "title": "Adapter",
+          "type": "string"
+        },
+        "allowed_hosts": {
+          "items": {
+            "maxLength": 253,
+            "pattern": "^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\\.[a-z]{2,63}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Allowed Hosts",
+          "type": "array"
+        },
+        "allowlist_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Allowlist Version",
+          "type": "string"
+        },
+        "auth_environment_name": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Auth Environment Name"
+        },
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "contact_environment": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contact Environment"
+        },
+        "deployment_workers": {
+          "const": 1,
+          "title": "Deployment Workers",
+          "type": "integer"
+        },
+        "identity_configured": {
+          "title": "Identity Configured",
+          "type": "boolean"
+        },
+        "identity_policy": {
+          "const": "contact-env/2.0.0",
+          "title": "Identity Policy",
+          "type": "string"
+        },
+        "locator_policy": {
+          "const": "doi-resolvers/1.0.0",
+          "default": "doi-resolvers/1.0.0",
+          "title": "Locator Policy",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "policy_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "proof_version": {
+          "const": "provider-configuration/1.0.0",
+          "default": "provider-configuration/1.0.0",
+          "title": "Proof Version",
+          "type": "string"
+        },
+        "provider_code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Provider Code",
+          "type": "string"
+        },
+        "provider_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Provider Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider_code",
+        "provider_version",
+        "adapter",
+        "config_checksum",
+        "allowlist_version",
+        "allowed_hosts",
+        "identity_policy",
+        "contact_environment",
+        "auth_environment_name",
+        "identity_configured",
+        "policy_version",
+        "policy_checksum",
+        "deployment_workers"
+      ],
+      "title": "ProviderConfigurationProof",
+      "type": "object"
+    },
+    "ProviderType": {
+      "enum": [
+        "GUIDELINE",
+        "LITERATURE",
+        "METADATA",
+        "WEB_FALLBACK"
+      ],
+      "title": "ProviderType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowlist_version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Allowlist Version",
+      "type": "string"
+    },
+    "applicability_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "configuration_proof": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProviderConfigurationProof"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "enabled": {
+      "default": false,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "homepage_url": {
+      "maxLength": 2048,
+      "title": "Homepage Url",
+      "type": "string"
+    },
+    "kind": {
+      "const": "source_provider",
+      "default": "source_provider",
+      "title": "Kind",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "provider_type": {
+      "$ref": "#/$defs/ProviderType"
+    },
+    "scope": {
+      "const": "GLOBAL",
+      "default": "GLOBAL",
+      "title": "Scope",
+      "type": "string"
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "unresolved_decisions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "GRA-002",
+          "KNO-008"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Unresolved Decisions",
+      "type": "array"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "name",
+    "provider_type",
+    "homepage_url",
+    "allowlist_version"
+  ],
+  "title": "SourceProvider",
+  "type": "object"
+}

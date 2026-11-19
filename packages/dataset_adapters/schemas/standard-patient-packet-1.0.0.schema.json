@@ -1,0 +1,540 @@
+{
+  "$defs": {
+    "BackgroundField": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "concept": {
+          "title": "Concept",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "status": {
+          "enum": [
+            "obtained",
+            "missing"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "laterality": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "visit": {
+          "default": "unknown",
+          "title": "Visit",
+          "type": "string"
+        },
+        "provenance_ref": {
+          "title": "Provenance Ref",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "meaning_status": {
+          "enum": [
+            "source_declared",
+            "code_mapping_unqualified"
+          ],
+          "title": "Meaning Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "concept",
+        "value",
+        "status",
+        "provenance_ref",
+        "source_refs",
+        "meaning_status"
+      ],
+      "title": "BackgroundField",
+      "type": "object"
+    },
+    "PacketComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_.:-]{1,180}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "volume",
+            "image_series",
+            "map",
+            "vector",
+            "scalar"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "concept": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Concept",
+          "type": "string"
+        },
+        "modality": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Modality",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "obtained",
+            "partial",
+            "missing",
+            "withheld"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "unit_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Basis"
+        },
+        "shape": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Shape",
+          "type": "array"
+        },
+        "dtype": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dtype"
+        },
+        "payload_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "title": "Payload Ids",
+          "type": "array"
+        },
+        "source_paths": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Paths",
+          "type": "array"
+        },
+        "source_locator": {
+          "title": "Source Locator",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "laterality": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "visit": {
+          "default": "unknown",
+          "title": "Visit",
+          "type": "string"
+        },
+        "interval_years": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interval Years"
+        },
+        "axis_semantics": {
+          "default": "unknown",
+          "enum": [
+            "unknown",
+            "source_index_only",
+            "not_applicable"
+          ],
+          "title": "Axis Semantics",
+          "type": "string"
+        },
+        "expected_members": {
+          "anyOf": [
+            {
+              "maximum": 1024,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Members"
+        },
+        "member_indices": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Member Indices",
+          "type": "array"
+        },
+        "semantic_limits": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Semantic Limits",
+          "type": "array"
+        },
+        "provenance_ref": {
+          "title": "Provenance Ref",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "parse_status": {
+          "enum": [
+            "readable",
+            "invalid_payload",
+            "no_payload"
+          ],
+          "title": "Parse Status",
+          "type": "string"
+        },
+        "parse_errors": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Parse Errors",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "concept",
+        "modality",
+        "status",
+        "source_locator",
+        "provenance_ref",
+        "source_refs",
+        "parse_status"
+      ],
+      "title": "PacketComponent",
+      "type": "object"
+    },
+    "PacketPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "path": {
+          "pattern": "^payloads/[a-f0-9]{64}\\.(npy|json|jpg|png)$",
+          "title": "Path",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "byte_size": {
+          "maximum": 67108864,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "media_type": {
+          "enum": [
+            "application/x-npy",
+            "application/json",
+            "image/jpeg",
+            "image/png"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "checksum",
+        "byte_size",
+        "media_type"
+      ],
+      "title": "PacketPayload",
+      "type": "object"
+    },
+    "Visit": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "laterality": {
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "UNKNOWN"
+          ],
+          "title": "Laterality",
+          "type": "string"
+        },
+        "source_visit": {
+          "title": "Source Visit",
+          "type": "string"
+        },
+        "interval_years": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interval Years"
+        },
+        "date": {
+          "default": null,
+          "title": "Date",
+          "type": "null"
+        },
+        "time_basis": {
+          "enum": [
+            "source_relative_years",
+            "not_provided"
+          ],
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "component_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Component Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "laterality",
+        "source_visit",
+        "time_basis",
+        "component_ids"
+      ],
+      "title": "Visit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "standard-patient-packet/1.0.0",
+      "default": "standard-patient-packet/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "packet_id": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Packet Id",
+      "type": "string"
+    },
+    "subject_id": {
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "title": "Subject Id",
+      "type": "string"
+    },
+    "identity_basis": {
+      "enum": [
+        "explicit_source_subject",
+        "sample_only_unproven_patient"
+      ],
+      "title": "Identity Basis",
+      "type": "string"
+    },
+    "collection_scope": {
+      "enum": [
+        "all_recorded_eyes_and_visits",
+        "selected_sample_only"
+      ],
+      "title": "Collection Scope",
+      "type": "string"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/PacketComponent"
+      },
+      "maxItems": 10000,
+      "minItems": 1,
+      "title": "Components",
+      "type": "array"
+    },
+    "background": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/BackgroundField"
+      },
+      "title": "Background",
+      "type": "array"
+    },
+    "visits": {
+      "items": {
+        "$ref": "#/$defs/Visit"
+      },
+      "title": "Visits",
+      "type": "array"
+    },
+    "payloads": {
+      "items": {
+        "$ref": "#/$defs/PacketPayload"
+      },
+      "title": "Payloads",
+      "type": "array"
+    },
+    "task_scope_selected": {
+      "const": false,
+      "default": false,
+      "title": "Task Scope Selected",
+      "type": "boolean"
+    },
+    "qualitative_analysis": {
+      "const": "not_run",
+      "default": "not_run",
+      "title": "Qualitative Analysis",
+      "type": "string"
+    },
+    "runtime_ready": {
+      "const": false,
+      "default": false,
+      "title": "Runtime Ready",
+      "type": "boolean"
+    },
+    "score": {
+      "default": null,
+      "title": "Score",
+      "type": "null"
+    }
+  },
+  "required": [
+    "checksum",
+    "packet_id",
+    "subject_id",
+    "identity_basis",
+    "collection_scope",
+    "components",
+    "visits",
+    "payloads"
+  ],
+  "title": "PatientPacket",
+  "type": "object"
+}

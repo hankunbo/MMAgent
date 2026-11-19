@@ -1,0 +1,76 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "attempt_id": {
+      "pattern": "^[0-9a-f]{32}$",
+      "title": "Attempt Id",
+      "type": "string"
+    },
+    "execution_binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Execution Binding Checksum",
+      "type": "string"
+    },
+    "plan_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Plan Checksum",
+      "type": "string"
+    },
+    "planned_step_ids": {
+      "anyOf": [
+        {
+          "items": {
+            "pattern": "^step_[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 512,
+          "minItems": 1,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Planned Step Ids"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "debug",
+        "shadow",
+        "decisive_research"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "execution-decision/1.0.0",
+      "enum": [
+        "execution-decision/1.0.0",
+        "execution-decision/1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Scope Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "attempt_id",
+    "plan_checksum",
+    "scope_checksum",
+    "purpose",
+    "policy_checksum",
+    "execution_binding_checksum"
+  ],
+  "title": "ExecutionDecision",
+  "type": "object"
+}

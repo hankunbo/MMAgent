@@ -1,0 +1,113 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "aggregate_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Aggregate Checksum",
+      "type": "string"
+    },
+    "aggregate_key": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Aggregate Key",
+      "type": "string"
+    },
+    "case_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "control_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Control Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "failed_result_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Failed Result Checksum",
+      "type": "string"
+    },
+    "install_successor": {
+      "const": false,
+      "default": false,
+      "title": "Install Successor",
+      "type": "boolean"
+    },
+    "interpretation_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Interpretation Checksum",
+      "type": "string"
+    },
+    "issued_at": {
+      "format": "date-time",
+      "title": "Issued At",
+      "type": "string"
+    },
+    "new_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "New Requests",
+      "type": "integer"
+    },
+    "original_grant_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Original Grant Checksum",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "save_identical_explanation_interpretation_only",
+      "default": "save_identical_explanation_interpretation_only",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "request_checksums": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Request Checksums",
+      "type": "array"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "recorded-explanation-grant/1.0.0",
+      "default": "recorded-explanation-grant/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "State Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "case_code",
+    "original_grant_checksum",
+    "failed_result_checksum",
+    "control_checksum",
+    "state_checksum",
+    "aggregate_key",
+    "aggregate_checksum",
+    "request_checksums",
+    "issued_at",
+    "deadline",
+    "interpretation_checksum"
+  ],
+  "title": "ExplanationGrant",
+  "type": "object"
+}

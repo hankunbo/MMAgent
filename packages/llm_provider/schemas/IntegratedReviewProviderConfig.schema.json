@@ -1,0 +1,287 @@
+{
+  "$defs": {
+    "LLMConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "api_key_env": {
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Api Key Env",
+          "type": "string"
+        },
+        "base_url": {
+          "maxLength": 2048,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "endpoint": {
+          "enum": [
+            "chat_completions",
+            "responses"
+          ],
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "max_retries": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "model": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "openai_compatible",
+            "openai"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "store": {
+          "title": "Store",
+          "type": "boolean"
+        },
+        "timeout_seconds": {
+          "maximum": 300,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider",
+        "api_key_env",
+        "base_url",
+        "model",
+        "endpoint",
+        "timeout_seconds",
+        "max_retries",
+        "store"
+      ],
+      "title": "LLMConfig",
+      "type": "object"
+    },
+    "ReviewBatchPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "batch_size": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Batch Size",
+          "type": "integer"
+        },
+        "max_batches": {
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Max Batches",
+          "type": "integer"
+        },
+        "partition": {
+          "const": "sorted_task_ids_full_parent_material",
+          "default": "sorted_task_ids_full_parent_material",
+          "title": "Partition",
+          "type": "string"
+        },
+        "planner_actions": {
+          "const": 1,
+          "default": 1,
+          "title": "Planner Actions",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": "review-batch-policy/1.0.0",
+          "default": "review-batch-policy/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "batch_size",
+        "max_batches"
+      ],
+      "title": "ReviewBatchPolicy",
+      "type": "object"
+    },
+    "RoleConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "images": {
+          "title": "Images",
+          "type": "boolean"
+        },
+        "max_input_bytes": {
+          "maximum": 262144,
+          "minimum": 256,
+          "title": "Max Input Bytes",
+          "type": "integer"
+        },
+        "max_output_bytes": {
+          "maximum": 262144,
+          "minimum": 256,
+          "title": "Max Output Bytes",
+          "type": "integer"
+        },
+        "max_output_tokens": {
+          "maximum": 16384,
+          "minimum": 1,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "prompt_version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "trace",
+            "expert",
+            "source",
+            "vision",
+            "review"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "prompt_version",
+        "prompt_checksum",
+        "max_output_tokens",
+        "max_output_bytes",
+        "max_input_bytes",
+        "images"
+      ],
+      "title": "RoleConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_endpoints": {
+      "items": {
+        "enum": [
+          "chat_completions",
+          "responses"
+        ],
+        "type": "string"
+      },
+      "title": "Allowed Endpoints",
+      "type": "array"
+    },
+    "image_capable": {
+      "title": "Image Capable",
+      "type": "boolean"
+    },
+    "independence": {
+      "const": "same_model_roles_are_correlated_not_clinical_review",
+      "title": "Independence",
+      "type": "string"
+    },
+    "max_concurrency": {
+      "maximum": 8,
+      "minimum": 1,
+      "title": "Max Concurrency",
+      "type": "integer"
+    },
+    "max_extra_requests": {
+      "const": 3,
+      "default": 3,
+      "title": "Max Extra Requests",
+      "type": "integer"
+    },
+    "max_requests": {
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Max Requests",
+      "type": "integer"
+    },
+    "mode": {
+      "enum": [
+        "fake",
+        "live"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "recovery": {
+      "const": "confirmed_http_once/1.0.0",
+      "title": "Recovery",
+      "type": "string"
+    },
+    "retry_delay_seconds": {
+      "maximum": 5,
+      "minimum": 0,
+      "title": "Retry Delay Seconds",
+      "type": "number"
+    },
+    "review_batching": {
+      "$ref": "#/$defs/ReviewBatchPolicy"
+    },
+    "review_correction_policy": {
+      "const": "schema-feedback-once/1.0.0",
+      "title": "Review Correction Policy",
+      "type": "string"
+    },
+    "review_response_policy": {
+      "const": "review-missing-method/1.0.0",
+      "title": "Review Response Policy",
+      "type": "string"
+    },
+    "roles": {
+      "items": {
+        "$ref": "#/$defs/RoleConfig"
+      },
+      "title": "Roles",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "agent-provider-config/6.0.0",
+      "default": "agent-provider-config/6.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "transport": {
+      "$ref": "#/$defs/LLMConfig"
+    },
+    "wire_mode": {
+      "const": "json_object",
+      "default": "json_object",
+      "title": "Wire Mode",
+      "type": "string"
+    },
+    "wire_policy": {
+      "const": "normalized_arrays/1.0.0",
+      "title": "Wire Policy",
+      "type": "string"
+    }
+  },
+  "required": [
+    "transport",
+    "mode",
+    "allowed_endpoints",
+    "max_requests",
+    "max_concurrency",
+    "retry_delay_seconds",
+    "image_capable",
+    "roles",
+    "independence",
+    "recovery",
+    "wire_policy",
+    "review_batching",
+    "review_response_policy",
+    "review_correction_policy"
+  ],
+  "title": "IntegratedReviewProviderConfig",
+  "type": "object"
+}

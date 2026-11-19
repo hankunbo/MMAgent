@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "Semantics": {
+      "additionalProperties": false,
+      "properties": {
+        "capability": {
+          "additionalProperties": true,
+          "title": "Capability",
+          "type": "object"
+        },
+        "inputs": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "output": {
+          "additionalProperties": true,
+          "title": "Output",
+          "type": "object"
+        },
+        "task_type": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Task Type",
+          "type": "string"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "default": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        }
+      },
+      "required": [
+        "capability",
+        "inputs",
+        "output",
+        "task_type"
+      ],
+      "title": "Semantics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-discovery-query/1.0.0",
+      "default": "tool-discovery-query/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "application_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Application Checksum",
+      "type": "string"
+    },
+    "requirement": {
+      "additionalProperties": true,
+      "title": "Requirement",
+      "type": "object"
+    },
+    "purpose": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "contracts": {
+      "items": {
+        "$ref": "#/$defs/Semantics"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Contracts",
+      "type": "array"
+    },
+    "max_memory_mb": {
+      "title": "Max Memory Mb",
+      "type": "integer"
+    },
+    "gpu_allowed": {
+      "const": false,
+      "default": false,
+      "title": "Gpu Allowed",
+      "type": "boolean"
+    },
+    "missing": {
+      "default": [
+        "evaluation_dataset",
+        "threshold_policy"
+      ],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Missing",
+      "type": "array"
+    }
+  },
+  "required": [
+    "application_checksum",
+    "requirement",
+    "purpose",
+    "contracts",
+    "max_memory_mb"
+  ],
+  "title": "DiscoveryQuery",
+  "type": "object"
+}

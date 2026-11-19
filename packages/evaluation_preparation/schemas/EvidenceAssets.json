@@ -1,0 +1,117 @@
+{
+  "$defs": {
+    "AssetItem": {
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "minLength": 1,
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "title": "AssetItem",
+      "type": "object"
+    },
+    "AssetLink": {
+      "additionalProperties": true,
+      "properties": {
+        "asset_id": {
+          "minLength": 1,
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "node_id": {
+          "minLength": 1,
+          "title": "Node Id",
+          "type": "string"
+        },
+        "source_pointer": {
+          "title": "Source Pointer",
+          "type": "string"
+        },
+        "source_value_checksum": {
+          "minLength": 1,
+          "title": "Source Value Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "asset_id",
+        "source_pointer",
+        "source_value_checksum"
+      ],
+      "title": "AssetLink",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "case_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Case Code"
+    },
+    "input_checksum": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Input Checksum"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/AssetItem"
+      },
+      "maxItems": 128,
+      "title": "Items",
+      "type": "array"
+    },
+    "links": {
+      "items": {
+        "$ref": "#/$defs/AssetLink"
+      },
+      "maxItems": 50000,
+      "title": "Links",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "evidence-assets/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_checksum": {
+      "minLength": 1,
+      "title": "Source Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "source_checksum",
+    "items"
+  ],
+  "title": "EvidenceAssets",
+  "type": "object"
+}

@@ -1,0 +1,420 @@
+{
+  "$defs": {
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "RegionScope": {
+      "additionalProperties": false,
+      "properties": {
+        "clarity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Clarity",
+          "type": "number"
+        },
+        "coverage": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage",
+          "type": "number"
+        },
+        "finding": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Finding",
+          "type": "string"
+        },
+        "limitation": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Limitation",
+          "type": "string"
+        },
+        "region": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Region",
+          "type": "string"
+        },
+        "visibility": {
+          "enum": [
+            "visible",
+            "partly_visible",
+            "not_identified",
+            "uncertain"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        }
+      },
+      "required": [
+        "region",
+        "visibility",
+        "coverage",
+        "clarity",
+        "finding",
+        "limitation"
+      ],
+      "title": "RegionScope",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "material_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Material Checksum",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "graph",
+        "visible_checksum",
+        "input_checksum",
+        "material_checksum",
+        "policy_checksum"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "ScopeStorageInterpretation": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Candidate Checksum",
+          "type": "string"
+        },
+        "changed_fields": {
+          "default": [
+            "schema_version"
+          ],
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "const": "schema_version",
+              "type": "string"
+            }
+          ],
+          "title": "Changed Fields",
+          "type": "array"
+        },
+        "findings_regions_bindings_unchanged": {
+          "const": true,
+          "default": true,
+          "title": "Findings Regions Bindings Unchanged",
+          "type": "boolean"
+        },
+        "original_candidate_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Original Candidate Checksum",
+          "type": "string"
+        },
+        "original_error": {
+          "const": "input_scope_original_observation_bound",
+          "default": "input_scope_original_observation_bound",
+          "title": "Original Error",
+          "type": "string"
+        },
+        "raw_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Raw Checksum",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "input-scope-storage-interpretation/1.0.0",
+          "default": "input-scope-storage-interpretation/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "raw_checksum",
+        "original_candidate_checksum",
+        "candidate_checksum"
+      ],
+      "title": "ScopeStorageInterpretation",
+      "type": "object"
+    },
+    "ScopeVisionProposalV2": {
+      "additionalProperties": false,
+      "description": "Full findings stay in accepted records; the observation is a bound pointer.\n\nThis is a new output contract. It does not grant an old failed candidate\nacceptance, change its original request, or turn a survey into a diagnosis.",
+      "properties": {
+        "finding": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Finding",
+          "type": "string"
+        },
+        "image_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Image Checksum",
+          "type": "string"
+        },
+        "location": {
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Location",
+          "type": "array"
+        },
+        "preprocessing_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Preprocessing Checksum",
+          "type": "string"
+        },
+        "regions": {
+          "items": {
+            "$ref": "#/$defs/RegionScope"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Regions",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "visual-input-scope-candidate/1.1.0",
+          "default": "visual-input-scope-candidate/1.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "ungradable",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope_checksum",
+        "image_checksum",
+        "preprocessing_checksum",
+        "location",
+        "status",
+        "finding",
+        "regions"
+      ],
+      "title": "ScopeVisionProposalV2",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actor": {
+      "const": "PLANNER",
+      "title": "Actor",
+      "type": "string"
+    },
+    "candidate": {
+      "$ref": "#/$defs/ScopeVisionProposalV2"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "correlation": {
+      "const": "SOURCE:AGENT_RESEARCH",
+      "title": "Correlation",
+      "type": "string"
+    },
+    "observation_checksums": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Observation Checksums",
+      "type": "array"
+    },
+    "original_request_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Original Request Checksum",
+      "type": "string"
+    },
+    "prompt_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Prompt Checksum",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-input-scope-submission/1.2.0",
+      "default": "research-input-scope-submission/1.2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "source_checksums": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Source Checksums",
+      "type": "array"
+    },
+    "status": {
+      "const": "candidate_not_accepted",
+      "default": "candidate_not_accepted",
+      "title": "Status",
+      "type": "string"
+    },
+    "storage_interpretation": {
+      "$ref": "#/$defs/ScopeStorageInterpretation"
+    }
+  },
+  "required": [
+    "scope",
+    "actor",
+    "correlation",
+    "request_id",
+    "prompt_checksum",
+    "config_checksum",
+    "observation_checksums",
+    "source_checksums",
+    "candidate",
+    "storage_interpretation",
+    "original_request_checksum"
+  ],
+  "title": "RecordedScopeSubmission",
+  "type": "object"
+}

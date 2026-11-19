@@ -1,0 +1,1347 @@
+{
+  "$defs": {
+    "ActionBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "branches": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Branches",
+          "type": "integer"
+        },
+        "cancelled": {
+          "title": "Cancelled",
+          "type": "boolean"
+        },
+        "confirmed": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Confirmed",
+          "type": "integer"
+        },
+        "no_progress": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "No Progress",
+          "type": "integer"
+        },
+        "reserved": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Reserved",
+          "type": "integer"
+        },
+        "retries": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "started": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Started",
+          "type": "integer"
+        },
+        "steps": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Steps",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "steps",
+        "reserved",
+        "started",
+        "confirmed",
+        "branches",
+        "retries",
+        "no_progress",
+        "cancelled"
+      ],
+      "title": "ActionBudget",
+      "type": "object"
+    },
+    "ActionRejection": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "empty",
+            "search_truncated",
+            "missing_data",
+            "unknown_producer",
+            "missing_implementation",
+            "safety",
+            "technical",
+            "and_unsatisfied",
+            "budget",
+            "already_attempted",
+            "graph_not_legal"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "source_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Checksum"
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "category",
+        "reason"
+      ],
+      "title": "ActionRejection",
+      "type": "object"
+    },
+    "ArtifactConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "qc_required": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Qc Required",
+          "type": "array"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "qc_required",
+        "scope_terms"
+      ],
+      "title": "ArtifactConstraint",
+      "type": "object"
+    },
+    "Binding": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "deadline": {
+          "format": "date-time",
+          "title": "Deadline",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "locks": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Locks",
+          "type": "array"
+        },
+        "profile": {
+          "$ref": "#/$defs/Profile"
+        },
+        "run_context_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Run Context Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "run_context_checksum",
+        "input_checksum",
+        "visible_checksum",
+        "graph",
+        "locks",
+        "profile",
+        "started_at",
+        "deadline"
+      ],
+      "title": "Binding",
+      "type": "object"
+    },
+    "Component": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "information_gain",
+            "directness",
+            "cost",
+            "latency",
+            "failure_risk"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "disabled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "name",
+        "state",
+        "value",
+        "source_ref"
+      ],
+      "title": "Component",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_options": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Artifact Options",
+          "type": "array"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "optional_missing": {
+          "title": "Optional Missing",
+          "type": "boolean"
+        },
+        "port_name": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "producer_options": {
+          "items": {
+            "$ref": "#/$defs/FeasibleCandidate"
+          },
+          "maxItems": 512,
+          "title": "Producer Options",
+          "type": "array"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "port_name",
+        "required",
+        "cardinality_min",
+        "cardinality_max",
+        "constraint",
+        "artifact_options",
+        "producer_options",
+        "optional_missing"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "ExecutionPolicy": {
+      "enum": [
+        "research",
+        "clinical_deployment"
+      ],
+      "title": "ExecutionPolicy",
+      "type": "string"
+    },
+    "FeasibleCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "$ref": "#/$defs/packages__grounding__models__Candidate"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/Component"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Components",
+          "type": "array"
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "identity": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Identity",
+          "type": "string"
+        },
+        "mapping_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "identity",
+        "mapping_ref",
+        "candidate",
+        "dependencies",
+        "components"
+      ],
+      "title": "FeasibleCandidate",
+      "type": "object"
+    },
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "port",
+        "constraint",
+        "required",
+        "cardinality_min",
+        "cardinality_max"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "LegalAction": {
+      "additionalProperties": false,
+      "properties": {
+        "branch": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Branch",
+          "type": "string"
+        },
+        "candidate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/packages__planner_control__models__Candidate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "candidate_ref": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Candidate Ref"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/Component"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "entrypoint": {
+          "enum": [
+            "ResearchPlannerSteps.invoke",
+            "ToolAdmissionService.admit",
+            "Planner.step",
+            "ResearchReview.run"
+          ],
+          "title": "Entrypoint",
+          "type": "string"
+        },
+        "expected_artifact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "failure_count": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Failure Count",
+          "type": "integer"
+        },
+        "failure_history": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Failure History",
+          "type": "array"
+        },
+        "failure_history_scope": {
+          "const": "current_run",
+          "default": "current_run",
+          "title": "Failure History Scope",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "observe",
+            "select_candidate",
+            "request_review",
+            "fallback",
+            "stop"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "preconditions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Preconditions",
+          "type": "array"
+        },
+        "reasons": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "required_inputs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Required Inputs",
+          "type": "array"
+        },
+        "review_required": {
+          "default": false,
+          "title": "Review Required",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "default": "planner-action/1.0.0",
+          "enum": [
+            "planner-action/1.0.0",
+            "planner-research-action/1.0.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Reference"
+        },
+        "validation_level": {
+          "default": "unknown",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Validation Level",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "target",
+        "branch",
+        "candidate",
+        "candidate_ref",
+        "required_inputs",
+        "entrypoint",
+        "preconditions",
+        "reasons",
+        "components",
+        "expires_at"
+      ],
+      "title": "LegalAction",
+      "type": "object"
+    },
+    "LegalActionSet": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/LegalAction"
+          },
+          "title": "Actions",
+          "type": "array"
+        },
+        "availability_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Availability Checksum",
+          "type": "string"
+        },
+        "binding": {
+          "$ref": "#/$defs/Binding"
+        },
+        "budget": {
+          "$ref": "#/$defs/ActionBudget"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "enumeration": {
+          "default": "complete",
+          "enum": [
+            "complete",
+            "search_truncated"
+          ],
+          "title": "Enumeration",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "plan_refs": {
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Plan Refs",
+          "type": "array"
+        },
+        "policy": {
+          "$ref": "#/$defs/RankingPolicy"
+        },
+        "rejections": {
+          "items": {
+            "$ref": "#/$defs/ActionRejection"
+          },
+          "title": "Rejections",
+          "type": "array"
+        },
+        "safety_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Safety Checksum",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "legal-action-set/1.0.0",
+          "default": "legal-action-set/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_checksums": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Source Checksums",
+          "type": "array"
+        },
+        "state_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "State Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "binding",
+        "graph",
+        "state_checksum",
+        "budget",
+        "policy",
+        "safety_checksum",
+        "availability_checksum",
+        "source_checksums",
+        "plan_refs",
+        "actions",
+        "rejections",
+        "expires_at",
+        "checksum"
+      ],
+      "title": "LegalActionSet",
+      "type": "object"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "Profile": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "expert_required": {
+          "default": false,
+          "title": "Expert Required",
+          "type": "boolean"
+        },
+        "max_actions": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Actions",
+          "type": "integer"
+        },
+        "max_branches": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Branches",
+          "type": "integer"
+        },
+        "max_no_progress": {
+          "default": 4,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max No Progress",
+          "type": "integer"
+        },
+        "max_retries": {
+          "default": 2,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "max_steps": {
+          "default": 48,
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Max Steps",
+          "type": "integer"
+        },
+        "seconds": {
+          "default": 300,
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Seconds",
+          "type": "integer"
+        },
+        "version": {
+          "const": "planner-baseline/1.0.0",
+          "default": "planner-baseline/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "Profile",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "RankingPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "failure_history_first": {
+          "const": true,
+          "default": true,
+          "title": "Failure History First",
+          "type": "boolean"
+        },
+        "fallback": {
+          "default": "semantic_baseline",
+          "enum": [
+            "semantic_baseline",
+            "legacy_id_baseline"
+          ],
+          "title": "Fallback",
+          "type": "string"
+        },
+        "information_gain_enabled": {
+          "default": false,
+          "title": "Information Gain Enabled",
+          "type": "boolean"
+        },
+        "max_agent_attempts": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Agent Attempts",
+          "type": "integer"
+        },
+        "missing_order": {
+          "const": "last",
+          "default": "last",
+          "title": "Missing Order",
+          "type": "string"
+        },
+        "order": {
+          "default": [
+            "directness",
+            "cost",
+            "latency",
+            "failure_risk"
+          ],
+          "items": {
+            "enum": [
+              "information_gain",
+              "directness",
+              "cost",
+              "latency",
+              "failure_risk"
+            ],
+            "type": "string"
+          },
+          "title": "Order",
+          "type": "array"
+        },
+        "suggestion_seconds": {
+          "default": 30,
+          "maximum": 120,
+          "minimum": 1,
+          "title": "Suggestion Seconds",
+          "type": "integer"
+        },
+        "tie_break": {
+          "const": "semantic_action",
+          "default": "semantic_action",
+          "title": "Tie Break",
+          "type": "string"
+        },
+        "version": {
+          "const": "planner-ranking/1.0.0",
+          "default": "planner-ranking/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "RankingPolicy",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    },
+    "TraceRanking": {
+      "additionalProperties": false,
+      "properties": {
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "ranked_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "minItems": 1,
+          "title": "Ranked Ids",
+          "type": "array"
+        },
+        "reason": {
+          "maxLength": 240,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1f]+$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "trace-ranking/1.0.0",
+          "default": "trace-ranking/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "set_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Set Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "set_checksum",
+        "policy_checksum",
+        "ranked_ids",
+        "reason"
+      ],
+      "title": "TraceRanking",
+      "type": "object"
+    },
+    "packages__grounding__models__Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "estimate_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "execution_policy": {
+          "$ref": "#/$defs/ExecutionPolicy"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/Input"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "intended_use": {
+          "$ref": "#/$defs/IntendedUse"
+        },
+        "output": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "output_port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "validation_required": {
+          "$ref": "#/$defs/ToolValidationStatus"
+        },
+        "workflow_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "capability_ref",
+        "tool_ref",
+        "implementation_ref",
+        "workflow_ref",
+        "output_port",
+        "output",
+        "inputs",
+        "validation_required",
+        "intended_use",
+        "execution_policy",
+        "estimate_ref"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "packages__planner_control__models__Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "and_ready": {
+          "title": "And Ready",
+          "type": "boolean"
+        },
+        "branch": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Branch",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Input Refs",
+          "type": "array"
+        },
+        "operation": {
+          "enum": [
+            "observe",
+            "tool",
+            "new_review",
+            "new_branch"
+          ],
+          "title": "Operation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "branch",
+        "operation",
+        "and_ready"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_set": {
+      "$ref": "#/$defs/LegalActionSet"
+    },
+    "attempts": {
+      "maximum": 3,
+      "minimum": 0,
+      "title": "Attempts",
+      "type": "integer"
+    },
+    "decided_at": {
+      "format": "date-time",
+      "title": "Decided At",
+      "type": "string"
+    },
+    "ranking": {
+      "$ref": "#/$defs/TraceRanking"
+    },
+    "rejected_advice": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+        "type": "string"
+      },
+      "title": "Rejected Advice",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "planner-selection/1.0.0",
+      "default": "planner-selection/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Selected Id",
+      "type": "string"
+    },
+    "strategy": {
+      "enum": [
+        "trace-ranking/1.0.0",
+        "semantic-baseline/1.0.0",
+        "legacy-id/1.0.0"
+      ],
+      "title": "Strategy",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_set",
+    "ranking",
+    "strategy",
+    "selected_id",
+    "attempts",
+    "decided_at"
+  ],
+  "title": "ActionDecision",
+  "type": "object"
+}

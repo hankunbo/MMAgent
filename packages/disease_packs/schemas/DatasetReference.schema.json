@@ -1,0 +1,233 @@
+{
+  "$defs": {
+    "FieldVisibility": {
+      "additionalProperties": false,
+      "properties": {
+        "policy_version": {
+          "const": "field-visibility/1.0.0",
+          "default": "field-visibility/1.0.0",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "planner_visible": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Planner Visible",
+          "type": "array"
+        },
+        "withheld": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Withheld",
+          "type": "array"
+        },
+        "owner_only": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Owner Only",
+          "type": "array"
+        },
+        "derived_requires_review": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Derived Requires Review",
+          "type": "array"
+        },
+        "unknown_fields": {
+          "const": "reject",
+          "default": "reject",
+          "title": "Unknown Fields",
+          "type": "string"
+        },
+        "raw_text_redactor_owner": {
+          "enum": [
+            "07A",
+            "none"
+          ],
+          "title": "Raw Text Redactor Owner",
+          "type": "string"
+        }
+      },
+      "required": [
+        "planner_visible",
+        "withheld",
+        "owner_only",
+        "raw_text_redactor_owner"
+      ],
+      "title": "FieldVisibility",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "dataset-reference/1.0.0",
+      "default": "dataset-reference/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "role": {
+      "enum": [
+        "case_evidence",
+        "coarse_triage",
+        "independent_tool_truth"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "owner": {
+      "enum": [
+        "06E",
+        "07A"
+      ],
+      "title": "Owner",
+      "type": "string"
+    },
+    "modalities": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Modalities",
+      "type": "array"
+    },
+    "declared_fields": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Declared Fields",
+      "type": "array"
+    },
+    "visibility": {
+      "$ref": "#/$defs/FieldVisibility"
+    },
+    "description_sources": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Description Sources",
+      "type": "array"
+    },
+    "local_root": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Local Root"
+    },
+    "expected_golden_levels": {
+      "items": {
+        "enum": [
+          "G1",
+          "G2",
+          "G3",
+          "G4"
+        ],
+        "type": "string"
+      },
+      "title": "Expected Golden Levels",
+      "type": "array"
+    },
+    "patient_linkage": {
+      "enum": [
+        "within_dataset_only",
+        "no_patient_linkage"
+      ],
+      "title": "Patient Linkage",
+      "type": "string"
+    },
+    "label_purpose": {
+      "const": "evaluation_only_not_publication",
+      "default": "evaluation_only_not_publication",
+      "title": "Label Purpose",
+      "type": "string"
+    },
+    "scope_notes": {
+      "items": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Scope Notes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "checksum",
+    "code",
+    "version",
+    "name",
+    "synthetic",
+    "role",
+    "owner",
+    "modalities",
+    "declared_fields",
+    "visibility",
+    "description_sources",
+    "expected_golden_levels",
+    "patient_linkage",
+    "scope_notes"
+  ],
+  "title": "DatasetReference",
+  "type": "object"
+}

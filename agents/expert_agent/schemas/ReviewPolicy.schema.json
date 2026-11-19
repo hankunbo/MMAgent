@@ -1,0 +1,40 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "comparison_protocol": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Comparison Protocol",
+      "type": "string"
+    },
+    "max_no_progress": {
+      "default": 2,
+      "maximum": 8,
+      "minimum": 1,
+      "title": "Max No Progress",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "research-expert-policy/1.0.0",
+      "default": "research-expert-policy/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selection": {
+      "const": "first_valid_round_A_B_C",
+      "default": "first_valid_round_A_B_C",
+      "title": "Selection",
+      "type": "string"
+    }
+  },
+  "required": [
+    "comparison_protocol"
+  ],
+  "title": "ReviewPolicy",
+  "type": "object"
+}

@@ -1,0 +1,928 @@
+{
+  "$defs": {
+    "ArtifactMetadata": {
+      "additionalProperties": false,
+      "description": "Explicit ingestion projection. No URI, report, measurements or image bytes.",
+      "properties": {
+        "asset_code": {
+          "pattern": "^ASSET:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Asset Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "patient_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Patient Hash",
+          "type": "string"
+        },
+        "encounter_code": {
+          "title": "Encounter Code",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Run Id"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        },
+        "qc_status": {
+          "$ref": "#/$defs/QCStatus"
+        },
+        "acquired_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Acquired At"
+        }
+      },
+      "required": [
+        "asset_code",
+        "checksum",
+        "case_code",
+        "patient_hash",
+        "encounter_code",
+        "run_id",
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "scope_terms",
+        "qc_status",
+        "acquired_at"
+      ],
+      "title": "ArtifactMetadata",
+      "type": "object"
+    },
+    "CaseScope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "pattern": "^CASE:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "patient_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Patient Hash",
+          "type": "string"
+        },
+        "encounter_code": {
+          "pattern": "^ENCOUNTER:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Encounter Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        }
+      },
+      "required": [
+        "case_code",
+        "patient_hash",
+        "encounter_code",
+        "laterality"
+      ],
+      "title": "CaseScope",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "EnvironmentFact": {
+      "additionalProperties": false,
+      "properties": {
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "availability": {
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "preconditions": {
+          "enum": [
+            "satisfied",
+            "rejected",
+            "unknown"
+          ],
+          "title": "Preconditions",
+          "type": "string"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/Ref"
+        }
+      },
+      "required": [
+        "implementation_ref",
+        "availability",
+        "preconditions",
+        "source_ref"
+      ],
+      "title": "EnvironmentFact",
+      "type": "object"
+    },
+    "GroundingLock": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "grounding-lock/1.0.0",
+          "default": "grounding-lock/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^RUN:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "graph_code": {
+          "pattern": "^GRAPH:(ANON|OID)_[A-Z0-9][A-Z0-9_-]{5,63}$",
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        },
+        "graph_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Graph Checksum",
+          "type": "string"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "mapping_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Mapping Refs",
+          "type": "array"
+        },
+        "release_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "template_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "graph_template_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "knowledge_refs": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 512,
+          "minItems": 1,
+          "title": "Knowledge Refs",
+          "type": "array"
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "graph_code",
+        "graph_version",
+        "graph_checksum",
+        "catalog_ref",
+        "mapping_refs",
+        "release_ref",
+        "template_ref",
+        "graph_template_ref",
+        "knowledge_refs",
+        "policy",
+        "checksum"
+      ],
+      "title": "GroundingLock",
+      "type": "object"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "policy",
+          "default": "policy",
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "synthetic_only": {
+          "title": "Synthetic Only",
+          "type": "boolean"
+        },
+        "admissible_states": {
+          "items": {
+            "const": "Active",
+            "type": "string"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "title": "Admissible States",
+          "type": "array"
+        },
+        "type_compatibility": {
+          "const": "exact",
+          "title": "Type Compatibility",
+          "type": "string"
+        },
+        "accepted_validation": {
+          "items": {
+            "$ref": "#/$defs/ToolValidationStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Accepted Validation",
+          "type": "array"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        },
+        "execution_policy": {
+          "const": "research",
+          "title": "Execution Policy",
+          "type": "string"
+        },
+        "max_bytes": {
+          "maximum": 65536,
+          "minimum": 1024,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_candidates": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_inputs": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Inputs",
+          "type": "integer"
+        },
+        "max_artifacts": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Max Artifacts",
+          "type": "integer"
+        },
+        "max_mappings": {
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Max Mappings",
+          "type": "integer"
+        },
+        "allowed_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Allowed Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "code",
+        "version",
+        "checksum",
+        "baseline_only",
+        "synthetic_only",
+        "admissible_states",
+        "type_compatibility",
+        "accepted_validation",
+        "intended_use",
+        "execution_policy",
+        "max_bytes",
+        "max_candidates",
+        "max_inputs",
+        "max_artifacts",
+        "max_mappings",
+        "allowed_terms"
+      ],
+      "title": "Policy",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "QueryConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "const": "POLICY:GROUNDING:QUERY_BASELINE",
+          "default": "POLICY:GROUNDING:QUERY_BASELINE",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "max_depth": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Depth",
+          "type": "integer"
+        },
+        "max_evaluations": {
+          "maximum": 512,
+          "minimum": 1,
+          "title": "Max Evaluations",
+          "type": "integer"
+        },
+        "max_operations": {
+          "default": 10000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Operations",
+          "type": "integer"
+        },
+        "max_findings": {
+          "default": 4096,
+          "maximum": 8192,
+          "minimum": 2,
+          "title": "Max Findings",
+          "type": "integer"
+        },
+        "top_k": {
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "information_gain_enabled": {
+          "title": "Information Gain Enabled",
+          "type": "boolean"
+        },
+        "order": {
+          "items": {
+            "enum": [
+              "information_gain",
+              "directness",
+              "cost",
+              "latency",
+              "failure_risk"
+            ],
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Order",
+          "type": "array"
+        },
+        "missing_order": {
+          "const": "last",
+          "default": "last",
+          "title": "Missing Order",
+          "type": "string"
+        },
+        "tie_break": {
+          "const": "mapping_ref,candidate_code,dependency_checksum",
+          "default": "mapping_ref,candidate_code,dependency_checksum",
+          "title": "Tie Break",
+          "type": "string"
+        },
+        "score_scope": {
+          "const": "individual_tool_estimates_not_chain_totals",
+          "default": "individual_tool_estimates_not_chain_totals",
+          "title": "Score Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "checksum",
+        "max_depth",
+        "max_evaluations",
+        "top_k",
+        "information_gain_enabled",
+        "order"
+      ],
+      "title": "QueryConfig",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "RetrievalContext": {
+      "additionalProperties": false,
+      "properties": {
+        "languages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Languages",
+          "type": "array"
+        },
+        "source_types": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Source Types",
+          "type": "array"
+        },
+        "date_from": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date From"
+        },
+        "date_to": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date To"
+        },
+        "population": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Population",
+          "type": "array"
+        },
+        "conditions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "modalities": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "targets": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Targets",
+          "type": "array"
+        },
+        "anatomy": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Anatomy",
+          "type": "array"
+        },
+        "version": {
+          "const": "retrieval-context/1.0.0",
+          "default": "retrieval-context/1.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disease_packs": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Packs",
+          "type": "array"
+        },
+        "disease_stages": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Stages",
+          "type": "array"
+        },
+        "sexes": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Sexes",
+          "type": "array"
+        },
+        "exams": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Exams",
+          "type": "array"
+        },
+        "times": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Times",
+          "type": "array"
+        },
+        "lateralities": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Lateralities",
+          "type": "array"
+        },
+        "devices": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Devices",
+          "type": "array"
+        },
+        "required_artifacts": {
+          "default": [],
+          "items": {
+            "enum": [
+              "template",
+              "validation_rule",
+              "stop_rule"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Required Artifacts",
+          "type": "array"
+        },
+        "age_years": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Years"
+        }
+      },
+      "title": "RetrievalContext",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "grounding-query/1.0.0",
+      "default": "grounding-query/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "lock": {
+      "$ref": "#/$defs/GroundingLock"
+    },
+    "requirement_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "target_node_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Target Node Code",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/CaseScope"
+    },
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactMetadata"
+      },
+      "maxItems": 256,
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "availability_source_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "snapshot_at": {
+      "format": "date-time",
+      "title": "Snapshot At",
+      "type": "string"
+    },
+    "window_start": {
+      "format": "date-time",
+      "title": "Window Start",
+      "type": "string"
+    },
+    "window_end": {
+      "format": "date-time",
+      "title": "Window End",
+      "type": "string"
+    },
+    "patient_data_types": {
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "maxItems": 256,
+      "title": "Patient Data Types",
+      "type": "array"
+    },
+    "satisfied_terms": {
+      "items": {
+        "maxLength": 256,
+        "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Satisfied Terms",
+      "type": "array"
+    },
+    "environment": {
+      "items": {
+        "$ref": "#/$defs/EnvironmentFact"
+      },
+      "maxItems": 128,
+      "title": "Environment",
+      "type": "array"
+    },
+    "context": {
+      "$ref": "#/$defs/RetrievalContext"
+    },
+    "config": {
+      "$ref": "#/$defs/QueryConfig"
+    }
+  },
+  "required": [
+    "lock",
+    "requirement_ref",
+    "target_node_code",
+    "scope",
+    "artifacts",
+    "availability_source_ref",
+    "snapshot_at",
+    "window_start",
+    "window_end",
+    "patient_data_types",
+    "satisfied_terms",
+    "environment",
+    "context",
+    "config"
+  ],
+  "title": "QueryRequest",
+  "type": "object"
+}

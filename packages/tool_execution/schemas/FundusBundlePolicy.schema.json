@@ -1,0 +1,147 @@
+{
+  "$defs": {
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        },
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "artifact_type_code": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Artifact Type Code",
+      "type": "string"
+    },
+    "implementation": {
+      "const": "automorph_fundus_bundle_qc/1.0.0",
+      "default": "automorph_fundus_bundle_qc/1.0.0",
+      "title": "Implementation",
+      "type": "string"
+    },
+    "input_artifact_type_code": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Input Artifact Type Code",
+      "type": "string"
+    },
+    "max_bytes": {
+      "default": 4194304,
+      "maximum": 4194304,
+      "minimum": 1,
+      "title": "Max Bytes",
+      "type": "integer"
+    },
+    "role": {
+      "const": "model_prediction",
+      "default": "model_prediction",
+      "title": "Role",
+      "type": "string"
+    },
+    "source_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Checksum",
+      "type": "string"
+    },
+    "unit": {
+      "default": null,
+      "title": "Unit",
+      "type": "null"
+    },
+    "unit_term": {
+      "$ref": "#/$defs/Term"
+    }
+  },
+  "required": [
+    "artifact_ref",
+    "artifact_type_code",
+    "input_artifact_type_code",
+    "source_checksum",
+    "unit_term"
+  ],
+  "title": "FundusBundlePolicy",
+  "type": "object"
+}

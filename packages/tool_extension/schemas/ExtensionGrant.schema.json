@@ -1,0 +1,87 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "synthetic-extension-grant/1.0.0",
+      "default": "synthetic-extension-grant/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "purpose": {
+      "const": "offline_extension_interfaces_only",
+      "default": "offline_extension_interfaces_only",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "task_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "stage_key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Stage Key",
+      "type": "string"
+    },
+    "worker": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Worker",
+      "type": "string"
+    },
+    "adapter_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Adapter Checksum",
+      "type": "string"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "catalog_fixture_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Catalog Fixture Checksum",
+      "type": "string"
+    },
+    "future_binding_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Future Binding Checksum",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "budget": {
+      "const": 1,
+      "default": 1,
+      "title": "Budget",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "run_id",
+    "task_id",
+    "stage_key",
+    "worker",
+    "adapter_checksum",
+    "policy_checksum",
+    "catalog_fixture_checksum",
+    "future_binding_checksum",
+    "expires_at"
+  ],
+  "title": "ExtensionGrant",
+  "type": "object"
+}

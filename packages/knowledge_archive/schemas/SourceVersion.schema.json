@@ -1,0 +1,468 @@
+{
+  "$defs": {
+    "ArchiveMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "bibliography": {
+          "$ref": "#/$defs/Bibliography"
+        },
+        "etag": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Etag"
+        },
+        "fetcher_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Fetcher Version",
+          "type": "string"
+        },
+        "last_modified": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Modified"
+        },
+        "metadata_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Metadata Checksum",
+          "type": "string"
+        },
+        "normalization_version": {
+          "const": "archive-normalization/1.0.0",
+          "default": "archive-normalization/1.0.0",
+          "title": "Normalization Version",
+          "type": "string"
+        },
+        "pipeline_version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "title": "Pipeline Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bibliography",
+        "metadata_checksum",
+        "fetcher_version",
+        "pipeline_version"
+      ],
+      "title": "ArchiveMetadata",
+      "type": "object"
+    },
+    "Bibliography": {
+      "additionalProperties": false,
+      "description": "Metadata mapped by the trusted connector boundary from this fetch response.\n\nThis is not a free-form patient input or a document parser. Optional fields\ndistinguish absent metadata from an explicit correction/retraction notice.",
+      "properties": {
+        "abstract_permission": {
+          "default": "unknown",
+          "enum": [
+            "unknown",
+            "metadata_only",
+            "permitted",
+            "restricted"
+          ],
+          "title": "Abstract Permission",
+          "type": "string"
+        },
+        "authors": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Authors",
+          "type": "array"
+        },
+        "canonical_url": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canonical Url"
+        },
+        "fulltext_urls": {
+          "default": [],
+          "items": {
+            "maxLength": 2048,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Fulltext Urls",
+          "type": "array"
+        },
+        "identifiers": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          },
+          "maxItems": 16,
+          "title": "Identifiers",
+          "type": "array"
+        },
+        "institutions": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Institutions",
+          "type": "array"
+        },
+        "language": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Language"
+        },
+        "notice": {
+          "default": "normal",
+          "enum": [
+            "normal",
+            "correction",
+            "retraction"
+          ],
+          "title": "Notice",
+          "type": "string"
+        },
+        "publication_date": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Date"
+        },
+        "source_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "GUIDELINE",
+                "ARTICLE",
+                "CONSENSUS",
+                "WEB"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Type"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        }
+      },
+      "title": "Bibliography",
+      "type": "object"
+    },
+    "Identifier": {
+      "additionalProperties": false,
+      "properties": {
+        "identifier_type": {
+          "enum": [
+            "DOI",
+            "PMID",
+            "PMCID",
+            "URL"
+          ],
+          "title": "Identifier Type",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifier_type",
+        "value"
+      ],
+      "title": "Identifier",
+      "type": "object"
+    },
+    "KnowledgeKind": {
+      "enum": [
+        "source_provider",
+        "search_query",
+        "search_run",
+        "search_hit",
+        "source",
+        "source_identifier",
+        "source_version",
+        "source_document",
+        "document_chunk",
+        "ingestion_job",
+        "clinical_claim",
+        "claim_evidence_link",
+        "claim_conflict",
+        "extraction_run",
+        "applicability_condition",
+        "concept",
+        "target",
+        "template",
+        "node",
+        "edge",
+        "evidence_requirement",
+        "validation_rule",
+        "stop_rule",
+        "release",
+        "expert_review",
+        "release_policy"
+      ],
+      "title": "KnowledgeKind",
+      "type": "string"
+    },
+    "KnowledgeReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/KnowledgeKind"
+        },
+        "version": {
+          "maxLength": 64,
+          "minLength": 5,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "KnowledgeReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowlist_approved": {
+      "title": "Allowlist Approved",
+      "type": "boolean"
+    },
+    "applicability_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Applicability Refs",
+      "type": "array"
+    },
+    "archive_metadata": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ArchiveMetadata"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "content_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Content Checksum",
+      "type": "string"
+    },
+    "discovery_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Discovery Refs",
+      "type": "array"
+    },
+    "fetched_at": {
+      "format": "date-time",
+      "title": "Fetched At",
+      "type": "string"
+    },
+    "kind": {
+      "const": "source_version",
+      "default": "source_version",
+      "title": "Kind",
+      "type": "string"
+    },
+    "media_type": {
+      "pattern": "^[a-z0-9][a-z0-9.+-]*/[a-z0-9][a-z0-9.+-]*$",
+      "title": "Media Type",
+      "type": "string"
+    },
+    "object_uri": {
+      "maxLength": 2048,
+      "title": "Object Uri",
+      "type": "string"
+    },
+    "provider_ref": {
+      "$ref": "#/$defs/KnowledgeReference"
+    },
+    "published_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Published At"
+    },
+    "scope": {
+      "const": "GLOBAL",
+      "default": "GLOBAL",
+      "title": "Scope",
+      "type": "string"
+    },
+    "size_bytes": {
+      "maximum": 1099511627776,
+      "minimum": 1,
+      "title": "Size Bytes",
+      "type": "integer"
+    },
+    "source_ref": {
+      "$ref": "#/$defs/KnowledgeReference"
+    },
+    "source_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/KnowledgeReference"
+      },
+      "maxItems": 64,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KnowledgeReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "unresolved_decisions": {
+      "default": [],
+      "items": {
+        "enum": [
+          "GRA-002",
+          "KNO-008"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "title": "Unresolved Decisions",
+      "type": "array"
+    },
+    "version": {
+      "maxLength": 64,
+      "minLength": 5,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "source_ref",
+    "provider_ref",
+    "content_checksum",
+    "object_uri",
+    "media_type",
+    "size_bytes",
+    "fetched_at",
+    "allowlist_approved"
+  ],
+  "title": "SourceVersion",
+  "type": "object"
+}

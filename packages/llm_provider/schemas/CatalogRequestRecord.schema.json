@@ -1,0 +1,400 @@
+{
+  "$defs": {
+    "Graph": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "research_artifact",
+            "formal_geceg"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum",
+        "kind"
+      ],
+      "title": "Graph",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "material_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Material Checksum",
+          "type": "string"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "visible_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Visible Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "graph",
+        "visible_checksum",
+        "input_checksum",
+        "material_checksum",
+        "policy_checksum"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "cost": {
+          "default": null,
+          "title": "Cost",
+          "type": "null"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        },
+        "status": {
+          "default": "unknown",
+          "enum": [
+            "observed",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "total_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Tokens"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "api_requests": {
+      "anyOf": [
+        {
+          "enum": [
+            0,
+            1
+          ],
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Api Requests"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "config_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Config Checksum",
+      "type": "string"
+    },
+    "deadline": {
+      "format": "date-time",
+      "title": "Deadline",
+      "type": "string"
+    },
+    "endpoint": {
+      "const": "models_get",
+      "default": "models_get",
+      "title": "Endpoint",
+      "type": "string"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "enum": [
+            "schema",
+            "refusal",
+            "truncated",
+            "rate_limit",
+            "timeout",
+            "authentication",
+            "no_result",
+            "transport",
+            "configuration",
+            "budget",
+            "deadline",
+            "scope",
+            "unsupported_image",
+            "secret_response"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Error"
+    },
+    "input_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Checksum",
+      "type": "string"
+    },
+    "invocation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Invocation Id",
+      "type": "string"
+    },
+    "latency_seconds": {
+      "minimum": 0,
+      "title": "Latency Seconds",
+      "type": "number"
+    },
+    "model": {
+      "maxLength": 128,
+      "title": "Model",
+      "type": "string"
+    },
+    "output_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Output Checksum"
+    },
+    "prompt_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Prompt Checksum",
+      "type": "string"
+    },
+    "prompt_version": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "provider": {
+      "maxLength": 128,
+      "title": "Provider",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "token_model_catalog_probe_not_inference",
+      "default": "token_model_catalog_probe_not_inference",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "raw_audit": {
+      "const": "digest_only_no_raw_retention",
+      "default": "digest_only_no_raw_retention",
+      "title": "Raw Audit",
+      "type": "string"
+    },
+    "remote_request_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Remote Request Checksum"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "retry_index": {
+      "maximum": 3,
+      "minimum": 0,
+      "title": "Retry Index",
+      "type": "integer"
+    },
+    "role": {
+      "enum": [
+        "trace",
+        "expert",
+        "source",
+        "vision",
+        "review"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "agent-catalog-request/1.0.0",
+      "default": "agent-catalog-request/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "simulated": {
+      "title": "Simulated",
+      "type": "boolean"
+    },
+    "usage": {
+      "$ref": "#/$defs/Usage"
+    }
+  },
+  "required": [
+    "request_id",
+    "invocation_id",
+    "retry_index",
+    "role",
+    "scope",
+    "provider",
+    "model",
+    "config_checksum",
+    "prompt_version",
+    "prompt_checksum",
+    "input_checksum",
+    "output_checksum",
+    "remote_request_checksum",
+    "attempt",
+    "simulated",
+    "api_requests",
+    "usage",
+    "latency_seconds",
+    "error",
+    "deadline"
+  ],
+  "title": "CatalogRequestRecord",
+  "type": "object"
+}

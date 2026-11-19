@@ -1,0 +1,464 @@
+{
+  "$defs": {
+    "DirectionAssessment": {
+      "additionalProperties": false,
+      "description": "Research explanation, not an automatically verified medical conclusion.",
+      "properties": {
+        "alternatives": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "direction": {
+          "enum": [
+            "support",
+            "refute",
+            "neutral",
+            "unassessable"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "magnitude_reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Magnitude Reason",
+          "type": "string"
+        },
+        "neutral_reason": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Neutral Reason"
+        },
+        "next_action": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Action"
+        },
+        "observed_features": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Observed Features",
+          "type": "string"
+        },
+        "opposing_interpretation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Opposing Interpretation",
+          "type": "string"
+        },
+        "quality_limitation": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Quality Limitation",
+          "type": "string"
+        },
+        "resolvable_gap": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resolvable Gap"
+        },
+        "schema_version": {
+          "const": "direction-assessment/1.0.0",
+          "default": "direction-assessment/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_relation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Source Relation",
+          "type": "string"
+        },
+        "supporting_interpretation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Supporting Interpretation",
+          "type": "string"
+        },
+        "unassessable_reason": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unassessable Reason"
+        }
+      },
+      "required": [
+        "direction",
+        "observed_features",
+        "source_relation",
+        "supporting_interpretation",
+        "opposing_interpretation",
+        "alternatives",
+        "magnitude_reason",
+        "quality_limitation"
+      ],
+      "title": "DirectionAssessment",
+      "type": "object"
+    },
+    "Judgment": {
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lower"
+        },
+        "method": {
+          "enum": [
+            "manual_source_bound_review",
+            "fixed_model_margin",
+            "not_assessed"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upper"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": -1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "lower",
+        "upper",
+        "reason",
+        "method"
+      ],
+      "title": "Judgment",
+      "type": "object"
+    },
+    "Rating": {
+      "additionalProperties": false,
+      "properties": {
+        "missing_reason": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Missing Reason"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "reason"
+      ],
+      "title": "Rating",
+      "type": "object"
+    },
+    "ReasonedReviewItem": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "$ref": "#/$defs/Rating"
+        },
+        "assessment_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "comparison": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Comparison",
+          "type": "string"
+        },
+        "direction_assessment": {
+          "$ref": "#/$defs/DirectionAssessment"
+        },
+        "judgment": {
+          "$ref": "#/$defs/Judgment"
+        },
+        "limitation_allocation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Limitation Allocation",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/Rating"
+        },
+        "observation_available": {
+          "title": "Observation Available",
+          "type": "boolean"
+        },
+        "observation_citations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Observation Citations",
+          "type": "array"
+        },
+        "reference_citations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Reference Citations",
+          "type": "array"
+        },
+        "relation": {
+          "$ref": "#/$defs/Rating"
+        },
+        "status": {
+          "enum": [
+            "assessed",
+            "reference_missing",
+            "method_mismatch",
+            "context_only",
+            "observation_ungradable",
+            "input_missing",
+            "intermediate"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unresolved": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Unresolved",
+          "type": "array"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "status",
+        "observation_available",
+        "observation_citations",
+        "reference_citations",
+        "comparison",
+        "observation",
+        "relation",
+        "applicability",
+        "judgment",
+        "limitation_allocation",
+        "unresolved",
+        "direction_assessment"
+      ],
+      "title": "ReasonedReviewItem",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "correlation_group": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Correlation Group",
+      "type": "string"
+    },
+    "dependence_block": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Dependence Block",
+      "type": "string"
+    },
+    "dependency_paths": {
+      "items": {
+        "items": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Dependency Paths",
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "observation_ref": {
+      "$ref": "#/$defs/Reference"
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "review": {
+      "$ref": "#/$defs/ReasonedReviewItem"
+    },
+    "source_refs": {
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "version": {
+      "const": "2.1.0",
+      "default": "2.1.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "observation_ref",
+    "source_refs",
+    "policy_checksum",
+    "review",
+    "correlation_group",
+    "dependence_block",
+    "dependency_paths",
+    "request_id"
+  ],
+  "title": "ReasonedInterpretation",
+  "type": "object"
+}

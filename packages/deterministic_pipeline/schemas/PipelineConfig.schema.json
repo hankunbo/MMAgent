@@ -1,0 +1,982 @@
+{
+  "$defs": {
+    "IndexConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "embedder": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProviderSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "fts_config": {
+          "const": "simple",
+          "default": "simple",
+          "title": "Fts Config",
+          "type": "string"
+        },
+        "fts_preprocessing": {
+          "const": "unicode-cjk/1.0.0",
+          "default": "unicode-cjk/1.0.0",
+          "title": "Fts Preprocessing",
+          "type": "string"
+        },
+        "fts_weight": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Fts Weight",
+          "type": "number"
+        },
+        "fusion": {
+          "const": "weighted-rrf/1.0.0",
+          "default": "weighted-rrf/1.0.0",
+          "title": "Fusion",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "hybrid",
+            "fts_only"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "recall_k": {
+          "default": 40,
+          "maximum": 200,
+          "minimum": 1,
+          "title": "Recall K",
+          "type": "integer"
+        },
+        "reranker": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProviderSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reranker_mode": {
+          "default": "disabled",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "title": "Reranker Mode",
+          "type": "string"
+        },
+        "rrf_k": {
+          "default": 60,
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Rrf K",
+          "type": "integer"
+        },
+        "snippet_chars": {
+          "default": 600,
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Snippet Chars",
+          "type": "integer"
+        },
+        "top_k": {
+          "default": 5,
+          "maximum": 50,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "vector_unavailable_reason": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vector Unavailable Reason"
+        },
+        "vector_weight": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Vector Weight",
+          "type": "number"
+        },
+        "version": {
+          "default": "index/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "title": "IndexConfig",
+      "type": "object"
+    },
+    "KnowledgeUseRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "policy_ref": {
+          "$ref": "#/$defs/VersionedReference"
+        },
+        "purpose": {
+          "enum": [
+            "limited_research_evidence_planning",
+            "clinical"
+          ],
+          "title": "Purpose",
+          "type": "string"
+        },
+        "scope_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Scope Checksum",
+          "type": "string"
+        },
+        "version": {
+          "const": "knowledge-use-request/1.0.0",
+          "default": "knowledge-use-request/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "purpose",
+        "policy_ref",
+        "scope_checksum"
+      ],
+      "title": "KnowledgeUseRequest",
+      "type": "object"
+    },
+    "PipelinePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "checksum": {
+          "title": "Checksum",
+          "type": "string"
+        },
+        "max_actions": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Max Actions",
+          "type": "integer"
+        },
+        "max_cost": {
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "title": "Max Cost",
+          "type": "number"
+        },
+        "max_graph_rounds": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Max Graph Rounds",
+          "type": "integer"
+        },
+        "max_same_action": {
+          "const": 1,
+          "default": 1,
+          "title": "Max Same Action",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Max Seconds",
+          "type": "integer"
+        },
+        "network": {
+          "const": "deny",
+          "default": "deny",
+          "title": "Network",
+          "type": "string"
+        },
+        "selection": {
+          "const": "grounding_order_existing_first/1.0.0",
+          "default": "grounding_order_existing_first/1.0.0",
+          "title": "Selection",
+          "type": "string"
+        },
+        "unknown_cost_reservation": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "title": "Unknown Cost Reservation",
+          "type": "number"
+        },
+        "version": {
+          "const": "deterministic-pipeline/1.0.0",
+          "default": "deterministic-pipeline/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "checksum",
+        "max_actions",
+        "max_graph_rounds",
+        "max_seconds",
+        "max_cost"
+      ],
+      "title": "PipelinePolicy",
+      "type": "object"
+    },
+    "ProviderSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "config_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Config Version",
+          "type": "string"
+        },
+        "dimension": {
+          "maximum": 2000,
+          "minimum": 1,
+          "title": "Dimension",
+          "type": "integer"
+        },
+        "model": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "model_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Model Version",
+          "type": "string"
+        },
+        "preprocessing": {
+          "const": "unicode-space/1.0.0",
+          "default": "unicode-space/1.0.0",
+          "title": "Preprocessing",
+          "type": "string"
+        },
+        "provider": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "config_version",
+        "model",
+        "model_version",
+        "dimension"
+      ],
+      "title": "ProviderSpec",
+      "type": "object"
+    },
+    "QueryConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "const": "POLICY:GROUNDING:QUERY_BASELINE",
+          "default": "POLICY:GROUNDING:QUERY_BASELINE",
+          "title": "Code",
+          "type": "string"
+        },
+        "information_gain_enabled": {
+          "title": "Information Gain Enabled",
+          "type": "boolean"
+        },
+        "max_depth": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Depth",
+          "type": "integer"
+        },
+        "max_evaluations": {
+          "maximum": 512,
+          "minimum": 1,
+          "title": "Max Evaluations",
+          "type": "integer"
+        },
+        "max_findings": {
+          "default": 4096,
+          "maximum": 8192,
+          "minimum": 2,
+          "title": "Max Findings",
+          "type": "integer"
+        },
+        "max_operations": {
+          "default": 10000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Operations",
+          "type": "integer"
+        },
+        "missing_order": {
+          "const": "last",
+          "default": "last",
+          "title": "Missing Order",
+          "type": "string"
+        },
+        "order": {
+          "items": {
+            "enum": [
+              "information_gain",
+              "directness",
+              "cost",
+              "latency",
+              "failure_risk"
+            ],
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Order",
+          "type": "array"
+        },
+        "score_scope": {
+          "const": "individual_tool_estimates_not_chain_totals",
+          "default": "individual_tool_estimates_not_chain_totals",
+          "title": "Score Scope",
+          "type": "string"
+        },
+        "tie_break": {
+          "const": "mapping_ref,candidate_code,dependency_checksum",
+          "default": "mapping_ref,candidate_code,dependency_checksum",
+          "title": "Tie Break",
+          "type": "string"
+        },
+        "top_k": {
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "checksum",
+        "max_depth",
+        "max_evaluations",
+        "top_k",
+        "information_gain_enabled",
+        "order"
+      ],
+      "title": "QueryConfig",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "ResearchRetrievalContext": {
+      "additionalProperties": false,
+      "properties": {
+        "age_years": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Years"
+        },
+        "anatomy": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Anatomy",
+          "type": "array"
+        },
+        "conditions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "date_from": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date From"
+        },
+        "date_to": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date To"
+        },
+        "devices": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Devices",
+          "type": "array"
+        },
+        "disease_packs": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Packs",
+          "type": "array"
+        },
+        "disease_stages": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Stages",
+          "type": "array"
+        },
+        "exams": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Exams",
+          "type": "array"
+        },
+        "languages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Languages",
+          "type": "array"
+        },
+        "lateralities": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Lateralities",
+          "type": "array"
+        },
+        "modalities": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "population": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Population",
+          "type": "array"
+        },
+        "required_artifacts": {
+          "default": [],
+          "items": {
+            "enum": [
+              "template",
+              "validation_rule",
+              "stop_rule"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Required Artifacts",
+          "type": "array"
+        },
+        "sexes": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Sexes",
+          "type": "array"
+        },
+        "source_types": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Source Types",
+          "type": "array"
+        },
+        "targets": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Targets",
+          "type": "array"
+        },
+        "times": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Times",
+          "type": "array"
+        },
+        "use": {
+          "$ref": "#/$defs/KnowledgeUseRequest"
+        },
+        "version": {
+          "const": "retrieval-context/1.0.0",
+          "default": "retrieval-context/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "use"
+      ],
+      "title": "ResearchRetrievalContext",
+      "type": "object"
+    },
+    "RetrievalContext": {
+      "additionalProperties": false,
+      "properties": {
+        "age_years": {
+          "anyOf": [
+            {
+              "maximum": 150,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age Years"
+        },
+        "anatomy": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Anatomy",
+          "type": "array"
+        },
+        "conditions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "date_from": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date From"
+        },
+        "date_to": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date To"
+        },
+        "devices": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Devices",
+          "type": "array"
+        },
+        "disease_packs": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Packs",
+          "type": "array"
+        },
+        "disease_stages": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Disease Stages",
+          "type": "array"
+        },
+        "exams": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Exams",
+          "type": "array"
+        },
+        "languages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Languages",
+          "type": "array"
+        },
+        "lateralities": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Lateralities",
+          "type": "array"
+        },
+        "modalities": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Modalities",
+          "type": "array"
+        },
+        "population": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Population",
+          "type": "array"
+        },
+        "required_artifacts": {
+          "default": [],
+          "items": {
+            "enum": [
+              "template",
+              "validation_rule",
+              "stop_rule"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Required Artifacts",
+          "type": "array"
+        },
+        "sexes": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Sexes",
+          "type": "array"
+        },
+        "source_types": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Source Types",
+          "type": "array"
+        },
+        "targets": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Targets",
+          "type": "array"
+        },
+        "times": {
+          "default": [],
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Times",
+          "type": "array"
+        },
+        "version": {
+          "const": "retrieval-context/1.0.0",
+          "default": "retrieval-context/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "RetrievalContext",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "catalog_ref": {
+      "$ref": "#/$defs/Ref"
+    },
+    "checksum": {
+      "title": "Checksum",
+      "type": "string"
+    },
+    "context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RetrievalContext"
+        },
+        {
+          "$ref": "#/$defs/ResearchRetrievalContext"
+        }
+      ],
+      "title": "Context"
+    },
+    "grounding": {
+      "$ref": "#/$defs/QueryConfig"
+    },
+    "mapping_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "title": "Mapping Refs",
+      "type": "array"
+    },
+    "pack_ref": {
+      "$ref": "#/$defs/VersionedReference"
+    },
+    "policy": {
+      "$ref": "#/$defs/PipelinePolicy"
+    },
+    "query": {
+      "maxLength": 256,
+      "title": "Query",
+      "type": "string"
+    },
+    "retrieval": {
+      "$ref": "#/$defs/IndexConfig"
+    },
+    "service_refs": {
+      "items": {
+        "$ref": "#/$defs/VersionedReference"
+      },
+      "minItems": 1,
+      "title": "Service Refs",
+      "type": "array"
+    },
+    "version": {
+      "default": "case-pipeline-config/1.0.0",
+      "enum": [
+        "case-pipeline-config/1.0.0",
+        "case-pipeline-config/2.0.0"
+      ],
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "pack_ref",
+    "catalog_ref",
+    "context",
+    "query",
+    "retrieval",
+    "grounding",
+    "policy",
+    "service_refs"
+  ],
+  "title": "PipelineConfig",
+  "type": "object"
+}

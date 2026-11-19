@@ -1,0 +1,137 @@
+{
+  "$defs": {
+    "RegionScope": {
+      "additionalProperties": false,
+      "properties": {
+        "clarity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Clarity",
+          "type": "number"
+        },
+        "coverage": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage",
+          "type": "number"
+        },
+        "finding": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Finding",
+          "type": "string"
+        },
+        "limitation": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Limitation",
+          "type": "string"
+        },
+        "region": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Region",
+          "type": "string"
+        },
+        "visibility": {
+          "enum": [
+            "visible",
+            "partly_visible",
+            "not_identified",
+            "uncertain"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        }
+      },
+      "required": [
+        "region",
+        "visibility",
+        "coverage",
+        "clarity",
+        "finding",
+        "limitation"
+      ],
+      "title": "RegionScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "finding": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Finding",
+      "type": "string"
+    },
+    "image_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Image Checksum",
+      "type": "string"
+    },
+    "location": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "title": "Location",
+      "type": "array"
+    },
+    "preprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Preprocessing Checksum",
+      "type": "string"
+    },
+    "regions": {
+      "items": {
+        "$ref": "#/$defs/RegionScope"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Regions",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "visual-input-scope-candidate/1.0.0",
+      "default": "visual-input-scope-candidate/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Scope Checksum",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "observed",
+        "ungradable",
+        "unknown"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scope_checksum",
+    "image_checksum",
+    "preprocessing_checksum",
+    "location",
+    "status",
+    "finding",
+    "regions"
+  ],
+  "title": "ScopeVisionProposal",
+  "type": "object"
+}

@@ -1,0 +1,141 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "clinical_acceptance": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Acceptance",
+      "type": "boolean"
+    },
+    "execution": {
+      "const": "bounded_live_research",
+      "default": "bounded_live_research",
+      "title": "Execution",
+      "type": "string"
+    },
+    "graph": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "new_medical_review": {
+      "title": "New Medical Review",
+      "type": "boolean"
+    },
+    "parent_graph": {
+      "$ref": "#/$defs/Reference"
+    },
+    "permission_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Permission Checksum",
+      "type": "string"
+    },
+    "reason": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Reason",
+      "type": "string"
+    },
+    "records_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Records Checksum"
+    },
+    "reviewer_kind": {
+      "const": "llm",
+      "default": "llm",
+      "title": "Reviewer Kind",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "research-acceptance/2.0.0",
+      "default": "research-acceptance/2.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scores_checksum": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Scores Checksum"
+    },
+    "status": {
+      "enum": [
+        "accepted",
+        "rejected"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "submission_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Submission Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "submission_checksum",
+    "status",
+    "reason",
+    "parent_graph",
+    "graph",
+    "records_checksum",
+    "scores_checksum",
+    "new_medical_review",
+    "permission_checksum"
+  ],
+  "title": "AcceptanceReceiptV2",
+  "type": "object"
+}

@@ -1,0 +1,421 @@
+{
+  "$defs": {
+    "ArtifactConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "modality": {
+          "$ref": "#/$defs/Term"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "coordinate_space": {
+          "$ref": "#/$defs/CoordinateSpace"
+        },
+        "unit": {
+          "$ref": "#/$defs/Term"
+        },
+        "qc_required": {
+          "items": {
+            "$ref": "#/$defs/QCStatus"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Qc Required",
+          "type": "array"
+        },
+        "scope_terms": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Scope Terms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "modality",
+        "laterality",
+        "coordinate_space",
+        "unit",
+        "qc_required",
+        "scope_terms"
+      ],
+      "title": "ArtifactConstraint",
+      "type": "object"
+    },
+    "CatalogTool": {
+      "additionalProperties": false,
+      "description": "Derived snapshot projection, never a second editable Tool master.",
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "implementation_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "capabilities": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/Input"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactConstraint"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Outputs",
+          "type": "array"
+        },
+        "output_ports": {
+          "items": {
+            "$ref": "#/$defs/PortRef"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Output Ports",
+          "type": "array"
+        },
+        "workflows": {
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "maxItems": 32,
+          "title": "Workflows",
+          "type": "array"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "catalog_status": {
+          "$ref": "#/$defs/ToolCatalogStatus"
+        },
+        "validation_status": {
+          "$ref": "#/$defs/ToolValidationStatus"
+        },
+        "intended_use": {
+          "$ref": "#/$defs/IntendedUse"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "implementation_ref",
+        "capabilities",
+        "inputs",
+        "outputs",
+        "output_ports",
+        "workflows",
+        "enabled",
+        "catalog_status",
+        "validation_status",
+        "intended_use"
+      ],
+      "title": "CatalogTool",
+      "type": "object"
+    },
+    "CoordinateSpace": {
+      "enum": [
+        "PIXEL_2D",
+        "VOXEL_3D",
+        "PATIENT",
+        "SCANNER",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CoordinateSpace",
+      "type": "string"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "$ref": "#/$defs/PortRef"
+        },
+        "constraint": {
+          "$ref": "#/$defs/ArtifactConstraint"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "cardinality_min": {
+          "maximum": 64,
+          "minimum": 0,
+          "title": "Cardinality Min",
+          "type": "integer"
+        },
+        "cardinality_max": {
+          "maximum": 64,
+          "minimum": 1,
+          "title": "Cardinality Max",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "port",
+        "constraint",
+        "required",
+        "cardinality_min",
+        "cardinality_max"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "IntendedUse": {
+      "enum": [
+        "research_only",
+        "clinical_deployment"
+      ],
+      "title": "IntendedUse",
+      "type": "string"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "PortRef": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "port_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Port Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_ref",
+        "direction",
+        "port_name"
+      ],
+      "title": "PortRef",
+      "type": "object"
+    },
+    "QCStatus": {
+      "enum": [
+        "UNASSESSED",
+        "PENDING",
+        "PASS",
+        "FAIL"
+      ],
+      "title": "QCStatus",
+      "type": "string"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "Term": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "known",
+            "unknown",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Code"
+        }
+      },
+      "required": [
+        "state",
+        "code"
+      ],
+      "title": "Term",
+      "type": "object"
+    },
+    "ToolCatalogStatus": {
+      "enum": [
+        "candidate",
+        "registered",
+        "active",
+        "quarantined",
+        "failed",
+        "deprecated"
+      ],
+      "title": "ToolCatalogStatus",
+      "type": "string"
+    },
+    "ToolValidationStatus": {
+      "enum": [
+        "unvalidated",
+        "smoke_tested",
+        "benchmark_passed",
+        "auto_validated_research"
+      ],
+      "title": "ToolValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "catalog",
+      "default": "catalog",
+      "title": "Kind",
+      "type": "string"
+    },
+    "code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Code",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "manifest_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Manifest Checksum",
+      "type": "string"
+    },
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "tools": {
+      "items": {
+        "$ref": "#/$defs/CatalogTool"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Tools",
+      "type": "array"
+    },
+    "estimates": {
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "maxItems": 128,
+      "title": "Estimates",
+      "type": "array"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "checksum",
+    "synthetic",
+    "manifest_checksum",
+    "artifacts",
+    "tools",
+    "estimates"
+  ],
+  "title": "CatalogSnapshot",
+  "type": "object"
+}

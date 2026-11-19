@@ -1,0 +1,215 @@
+{
+  "$defs": {
+    "Candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "and_ready": {
+          "title": "And Ready",
+          "type": "boolean"
+        },
+        "branch": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Branch",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "title": "Input Refs",
+          "type": "array"
+        },
+        "operation": {
+          "enum": [
+            "observe",
+            "tool",
+            "new_review",
+            "new_branch"
+          ],
+          "title": "Operation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "branch",
+        "operation",
+        "and_ready"
+      ],
+      "title": "Candidate",
+      "type": "object"
+    },
+    "Gap": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Code"
+        },
+        "dispatch": {
+          "const": "recorded_for_11_not_dispatched",
+          "default": "recorded_for_11_not_dispatched",
+          "title": "Dispatch",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "missing_data",
+            "product_demand",
+            "mapping",
+            "unknown_producer",
+            "capability",
+            "safety",
+            "technical",
+            "unavailable_port"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "reason": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "requirement_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Reference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "target": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "reason"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Candidate"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "confirmed": {
+      "default": 0,
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Confirmed",
+      "type": "integer"
+    },
+    "gaps": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Gap"
+      },
+      "title": "Gaps",
+      "type": "array"
+    },
+    "progress": {
+      "default": true,
+      "title": "Progress",
+      "type": "boolean"
+    },
+    "reason": {
+      "default": "confirmed",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Reason",
+      "type": "string"
+    },
+    "refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Refs",
+      "type": "array"
+    },
+    "started": {
+      "default": 0,
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Started",
+      "type": "integer"
+    },
+    "status": {
+      "default": "ok",
+      "enum": [
+        "ok",
+        "gap",
+        "unavailable",
+        "rejected",
+        "unknown"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "title": "Outcome",
+  "type": "object"
+}

@@ -1,0 +1,277 @@
+{
+  "$defs": {
+    "FieldVisibility": {
+      "additionalProperties": false,
+      "properties": {
+        "derived_requires_review": {
+          "default": [],
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Derived Requires Review",
+          "type": "array"
+        },
+        "owner_only": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Owner Only",
+          "type": "array"
+        },
+        "planner_visible": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Planner Visible",
+          "type": "array"
+        },
+        "policy_version": {
+          "const": "field-visibility/1.0.0",
+          "default": "field-visibility/1.0.0",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "raw_text_redactor_owner": {
+          "enum": [
+            "07A",
+            "none"
+          ],
+          "title": "Raw Text Redactor Owner",
+          "type": "string"
+        },
+        "unknown_fields": {
+          "const": "reject",
+          "default": "reject",
+          "title": "Unknown Fields",
+          "type": "string"
+        },
+        "withheld": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Withheld",
+          "type": "array"
+        }
+      },
+      "required": [
+        "planner_visible",
+        "withheld",
+        "owner_only",
+        "raw_text_redactor_owner"
+      ],
+      "title": "FieldVisibility",
+      "type": "object"
+    },
+    "FileBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 33554432,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "relative_path": {
+          "maxLength": 200,
+          "title": "Relative Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relative_path",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "FileBinding",
+      "type": "object"
+    },
+    "ObjectReference": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 4194304,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "uri": {
+          "pattern": "^object://knowledge/objects/[a-f0-9]{32}$",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "ObjectReference",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "access": {
+      "const": "offline_evaluator_only",
+      "default": "offline_evaluator_only",
+      "title": "Access",
+      "type": "string"
+    },
+    "adapter_version": {
+      "const": "dataset-adapters/1.0.0",
+      "default": "dataset-adapters/1.0.0",
+      "title": "Adapter Version",
+      "type": "string"
+    },
+    "case_code": {
+      "title": "Case Code",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "dataset_ref": {
+      "$ref": "#/$defs/VersionedReference"
+    },
+    "expert_reviews": {
+      "default": [],
+      "maxItems": 0,
+      "minItems": 0,
+      "title": "Expert Reviews",
+      "type": "array"
+    },
+    "label_scope": {
+      "enum": [
+        "source_separated",
+        "patient_coarse_and_derived_image_rows"
+      ],
+      "title": "Label Scope",
+      "type": "string"
+    },
+    "original_note": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "pack_ref": {
+      "$ref": "#/$defs/VersionedReference"
+    },
+    "projection": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "reference_graph": {
+      "default": null,
+      "title": "Reference Graph",
+      "type": "null"
+    },
+    "reference_status": {
+      "const": "pending",
+      "default": "pending",
+      "title": "Reference Status",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "restricted-evaluation/1.0.0",
+      "default": "restricted-evaluation/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_fields": {
+      "$ref": "#/$defs/ObjectReference"
+    },
+    "source_files": {
+      "items": {
+        "$ref": "#/$defs/FileBinding"
+      },
+      "title": "Source Files",
+      "type": "array"
+    },
+    "visibility": {
+      "$ref": "#/$defs/FieldVisibility"
+    }
+  },
+  "required": [
+    "checksum",
+    "case_code",
+    "dataset_ref",
+    "pack_ref",
+    "visibility",
+    "source_files",
+    "source_fields",
+    "label_scope"
+  ],
+  "title": "RestrictedManifest",
+  "type": "object"
+}

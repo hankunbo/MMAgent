@@ -1,0 +1,322 @@
+{
+  "$defs": {
+    "DiscoveryPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "tool-discovery-policy/1.0.0",
+          "default": "tool-discovery-policy/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "baseline_only": {
+          "const": true,
+          "default": true,
+          "title": "Baseline Only",
+          "type": "boolean"
+        },
+        "max_records": {
+          "default": 32,
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Max Records",
+          "type": "integer"
+        },
+        "max_sources": {
+          "default": 8,
+          "maximum": 16,
+          "minimum": 1,
+          "title": "Max Sources",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "default": 10,
+          "maximum": 30,
+          "minimum": 1,
+          "title": "Max Seconds",
+          "type": "integer"
+        },
+        "commit_margin_seconds": {
+          "default": 2,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Commit Margin Seconds",
+          "type": "integer"
+        },
+        "max_metadata_bytes": {
+          "default": 262144,
+          "maximum": 524288,
+          "minimum": 1024,
+          "title": "Max Metadata Bytes",
+          "type": "integer"
+        },
+        "top_k": {
+          "default": 5,
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "max_memory_mb": {
+          "default": 4096,
+          "maximum": 65536,
+          "minimum": 1,
+          "title": "Max Memory Mb",
+          "type": "integer"
+        },
+        "allow_gpu": {
+          "const": false,
+          "default": false,
+          "title": "Allow Gpu",
+          "type": "boolean"
+        },
+        "weights": {
+          "default": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.5,
+            0.0,
+            0.5
+          ],
+          "items": {
+            "type": "number"
+          },
+          "title": "Weights",
+          "type": "array"
+        }
+      },
+      "title": "DiscoveryPolicy",
+      "type": "object"
+    },
+    "DiscoveryQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "tool-discovery-query/1.0.0",
+          "default": "tool-discovery-query/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "application_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Application Checksum",
+          "type": "string"
+        },
+        "requirement": {
+          "additionalProperties": true,
+          "title": "Requirement",
+          "type": "object"
+        },
+        "purpose": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "contracts": {
+          "items": {
+            "$ref": "#/$defs/Semantics"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Contracts",
+          "type": "array"
+        },
+        "max_memory_mb": {
+          "title": "Max Memory Mb",
+          "type": "integer"
+        },
+        "gpu_allowed": {
+          "const": false,
+          "default": false,
+          "title": "Gpu Allowed",
+          "type": "boolean"
+        },
+        "missing": {
+          "default": [
+            "evaluation_dataset",
+            "threshold_policy"
+          ],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Missing",
+          "type": "array"
+        }
+      },
+      "required": [
+        "application_checksum",
+        "requirement",
+        "purpose",
+        "contracts",
+        "max_memory_mb"
+      ],
+      "title": "DiscoveryQuery",
+      "type": "object"
+    },
+    "Semantics": {
+      "additionalProperties": false,
+      "properties": {
+        "capability": {
+          "additionalProperties": true,
+          "title": "Capability",
+          "type": "object"
+        },
+        "inputs": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "output": {
+          "additionalProperties": true,
+          "title": "Output",
+          "type": "object"
+        },
+        "task_type": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Task Type",
+          "type": "string"
+        },
+        "intended_use": {
+          "const": "research_only",
+          "default": "research_only",
+          "title": "Intended Use",
+          "type": "string"
+        }
+      },
+      "required": [
+        "capability",
+        "inputs",
+        "output",
+        "task_type"
+      ],
+      "title": "Semantics",
+      "type": "object"
+    },
+    "SourceBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "local_contract",
+            "official_package",
+            "official_model",
+            "paper_code",
+            "lead"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "fingerprint": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Fingerprint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "fingerprint"
+      ],
+      "title": "SourceBinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tool-discovery-plan/1.0.0",
+      "default": "tool-discovery-plan/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "application_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Application Checksum",
+      "type": "string"
+    },
+    "query": {
+      "$ref": "#/$defs/DiscoveryQuery"
+    },
+    "policy": {
+      "$ref": "#/$defs/DiscoveryPolicy"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/SourceBinding"
+      },
+      "maxItems": 16,
+      "title": "Sources",
+      "type": "array"
+    },
+    "claim_key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Claim Key",
+      "type": "string"
+    },
+    "ack_key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Ack Key",
+      "type": "string"
+    },
+    "worker": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Worker",
+      "type": "string"
+    },
+    "lease_token": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Lease Token",
+      "type": "string"
+    },
+    "ack_command_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Ack Command Checksum",
+      "type": "string"
+    },
+    "ack_event_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Ack Event Id",
+      "type": "string"
+    },
+    "ack_idempotency_key": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Ack Idempotency Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "application_checksum",
+    "query",
+    "policy",
+    "sources",
+    "claim_key",
+    "ack_key",
+    "worker",
+    "lease_token",
+    "ack_command_checksum",
+    "ack_event_id",
+    "ack_idempotency_key"
+  ],
+  "title": "DiscoveryPlan",
+  "type": "object"
+}

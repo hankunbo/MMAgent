@@ -1,0 +1,144 @@
+{
+  "$defs": {
+    "ProbeWire": {
+      "additionalProperties": false,
+      "properties": {
+        "input_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Input Checksum",
+          "type": "string"
+        },
+        "output_schema_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Output Schema Checksum",
+          "type": "string"
+        },
+        "prompt_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Prompt Checksum",
+          "type": "string"
+        },
+        "remote_constraint": {
+          "enum": [
+            "normalized_strict",
+            "json_object"
+          ],
+          "title": "Remote Constraint",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "source",
+            "vision",
+            "review"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "schema_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Schema Checksum",
+          "type": "string"
+        },
+        "wire_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Wire Checksum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "wire_checksum",
+        "schema_checksum",
+        "prompt_checksum",
+        "input_checksum",
+        "output_schema_checksum",
+        "remote_constraint"
+      ],
+      "title": "ProbeWire",
+      "type": "object"
+    },
+    "PublicCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "config_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Config Checksum",
+          "type": "string"
+        },
+        "config_path": {
+          "title": "Config Path",
+          "type": "string"
+        },
+        "hypothesis": {
+          "title": "Hypothesis",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "requests": {
+          "items": {
+            "$ref": "#/$defs/ProbeWire"
+          },
+          "maxItems": 3,
+          "minItems": 2,
+          "title": "Requests",
+          "type": "array"
+        },
+        "source_reused": {
+          "title": "Source Reused",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "config_path",
+        "config_checksum",
+        "requests",
+        "source_reused",
+        "hypothesis"
+      ],
+      "title": "PublicCandidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/PublicCandidate"
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "public-compatibility-plan/1.0.0",
+      "default": "public-compatibility-plan/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "session_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Session Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_id",
+    "run_id",
+    "candidates"
+  ],
+  "title": "CompatibilityPlan",
+  "type": "object"
+}

@@ -1,0 +1,96 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "acceptance_key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Acceptance Key",
+      "type": "string"
+    },
+    "accepted_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Accepted Checksum",
+      "type": "string"
+    },
+    "event": {
+      "$ref": "#/$defs/Reference"
+    },
+    "intent_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Intent Checksum",
+      "type": "string"
+    },
+    "journal_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Journal Checksum",
+      "type": "string"
+    },
+    "parent_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parent Checksum",
+      "type": "string"
+    },
+    "report_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Report Checksum",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "committed-review-readback/1.0.0",
+      "default": "committed-review-readback/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "event",
+    "acceptance_key",
+    "parent_checksum",
+    "accepted_checksum",
+    "report_checksum",
+    "intent_checksum",
+    "journal_checksum"
+  ],
+  "title": "CommittedReviewReadback",
+  "type": "object"
+}

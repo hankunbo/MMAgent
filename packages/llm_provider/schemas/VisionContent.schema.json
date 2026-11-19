@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "PartialObservation": {
+      "additionalProperties": false,
+      "description": "Task-relative estimates, not image measurements or calibrated risks.",
+      "properties": {
+        "basis": {
+          "enum": [
+            "disc_arc",
+            "cup_disc_boundaries",
+            "retinal_roi",
+            "vessel_segments"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "basis_detail": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Basis Detail",
+          "type": "string"
+        },
+        "clarity": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Clarity",
+          "type": "number"
+        },
+        "coverage": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Coverage",
+          "type": "number"
+        },
+        "estimate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Estimate"
+        },
+        "lower": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lower"
+        },
+        "signal": {
+          "enum": [
+            "present",
+            "absent_in_visible_region",
+            "indeterminate"
+          ],
+          "title": "Signal",
+          "type": "string"
+        },
+        "unseen": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Unseen",
+          "type": "string"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upper"
+        },
+        "visible": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Visible",
+          "type": "string"
+        }
+      },
+      "required": [
+        "coverage",
+        "clarity",
+        "basis",
+        "basis_detail",
+        "visible",
+        "unseen",
+        "signal",
+        "estimate",
+        "lower",
+        "upper"
+      ],
+      "title": "PartialObservation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "binding_code": {
+      "pattern": "^V:[0-9a-f]{16}$",
+      "title": "Binding Code",
+      "type": "string"
+    },
+    "finding": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Finding",
+      "type": "string"
+    },
+    "partial": {
+      "$ref": "#/$defs/PartialObservation"
+    },
+    "schema_version": {
+      "const": "visual-observation-content/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "observed",
+        "ungradable",
+        "unknown"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "binding_code",
+    "status",
+    "finding",
+    "partial"
+  ],
+  "title": "VisionContent",
+  "type": "object"
+}

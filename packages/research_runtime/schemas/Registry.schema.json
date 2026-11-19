@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "Profile": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_modalities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Allowed Modalities",
+          "type": "array"
+        },
+        "code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "definition_status": {
+          "const": "research_question_not_medical_rule",
+          "title": "Definition Status",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "meaning": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Meaning",
+          "type": "string"
+        },
+        "ordered_labels": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Ordered Labels",
+          "type": "array"
+        },
+        "output_kind": {
+          "enum": [
+            "binary_evidence",
+            "ordinal_evidence",
+            "observed_change",
+            "evidence_review"
+          ],
+          "title": "Output Kind",
+          "type": "string"
+        },
+        "target_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Target Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "code",
+        "target_code",
+        "output_kind",
+        "allowed_modalities",
+        "meaning",
+        "definition_status"
+      ],
+      "title": "Profile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "profiles": {
+      "items": {
+        "$ref": "#/$defs/Profile"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Profiles",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "multimodal-task-registry/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "version",
+    "profiles"
+  ],
+  "title": "Registry",
+  "type": "object"
+}

@@ -1,0 +1,97 @@
+{
+  "additionalProperties": false,
+  "description": "Explicit weak-isolation demand; never accepted by the old CPU service.",
+  "properties": {
+    "baseline_only": {
+      "const": true,
+      "default": true,
+      "title": "Baseline Only",
+      "type": "boolean"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "cpu_count": {
+      "maximum": 128,
+      "minimum": 1,
+      "title": "Cpu Count",
+      "type": "integer"
+    },
+    "defaults": {
+      "const": "explicit_parameters_only",
+      "default": "explicit_parameters_only",
+      "title": "Defaults",
+      "type": "string"
+    },
+    "environment_variables": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+        "type": "string"
+      },
+      "title": "Environment Variables",
+      "type": "array"
+    },
+    "failure_policy": {
+      "const": "stop_descendants_no_retry",
+      "default": "stop_descendants_no_retry",
+      "title": "Failure Policy",
+      "type": "string"
+    },
+    "max_output_bytes": {
+      "maximum": 1099511627776,
+      "minimum": 1,
+      "title": "Max Output Bytes",
+      "type": "integer"
+    },
+    "max_plan_bytes": {
+      "maximum": 16777216,
+      "minimum": 1024,
+      "title": "Max Plan Bytes",
+      "type": "integer"
+    },
+    "max_steps": {
+      "maximum": 512,
+      "minimum": 1,
+      "title": "Max Steps",
+      "type": "integer"
+    },
+    "memory_bytes": {
+      "maximum": 1099511627776,
+      "minimum": 1048576,
+      "title": "Memory Bytes",
+      "type": "integer"
+    },
+    "network": {
+      "const": "not_guaranteed",
+      "default": "not_guaranteed",
+      "title": "Network",
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "maximum": 86400,
+      "minimum": 1,
+      "title": "Timeout Seconds",
+      "type": "integer"
+    },
+    "version": {
+      "const": "trusted-local-compiler/1.0.0",
+      "default": "trusted-local-compiler/1.0.0",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "max_steps",
+    "max_plan_bytes",
+    "timeout_seconds",
+    "memory_bytes",
+    "cpu_count",
+    "max_output_bytes"
+  ],
+  "title": "TrustedResearchCompilerConfig",
+  "type": "object"
+}

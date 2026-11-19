@@ -1,0 +1,1013 @@
+{
+  "$defs": {
+    "Component": {
+      "additionalProperties": false,
+      "description": "Exact 03 EvidenceComponent, including original order and explanations.",
+      "properties": {
+        "blocked_count": {
+          "minimum": 0,
+          "title": "Blocked Count",
+          "type": "integer"
+        },
+        "contributing_nodes": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "title": "Contributing Nodes",
+          "type": "array"
+        },
+        "explanations": {
+          "items": {
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "title": "Explanations",
+          "type": "array"
+        },
+        "required_count": {
+          "minimum": 0,
+          "title": "Required Count",
+          "type": "integer"
+        },
+        "resolved_count": {
+          "minimum": 0,
+          "title": "Resolved Count",
+          "type": "integer"
+        },
+        "rule_refs": {
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "maxItems": 1024,
+          "title": "Rule Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "contributing_nodes",
+        "rule_refs",
+        "required_count",
+        "resolved_count",
+        "blocked_count",
+        "explanations"
+      ],
+      "title": "Component",
+      "type": "object"
+    },
+    "EngineeringReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "grants_medical_authority": {
+          "const": false,
+          "title": "Grants Medical Authority",
+          "type": "boolean"
+        },
+        "kind": {
+          "enum": [
+            "engineering",
+            "mixed"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "owner": {
+          "const": "04_STOP_BASIS",
+          "title": "Owner",
+          "type": "string"
+        },
+        "reason_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "stop-basis-binding/2.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "trigger": {
+          "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+          "title": "Trigger",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "checksum",
+        "kind",
+        "owner",
+        "synthetic",
+        "trigger",
+        "reason_code",
+        "grants_medical_authority"
+      ],
+      "title": "EngineeringReceipt",
+      "type": "object"
+    },
+    "GraphSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "graph_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Graph Checksum",
+          "type": "string"
+        },
+        "graph_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Graph Code",
+          "type": "string"
+        },
+        "graph_version": {
+          "minimum": 1,
+          "title": "Graph Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "graph_code",
+        "graph_version",
+        "graph_checksum"
+      ],
+      "title": "GraphSnapshot",
+      "type": "object"
+    },
+    "Laterality": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "BILATERAL",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "ObjectReference": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 4194304,
+          "minimum": 1,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "uri": {
+          "pattern": "^object://knowledge/objects/[a-f0-9]{32}$",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "ObjectReference",
+      "type": "object"
+    },
+    "Ref": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "mapping",
+            "policy",
+            "catalog",
+            "artifact",
+            "capability",
+            "tool",
+            "implementation",
+            "workflow",
+            "evidence_requirement",
+            "clinical_claim",
+            "release",
+            "template",
+            "source_version",
+            "applicability_condition",
+            "estimate",
+            "validation_rule"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Ref",
+      "type": "object"
+    },
+    "ScoreDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "definition": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Definition",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "higher",
+            "lower",
+            "none",
+            "owner_counts"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "layer": {
+          "enum": [
+            "qc",
+            "measurement",
+            "model",
+            "proposition",
+            "graph",
+            "disease",
+            "uncertainty",
+            "technical"
+          ],
+          "title": "Layer",
+          "type": "string"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "metric": {
+          "enum": [
+            "quality",
+            "measurement",
+            "logit",
+            "segmentation_confidence",
+            "support",
+            "refutation",
+            "completeness",
+            "conflict",
+            "probability",
+            "calibration_error",
+            "uncertainty",
+            "coverage"
+          ],
+          "title": "Metric",
+          "type": "string"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "unit": {
+          "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "version": {
+          "const": "score-definition/1.0.0",
+          "default": "score-definition/1.0.0",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "layer",
+        "metric",
+        "definition",
+        "unit",
+        "direction"
+      ],
+      "title": "ScoreDefinition",
+      "type": "object"
+    },
+    "ScoreEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "calibration": {
+          "default": "not_applicable",
+          "enum": [
+            "not_applicable",
+            "uncalibrated",
+            "unavailable"
+          ],
+          "title": "Calibration",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/ScoreDefinition"
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Denominator"
+        },
+        "missing_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "not_provided",
+                "not_calibrated",
+                "no_reference_mask",
+                "no_probability_output",
+                "graph_not_qualified",
+                "required_dependency_failed",
+                "tool_failed",
+                "unknown_job",
+                "not_executed",
+                "zero_denominator"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Missing Reason"
+        },
+        "numerator": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Numerator"
+        },
+        "schema_version": {
+          "const": "score-entry/1.0.0",
+          "default": "score-entry/1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/ScoreSource"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable",
+            "not_applicable",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "target": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Target",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/$defs/Component"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "definition",
+        "target",
+        "status",
+        "value",
+        "missing_reason",
+        "source"
+      ],
+      "title": "ScoreEntry",
+      "type": "object"
+    },
+    "ScoreScope": {
+      "additionalProperties": false,
+      "properties": {
+        "case_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Case Code",
+          "type": "string"
+        },
+        "encounter_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Encounter Code",
+          "type": "string"
+        },
+        "laterality": {
+          "$ref": "#/$defs/Laterality"
+        },
+        "patient_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Patient Hash",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_code",
+        "run_id",
+        "encounter_code",
+        "patient_hash",
+        "laterality"
+      ],
+      "title": "ScoreScope",
+      "type": "object"
+    },
+    "ScoreSource": {
+      "additionalProperties": false,
+      "description": "Accepted event IDs and validation checksums are paired by tuple position.",
+      "properties": {
+        "accepted_event_ids": {
+          "default": [],
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Accepted Event Ids",
+          "type": "array"
+        },
+        "artifact_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Checksum"
+        },
+        "artifact_code": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Code"
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{32}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attempt Id"
+        },
+        "correlation_group": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Correlation Group",
+          "type": "string"
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GraphSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "implementation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Ref"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "model_versions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "maxItems": 16,
+          "title": "Model Versions",
+          "type": "array"
+        },
+        "object_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "output_schema_version": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Schema Version"
+        },
+        "plan_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plan Checksum"
+        },
+        "policy_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Policy Checksum",
+          "type": "string"
+        },
+        "qc_policy_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Qc Policy Checksums",
+          "type": "array"
+        },
+        "qualification": {
+          "enum": [
+            "research_output",
+            "accepted_graph",
+            "technical"
+          ],
+          "title": "Qualification",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ScoreScope"
+        },
+        "step_checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Checksum"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "validation_checksums": {
+          "default": [],
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Validation Checksums",
+          "type": "array"
+        }
+      },
+      "required": [
+        "scope",
+        "qualification",
+        "synthetic",
+        "correlation_group",
+        "policy_checksum"
+      ],
+      "title": "ScoreSource",
+      "type": "object"
+    },
+    "TechnicalFact": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attempt Id"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "optional_dependencies": {
+          "items": {
+            "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+            "type": "string"
+          },
+          "title": "Optional Dependencies",
+          "type": "array"
+        },
+        "qc_statuses": {
+          "items": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "PENDING",
+              "UNASSESSED",
+              "REJECTED"
+            ],
+            "type": "string"
+          },
+          "title": "Qc Statuses",
+          "type": "array"
+        },
+        "required_dependencies": {
+          "items": {
+            "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+            "type": "string"
+          },
+          "title": "Required Dependencies",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "SUCCEEDED",
+            "FAILED",
+            "PARTIAL_FAILED",
+            "CANCELLED",
+            "UNKNOWN_JOB",
+            "NOT_EXECUTED"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "status",
+        "qc_statuses",
+        "required_dependencies",
+        "optional_dependencies"
+      ],
+      "title": "TechnicalFact",
+      "type": "object"
+    },
+    "ValidationFact": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted_graph": {
+          "$ref": "#/$defs/GraphSnapshot"
+        },
+        "audit_event_id": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Audit Event Id",
+          "type": "string"
+        },
+        "audit_event_sequence": {
+          "minimum": 1,
+          "title": "Audit Event Sequence",
+          "type": "integer"
+        },
+        "binding_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Binding Checksum",
+          "type": "string"
+        },
+        "clinical_effect": {
+          "enum": [
+            "SUPPORTS",
+            "REFUTES",
+            "NONE"
+          ],
+          "title": "Clinical Effect",
+          "type": "string"
+        },
+        "evidence_bindings": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Evidence Bindings",
+          "type": "array"
+        },
+        "rule_refs": {
+          "items": {
+            "$ref": "#/$defs/VersionedReference"
+          },
+          "maxItems": 64,
+          "title": "Rule Refs",
+          "type": "array"
+        },
+        "source_snapshot": {
+          "$ref": "#/$defs/GraphSnapshot"
+        },
+        "target_node_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Target Node Code",
+          "type": "string"
+        },
+        "validation_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Validation Checksum",
+          "type": "string"
+        },
+        "validation_code": {
+          "maxLength": 256,
+          "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+          "title": "Validation Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "validation_code",
+        "validation_checksum",
+        "binding_checksum",
+        "target_node_code",
+        "clinical_effect",
+        "source_snapshot",
+        "accepted_graph",
+        "audit_event_id",
+        "audit_event_sequence",
+        "rule_refs",
+        "evidence_bindings"
+      ],
+      "title": "ValidationFact",
+      "type": "object"
+    },
+    "VersionedReference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checksum"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{1,31}(?::[A-Z0-9][A-Z0-9._-]{0,63})+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "version"
+      ],
+      "title": "VersionedReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Current graph qualification is distinct from retained local accepted facts.\n\nCross-field policy, snapshot and event/validation joins are enforced by the\npublic model. Current source authorization still belongs to the service.",
+  "properties": {
+    "accepted_validations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ValidationFact"
+      },
+      "maxItems": 256,
+      "title": "Accepted Validations",
+      "type": "array"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "clinical_authority": {
+      "const": "none",
+      "default": "none",
+      "title": "Clinical Authority",
+      "type": "string"
+    },
+    "engineering_stop": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EngineeringReceipt"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/ScoreEntry"
+      },
+      "maxItems": 1024,
+      "title": "Entries",
+      "type": "array"
+    },
+    "graph": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GraphSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "graph_status": {
+      "enum": [
+        "accepted",
+        "unavailable"
+      ],
+      "title": "Graph Status",
+      "type": "string"
+    },
+    "original_report": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectReference"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "run_status": {
+      "pattern": "^[A-Za-z0-9_.:/+-]{1,160}$",
+      "title": "Run Status",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "case-score-ledger/1.0.0",
+      "default": "case-score-ledger/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScoreScope"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "technical": {
+      "items": {
+        "$ref": "#/$defs/TechnicalFact"
+      },
+      "maxItems": 128,
+      "title": "Technical",
+      "type": "array"
+    }
+  },
+  "required": [
+    "checksum",
+    "scope",
+    "synthetic",
+    "policy_checksum",
+    "entries",
+    "technical",
+    "graph",
+    "graph_status",
+    "original_report",
+    "run_status"
+  ],
+  "title": "ScoreEnvelope",
+  "type": "object"
+}

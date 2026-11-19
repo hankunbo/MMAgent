@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "Intervention": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "remove_evidence",
+            "remove_resource",
+            "reverse",
+            "select_check",
+            "replace_tool",
+            "replace_path"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "targets": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Targets",
+          "type": "array"
+        },
+        "alternative": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Alternative"
+        }
+      },
+      "required": [
+        "kind",
+        "targets"
+      ],
+      "title": "Intervention",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "interventions": {
+      "items": {
+        "$ref": "#/$defs/Intervention"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Interventions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "interventions"
+  ],
+  "title": "Candidate",
+  "type": "object"
+}

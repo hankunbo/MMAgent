@@ -1,0 +1,112 @@
+{
+  "$defs": {
+    "Reference": {
+      "additionalProperties": false,
+      "properties": {
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "role": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Role",
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+-]{0,127}$",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "code",
+        "version",
+        "checksum"
+      ],
+      "title": "Reference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "active": {
+      "title": "Active",
+      "type": "boolean"
+    },
+    "data_class": {
+      "enum": [
+        "public",
+        "deidentified",
+        "private",
+        "unknown"
+      ],
+      "title": "Data Class",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    },
+    "independent_private_approval": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "policy_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Policy Checksum",
+      "type": "string"
+    },
+    "reference": {
+      "$ref": "#/$defs/Reference"
+    },
+    "request_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Request Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "platform-egress-approval/1.0.0",
+      "default": "platform-egress-approval/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_references": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Reference"
+      },
+      "title": "Source References",
+      "type": "array"
+    },
+    "visible_projection_approved": {
+      "title": "Visible Projection Approved",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "reference",
+    "request_checksum",
+    "policy_checksum",
+    "data_class",
+    "visible_projection_approved",
+    "expires_at",
+    "active"
+  ],
+  "title": "Approval",
+  "type": "object"
+}

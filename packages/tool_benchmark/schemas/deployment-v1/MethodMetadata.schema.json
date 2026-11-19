@@ -1,0 +1,180 @@
+{
+  "$defs": {
+    "ReviewedFile": {
+      "additionalProperties": false,
+      "properties": {
+        "byte_size": {
+          "maximum": 8589934592,
+          "minimum": 0,
+          "title": "Byte Size",
+          "type": "integer"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "checksum",
+        "byte_size"
+      ],
+      "title": "ReviewedFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "acquisition_time": {
+      "enum": [
+        "required",
+        "not_consumed"
+      ],
+      "title": "Acquisition Time",
+      "type": "string"
+    },
+    "basis": {
+      "maxLength": 4096,
+      "minLength": 20,
+      "title": "Basis",
+      "type": "string"
+    },
+    "checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "evidence": {
+      "$ref": "#/$defs/ReviewedFile"
+    },
+    "excluded_uses": {
+      "default": [
+        "bilateral_pairing",
+        "longitudinal_comparison",
+        "clinical_conclusion"
+      ],
+      "maxItems": 3,
+      "minItems": 3,
+      "prefixItems": [
+        {
+          "const": "bilateral_pairing",
+          "type": "string"
+        },
+        {
+          "const": "longitudinal_comparison",
+          "type": "string"
+        },
+        {
+          "const": "clinical_conclusion",
+          "type": "string"
+        }
+      ],
+      "title": "Excluded Uses",
+      "type": "array"
+    },
+    "execution_declaration_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Execution Declaration Checksum",
+      "type": "string"
+    },
+    "input_constraints_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Input Constraints Checksum",
+      "type": "string"
+    },
+    "laterality": {
+      "enum": [
+        "required",
+        "not_consumed"
+      ],
+      "title": "Laterality",
+      "type": "string"
+    },
+    "missing_facts": {
+      "const": "preserve_UNKNOWN_and_null",
+      "default": "preserve_UNKNOWN_and_null",
+      "title": "Missing Facts",
+      "type": "string"
+    },
+    "output_constraints_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Output Constraints Checksum",
+      "type": "string"
+    },
+    "owner": {
+      "const": "06E_DEPLOYMENT_REVIEWER",
+      "default": "06E_DEPLOYMENT_REVIEWER",
+      "title": "Owner",
+      "type": "string"
+    },
+    "parameter_schema_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Parameter Schema Checksum",
+      "type": "string"
+    },
+    "parameters_scope": {
+      "const": "all_values_allowed_by_bound_schema",
+      "default": "all_values_allowed_by_bound_schema",
+      "title": "Parameters Scope",
+      "type": "string"
+    },
+    "postprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Postprocessing Checksum",
+      "type": "string"
+    },
+    "preprocessing_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Preprocessing Checksum",
+      "type": "string"
+    },
+    "purposes": {
+      "items": {
+        "enum": [
+          "debug",
+          "shadow"
+        ],
+        "type": "string"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Purposes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "research-method-metadata/1.0.0",
+      "default": "research-method-metadata/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "single_input_current_observation",
+      "default": "single_input_current_observation",
+      "title": "Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checksum",
+    "purposes",
+    "laterality",
+    "acquisition_time",
+    "basis",
+    "evidence",
+    "execution_declaration_checksum",
+    "input_constraints_checksum",
+    "output_constraints_checksum",
+    "parameter_schema_checksum",
+    "preprocessing_checksum",
+    "postprocessing_checksum"
+  ],
+  "title": "MethodMetadata",
+  "type": "object"
+}

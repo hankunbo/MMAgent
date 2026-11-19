@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {
+          "items": {
+            "maxLength": 256,
+            "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Applicability",
+          "type": "array"
+        },
+        "case_code": {
+          "title": "Case Code",
+          "type": "string"
+        },
+        "checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Checksum",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nature": {
+          "enum": [
+            "source_fact",
+            "agent_opinion",
+            "technical_failure",
+            "missing_evidence",
+            "simulation",
+            "abstract_candidate"
+          ],
+          "title": "Nature",
+          "type": "string"
+        },
+        "object_checksum": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Object Checksum",
+          "type": "string"
+        },
+        "object_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+          "title": "Object Code",
+          "type": "string"
+        },
+        "owner": {
+          "enum": [
+            "research_fact",
+            "planner_event",
+            "simulation",
+            "recovery",
+            "agent_review"
+          ],
+          "title": "Owner",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "research_offline",
+          "default": "research_offline",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "semantics_version": {
+          "anyOf": [
+            {
+              "const": "counterfactual-semantics/1.1.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Semantics Version"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner",
+        "case_code",
+        "run_id",
+        "key",
+        "object_code",
+        "kind",
+        "version",
+        "checksum",
+        "object_checksum",
+        "dependencies",
+        "applicability",
+        "nature"
+      ],
+      "title": "Source",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "basis": {
+      "enum": [
+        "engineering_review",
+        "agent_opinion"
+      ],
+      "title": "Basis",
+      "type": "string"
+    },
+    "clinical_approval": {
+      "const": false,
+      "default": false,
+      "title": "Clinical Approval",
+      "type": "boolean"
+    },
+    "decision": {
+      "enum": [
+        "approve",
+        "reject",
+        "comment"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Key",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Reason",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "memory-review/1.0.0",
+      "default": "memory-review/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Source"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "target": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Target",
+      "type": "string"
+    },
+    "target_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Target Checksum",
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "target",
+    "target_checksum",
+    "decision",
+    "basis",
+    "reason"
+  ],
+  "title": "Review",
+  "type": "object"
+}

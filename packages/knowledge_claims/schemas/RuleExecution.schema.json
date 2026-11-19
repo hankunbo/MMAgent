@@ -1,0 +1,43 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "extractor-execution/1.0.0",
+      "default": "extractor-execution/1.0.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "implementation": {
+      "const": "registered_exact_candidate",
+      "default": "registered_exact_candidate",
+      "title": "Implementation",
+      "type": "string"
+    },
+    "rule_version": {
+      "const": "exact-candidate/1.0.0",
+      "default": "exact-candidate/1.0.0",
+      "title": "Rule Version",
+      "type": "string"
+    },
+    "transport": {
+      "const": "local",
+      "default": "local",
+      "title": "Transport",
+      "type": "string"
+    },
+    "external_services_called": {
+      "const": false,
+      "default": false,
+      "title": "External Services Called",
+      "type": "boolean"
+    },
+    "model_called": {
+      "const": false,
+      "default": false,
+      "title": "Model Called",
+      "type": "boolean"
+    }
+  },
+  "title": "RuleExecution",
+  "type": "object"
+}

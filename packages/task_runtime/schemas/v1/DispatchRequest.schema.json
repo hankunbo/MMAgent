@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "case_code": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Case Code",
+      "type": "string"
+    },
+    "context_checksum": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Context Checksum",
+      "type": "string"
+    },
+    "expected_revision": {
+      "minimum": 0,
+      "title": "Expected Revision",
+      "type": "integer"
+    },
+    "idempotency_key": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+-]{0,127}$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 256,
+      "pattern": "^[A-Z][A-Z0-9_]*(?::[A-Z0-9][A-Z0-9._-]*)+$",
+      "title": "Run Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "case_code",
+    "context_checksum",
+    "idempotency_key",
+    "expected_revision"
+  ],
+  "title": "DispatchRequest",
+  "type": "object"
+}

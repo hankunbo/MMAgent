@@ -1,0 +1,71 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "acceptance_is_inside_review": {
+      "const": true,
+      "title": "Acceptance Is Inside Review",
+      "type": "boolean"
+    },
+    "budget_owner": {
+      "const": "original_campaign_and_RuntimeAgentJournal",
+      "title": "Budget Owner",
+      "type": "string"
+    },
+    "deadline": {
+      "title": "Deadline",
+      "type": "string"
+    },
+    "implementation": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Implementation",
+      "type": "object"
+    },
+    "max_new_requests": {
+      "maximum": 40,
+      "minimum": 1,
+      "title": "Max New Requests",
+      "type": "integer"
+    },
+    "protocol_checksum": {
+      "title": "Protocol Checksum",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "multimodal-stage-plan/1.0.0",
+      "default": "multimodal-stage-plan/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stages": {
+      "items": {
+        "enum": [
+          "sources",
+          "definitions",
+          "requirements",
+          "acquisition",
+          "review",
+          "acceptance",
+          "export"
+        ],
+        "type": "string"
+      },
+      "maxItems": 7,
+      "minItems": 7,
+      "title": "Stages",
+      "type": "array"
+    }
+  },
+  "required": [
+    "protocol_checksum",
+    "implementation",
+    "stages",
+    "deadline",
+    "max_new_requests",
+    "budget_owner",
+    "acceptance_is_inside_review"
+  ],
+  "title": "StagePlan",
+  "type": "object"
+}
